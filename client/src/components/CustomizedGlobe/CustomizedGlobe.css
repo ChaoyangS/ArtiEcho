@@ -1,0 +1,59 @@
+.container {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* Custom X markers */
+.custom-marker {
+  color: grey;
+  font-size: 20px;
+  font-weight: bold;
+  position: absolute;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.custom-marker:hover {
+  color: darkblue;
+}
+
+/* Navigation Pane */
+.nav-pane {
+  position: fixed;
+  top: 0;
+  right: -30rem; /* Start off-screen */
+  width: 30rem;
+  height: 100vh;
+  background: lightsteelblue;
+  opacity: 30%;
+  box-shadow: -0.25rem 0 0.625rem rgba(0, 0, 0, 0.2);
+  padding: 1.25rem;
+  transition: right 0.3s ease-in-out;
+}
+
+.nav-pane.open {
+  right: 0; /* Slide in when a location is selected */
+}
+
+.nav-pane h2 {
+  margin: 0 0 10px;
+}
+
+.nav-pane p {
+  font-size: 1rem;
+}
+
+/* Close Button */
+.close-btn {
+  position: absolute;
+  top: 0.625rem;
+  right: 0.625rem;
+  font-size: 1.5rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: black;
+}
