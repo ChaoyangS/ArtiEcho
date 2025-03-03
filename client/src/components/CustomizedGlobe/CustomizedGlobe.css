@@ -7,7 +7,7 @@
 
 /* Custom X markers */
 .custom-marker {
-  color: grey;
+  color: salmon;
   font-size: 20px;
   font-weight: bold;
   position: absolute;
@@ -27,11 +27,12 @@
   right: -30rem; /* Start off-screen */
   width: 30rem;
   height: 100vh;
-  background: lightsteelblue;
-  opacity: 30%;
+  background: rgba(141, 152, 167, 0.4);
+  opacity: 100%;
   box-shadow: -0.25rem 0 0.625rem rgba(0, 0, 0, 0.2);
   padding: 1.25rem;
   transition: right 0.3s ease-in-out;
+  overflow-y: auto;
 }
 
 .nav-pane.open {
