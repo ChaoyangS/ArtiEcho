@@ -55,5 +55,10 @@ Sidebar Container .sidebar {
 }
 .dropdown-button {
   border: none;
-  background-color: white;
+  background-color: #5c5c5c;
+  color: #e1bcbc;
+  font-size: medium;
+}
+.Navbar {
+  background-color: #5c5c5c;
 }
