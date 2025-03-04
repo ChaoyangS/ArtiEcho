@@ -1,0 +1,59 @@
+Sidebar Container .sidebar {
+  width: 180px;
+  background-color: #9b9b9b;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border-radius: 10px;
+  position: relative; /* Ensures dropdown positions correctly */
+}
+
+/* Sidebar Menu Items */
+.sidebar-item {
+  color: #e1bcbc;
+  font-size: 16px;
+  padding: 10px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.sidebar-item:hover {
+  background-color: #7d7d7d;
+  border-radius: 5px;
+}
+
+/* Selected Item */
+.sidebar-item.selected {
+  font-weight: bold;
+  color: #f5d1d1;
+}
+
+/* Dropdown Menu */
+.dropdown {
+  position: absolute;
+  top: 40px;
+  left: 15px;
+  width: 160px;
+  background-color: #7d7d7d;
+  border-radius: 5px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  display: block;
+  z-index: 10;
+}
+
+/* Dropdown Items */
+.dropdown-item {
+  padding: 10px;
+  color: #e1bcbc;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.dropdown-item:hover {
+  background-color: #5c5c5c;
+}
+.dropdown-button {
+  border: none;
+  background-color: white;
+}

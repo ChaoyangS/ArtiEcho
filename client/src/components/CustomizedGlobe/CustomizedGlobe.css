@@ -1,8 +1,10 @@
 .container {
   position: relative;
+  /* display: flex; */
   width: 100vw;
   height: 100vh;
   overflow: hidden;
+  align-items: center;
 }
 
 /* Custom X markers */
