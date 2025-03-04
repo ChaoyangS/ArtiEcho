@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import Globe from "react-globe.gl";
 import * as THREE from "three";
 import "./CustomizedGlobe.css";
+import "../../styles/_global.css";
 import Waterlilies from "../../assets/Water.webp";
 import Sunflower from "../../assets/sunflower.jpeg";
 import Starrynight from "../../assets/starrynight.jpeg";
