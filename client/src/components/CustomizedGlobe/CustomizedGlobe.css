@@ -57,12 +57,12 @@
   writing-mode: horizontal-tb;
   position: static;
   transform: none;
-  color: #000000;
+  color: #ffffff;
 }
 
 .nav-pane h2 {
   margin: 0 0 10px;
-  color: #000000;
+  color: #ffffff;
 }
 
 /* Close Button */
@@ -74,5 +74,40 @@
   background: none;
   border: none;
   cursor: pointer;
-  color: black;
+  color: #ffffff;
+}
+
+/* Artwork List Styles */
+.artwork-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.artwork-card {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 0.5rem;
+  overflow: hidden;
+  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
+}
+
+.artwork-card img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.artwork-details {
+  padding: 1rem;
+  color: #ffffff;
+}
+
+.artwork-details h3 {
+  margin: 0 0 0.5rem;
+  color: #ffffff;
+}
+
+.artwork-details p {
+  margin: 0.25rem 0;
+  color: #ffffff;
 }
