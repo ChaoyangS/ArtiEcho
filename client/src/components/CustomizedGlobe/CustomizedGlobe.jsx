@@ -9,7 +9,7 @@ import Sunflower from "../../assets/sunflower.jpeg";
 import Starrynight from "../../assets/starrynight.jpeg";
 import Mona from "../../assets/mona.jpeg";
 
-// 🎨 Function to Create Globe Material
+// Function to Create Globe Material
 const createGlobeMaterial = () => {
   return new THREE.MeshStandardMaterial({
     color: new THREE.Color(0xffffff),
@@ -26,7 +26,7 @@ const createGlobeMaterial = () => {
   });
 };
 
-// 📍 Mock Data for Locations
+// Mock Data for Locations
 const locations = [
   {
     lat: 51.5074,
@@ -72,7 +72,7 @@ const locations = [
   },
 ];
 
-// 📌 Function to Render HTML Element for Locations
+// Function to Render HTML Element for Locations
 const renderHtmlElement = (location, setSelectedLocation) => {
   const el = document.createElement("div");
   el.innerHTML = "✖";
@@ -81,7 +81,7 @@ const renderHtmlElement = (location, setSelectedLocation) => {
   return el;
 };
 
-// 🎭 Artwork List Component
+// Artwork List Component
 const ArtworkList = ({ artworks }) => (
   <div className="artwork-list">
     {artworks.map((art, index) => (
@@ -109,7 +109,7 @@ function CustomizedGlobe() {
   const [selectedLocation, setSelectedLocation] = useState(null);
   const [polygons, setPolygons] = useState([]);
 
-  // 🌍 Fetch GeoJSON Data
+  // Fetch GeoJSON Data
   useEffect(() => {
     fetch(
       "https://raw.githubusercontent.com/johan/world.geo.json/master/countries.geo.json"
@@ -120,7 +120,7 @@ function CustomizedGlobe() {
 
   return (
     <div className="container">
-      {/* 🌎 Globe Component */}
+      {/* Globe Component */}
       <Globe
         ref={globeRef}
         globeImageUrl="https://upload.wikimedia.org/wikipedia/commons/2/2c/BlackMarble20161km.jpg"
@@ -132,7 +132,7 @@ function CustomizedGlobe() {
         htmlElement={(d) => renderHtmlElement(d, setSelectedLocation)}
         polygonsData={polygons}
         polygonCapColor={() => "lightgrey"}
-        polygonSideColor={() => "grey"}
+        polygonSideColor={() => "white"}
         polygonStrokeColor={() => "#333333"}
         polygonAltitude={0.01}
         polygonLabel={null}
@@ -140,7 +140,7 @@ function CustomizedGlobe() {
         atmosphereAltitude={0.1}
       />
 
-      {/* 📌 Navigation Pane */}
+      {/* Navigation Pane */}
       <div className={`nav-pane ${selectedLocation ? "open" : ""}`}>
         {selectedLocation ? (
           <>
