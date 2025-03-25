@@ -1,0 +1,15 @@
+.topten-artwork-page {
+    background-color: #17181a; /* optional color: #ae838c; */
+    padding: 0 20px;
+    text-align: center;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  h3 {
+    padding: 0;
+    color: #f2ded8; /* optional color: #f2ded8; */
+    margin-bottom: 20px;
+  }

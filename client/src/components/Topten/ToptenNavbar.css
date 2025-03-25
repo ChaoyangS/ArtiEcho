@@ -1,0 +1,18 @@
+.topten-navbar {
+    margin-top: 0;
+    background-color: #d3b9be;
+    padding: 0px;
+    text-align: left;
+    height: 20px;
+  }
+  
+  .topten-navbar a {
+    color: white;
+    text-decoration: none;
+    margin: 0px;
+    font-size: 12px;
+  }
+  
+  .topten-navbar a:hover {
+    text-decoration: underline;
+  }
