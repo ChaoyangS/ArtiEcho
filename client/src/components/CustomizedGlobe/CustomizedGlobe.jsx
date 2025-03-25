@@ -11,15 +11,8 @@ import Mona from "../../assets/mona.jpeg";
 
 // Function to Create Globe Material
 const createGlobeMaterial = () => {
-  return new THREE.MeshStandardMaterial({
+  return new THREE.MeshBasicMaterial({
     color: new THREE.Color(0xffffff),
-    emissive: new THREE.Color(0xffffff),
-    emissiveIntensity: 0.5,
-    transparent: false,
-    opacity: 1,
-    depthWrite: true,
-    roughness: 0.5,
-    metalness: 0.3,
     map: new THREE.TextureLoader().load(
       "https://upload.wikimedia.org/wikipedia/commons/2/2c/BlackMarble20161km.jpg"
     ),
@@ -123,7 +116,7 @@ function CustomizedGlobe() {
       {/* Globe Component */}
       <Globe
         ref={globeRef}
-        globeImageUrl="https://upload.wikimedia.org/wikipedia/commons/2/2c/BlackMarble20161km.jpg"
+        // globeImageUrl="https://upload.wikimedia.org/wikipedia/commons/2/2c/BlackMarble20161km.jpg"
         backgroundColor="#000000"
         globeMaterial={createGlobeMaterial}
         htmlElementsData={locations}
@@ -133,11 +126,13 @@ function CustomizedGlobe() {
         polygonsData={polygons}
         polygonCapColor={() => "lightgrey"}
         polygonSideColor={() => "white"}
-        polygonStrokeColor={() => "#333333"}
+        polygonStrokeColor={() => "black"}
         polygonAltitude={0.01}
         polygonLabel={null}
         atmosphereColor="#ffffff"
         atmosphereAltitude={0.1}
+        width={1000}
+        height={1000}
       />
 
       {/* Navigation Pane */}
