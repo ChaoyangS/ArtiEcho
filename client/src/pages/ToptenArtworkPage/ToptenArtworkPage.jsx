@@ -1,30 +1,37 @@
-import React from "react";
+/*
+  Top Ten Artworks page.
+*/
+
+import React, { useEffect, useState } from "react";
 import ToptenNavbar from "../../components/Topten/ToptenNavbar";
 import Topten from "../../components/Topten/Topten";
 import "./ToptenArtworkPage.css";
-import Mona from "../../assets/mona.jpeg";
-import Starrynight from "../../assets/starrynight.jpeg";
-import Sunflowers from "../../assets/sunflower.jpeg";
-import Water from "../../assets/water.webp";
-import Swordman from "../../assets/swordman.jpeg"; // example with fake name from data
-import Unknown from "../../assets/unknown.jpeg"; // example with fake name from data
-
-const mockArtworks = [
-  // Mock artwork datas, can be replaced by the query
-  { title: "Starry Night", artist: "Vincent van Gogh", image: Starrynight },
-  { title: "Mona Lisa", artist: "Leonardo da Vinci", image: Mona },
-  { title: "Sunflowers", artist: "Vincent van Gogh", image: Sunflowers },
-  { title: "Water Lily", artist: "Claude Monet", image: Water },
-  { title: "Swordman", artist: "unknown", image: Swordman },
-  { title: "Hills", artist: "unknown", image: Unknown },
-];
 
 const ToptenArtworkPage = () => {
+  const [artworks, setArtworks] = useState([]);
+
+  useEffect(() => {
+    console.log("Fetching artwork data...");
+    fetch("http://localhost:3000/topten-artworks")
+      .then((res) => res.json())
+      .then((data) => {
+        const formatted = data.map((item) => ({
+          title: item.title,
+          artist: item.artist || "Unknown",
+          image: item.image || "/placeholder.jpg", // fallback image path
+        }));
+        setArtworks(formatted);
+      })
+      .catch((err) => {
+        console.error("Failed to fetch artworks:", err);
+      });
+  }, []);
+
   return (
     <div className="topten-artwork-page">
       {/* <ToptenNavbar />*/}
-      <h3>Top 10 Artworks by Genre</h3>
-      <Topten title="Top 10 Artworks" items={mockArtworks} category="Artworks" /> 
+      {/* <h3>Top 10 Artworks by Genre</h3> */} {/*  Will consider move to navbar or somewhere */}
+      <Topten title="Top 10 Artworks" items={artworks} category="Artworks" />
     </div>
   );
 };

@@ -1,5 +1,10 @@
+/*
+  This file is the repeated component for 2 Top Ten pages: Top Ten Artworks page and Top Ten Artists page
+*/
+
 import React from "react";
 import "./Topten.css";
+import { Link } from "react-router-dom";
 
 const Topten = ({ title, items, category }) => {
   return (
@@ -14,14 +19,24 @@ const Topten = ({ title, items, category }) => {
                   <div className="topten-rank"><h1>{index + 1}</h1></div>
                   <div className="topten-text">
                     <p className="topten-category">{category}</p> 
-                    <h3 className="topten-title">{item.title}</h3>           
+                    <h3 className="topten-title">
+                    <Link to={`/artworks/${item.title.replace(/\s+/g, "-").toLowerCase()}`} className="topten-link">{item.title}</Link>  
+                    </h3> 
+                    {/* If this is for top ten artworks */}          
                     {category === "Artworks" && (
                       <article className="detail-list-description">
                         <p>Time period:</p>
-                        <p>Artist: {item.artist}</p>
+                        <p>Artist:{" "}
+                          <Link
+                            to={`/artists/${item.artist.replace(/\s+/g, "-").toLowerCase()}`}
+                            className="topten-link"
+                          >
+                            {item.artist}
+                          </Link></p>
                         <p>Art Style:</p>
                         </article>
                     )}
+                    {/* If this is for top ten artists */}  
                     {category === "Artists" && (
                       <>
                         <p>Notable Works: {item.notableWorks}</p>

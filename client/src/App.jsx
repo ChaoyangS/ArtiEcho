@@ -14,6 +14,7 @@ function App() {
   return (
     <>
     <Navbar />
+    {/*<h1>ArtiEcho</h1>*/}
       {/* Routes for different pages */}
       <Routes>
         <Route path="/" element={<CustomizedGlobe />} /> {/* Homepage route */}
