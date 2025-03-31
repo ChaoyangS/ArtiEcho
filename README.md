@@ -3,5 +3,7 @@ offers an engaging way to experience the evolution of art collections alongside 
 
 Directories:
 The client directory consists of front end development work.
+
 The data directory consists of data we are using for the backend
+
 The server directory consists of back end development work.
