@@ -18,28 +18,9 @@ const connection = new Pool({
 });
 connection.connect((err) => err && console.log(err));
 
-/******************
- * WARM UP ROUTES *
- ******************/
-
-// // Route 1: GET /author/:type
-// const author = async function (req, res) {
-//   // TODO (TASK 1): replace the values of name and pennkey with your own
-//   const name = "Chaoyang Shen";
-//   const pennkey = "shec";
-
-//   // checks the value of type in the request parameters
-//   // note that parameters are required and are specified in server.js in the endpoint by a colon (e.g. /author/:type)
-//   if (req.params.type === "name") {
-//     // res.json returns data back to the requester via an HTTP response
-//     res.json({ data: name });
-//   } else if (req.params.type === "pennkey") {
-//     res.json({ data: pennkey });
-//     // TODO (TASK 2): edit the else if condition to check if the request parameter is 'pennkey' and if so, send back a JSON response with the pennkey
-//   } else {
-//     res.status(400).json({});
-//   }
-// };
+// /********************************
+//  * ROUTES *
+//  ********************************/
 
 // Route 1: GET /artwork
 const artwork = async function (req, res) {
@@ -52,12 +33,10 @@ const artwork = async function (req, res) {
   // Only a small change (unrelated to querying) is required for TASK 3 in this route.
   connection.query(
     `
-SELECT objectID, title, subclassification
-FROM  objects
-WHERE  subclassification IN ('Drawing', 'Sculpture', 'Photograph',  'Print', 'Painting')
-LIMIT 10;
-
-
+    SELECT objectID, title, subclassification
+    FROM  objects
+    WHERE  subclassification IN ('Drawing', 'Sculpture', 'Photograph',  'Print', 'Painting')
+    LIMIT 10;
   `,
     (err, data) => {
       if (err) {
@@ -68,280 +47,13 @@ LIMIT 10;
         res.json({
           song_ID: data.rows[1],
         });
-        console.log(data);
       }
     }
   );
 };
 
-// /********************************
-//  * BASIC SONG/ALBUM INFO ROUTES *
-//  ********************************/
 
-// // Route 3: GET /song/:song_id
-// const song = async function (req, res) {
-//   // TODO (TASK 4): implement a route that given a song_id, returns all information about the song
-//   // Hint: unlike route 2, you can directly SELECT * and just return data.rows[0]
-//   // Most of the code is already written for you, you just need to fill in the query
-//   const { song_id } = req.params;
-//   connection.query(
-//     `
-//     SELECT *
-//     FROM Songs
-//     WHERE song_id = '${song_id}'
 
-//     `,
-//     (err, data) => {
-//       if (err) {
-//         console.log(err);
-//         res.json({});
-//       } else {
-//         res.json(data.rows[0]);
-//       }
-//     }
-//   );
-// };
-
-// // Route 4: GET /album/:album_id
-// const album = async function (req, res) {
-//   // TODO (TASK 5): implement a route that given a album_id, returns all information about the album
-//   const { album_id } = req.params;
-//   connection.query(
-//     `
-//     SELECT *
-//     FROM Albums
-//     WHERE album_id = '${album_id}'
-
-//     `,
-//     (err, data) => {
-//       if (err) {
-//         console.log(err);
-//         res.json({});
-//       } else {
-//         res.json(data.rows[0]);
-//       }
-//     }
-//   ); // replace this with your implementation
-// };
-
-// // Route 5: GET /albums
-// const albums = async function (req, res) {
-//   // TODO (TASK 6): implement a route that returns all albums ordered by release date (descending)
-//   // Note that in this case you will need to return multiple albums, so you will need to return an array of objects
-//   connection.query(
-//     `
-//     SELECT *
-//     FROM Albums
-//     ORDER BY release_date DESC
-
-//     `,
-//     (err, data) => {
-//       if (err) {
-//         console.log(err);
-//         res.json({});
-//       } else {
-//         res.json(data.rows);
-//       }
-//     }
-//   );
-//   // res.json([]); // replace this with your implementation
-// };
-
-// // Route 6: GET /album_songs/:album_id
-// const album_songs = async function (req, res) {
-//   // TODO (TASK 7): implement a route that given an album_id, returns all songs on that album ordered by track number (ascending)
-//   const { album_id } = req.params;
-//   connection.query(
-//     `
-//     SELECT s.song_id, s.title, s.number, s.duration, s.plays
-//     FROM Songs s
-//     WHERE album_id = '${album_id}'
-//     ORDER BY s.number ASC
-
-//     `,
-//     (err, data) => {
-//       if (err) {
-//         console.log(err);
-//         res.json({});
-//       } else {
-//         res.json(data.rows);
-//       }
-//     }
-//   );
-//   // res.json([]); // replace this with your implementation
-// };
-
-// /************************
-//  * ADVANCED INFO ROUTES *
-//  ************************/
-
-// // Route 7: GET /top_songs
-// const top_songs = async function (req, res) {
-//   const page = req.query.page;
-//   // TODO (TASK 8): use the ternary (or nullish) operator to set the pageSize based on the query or default to 10
-//   const pageSize = req.query.page_size ?? 10;
-
-//   if (!page) {
-//     // TODO (TASK 9)): query the database and return all songs ordered by number of plays (descending)
-//     connection.query(
-//       `
-//       SELECT s.song_id, s.title, s.album_id, a.title AS album, s.plays
-//       FROM Songs s JOIN Albums a ON s.album_id = a.album_id
-//       ORDER BY s.plays DESC
-
-//       `,
-//       (err, data) => {
-//         if (err) {
-//           console.log(err);
-//           res.json({});
-//         } else {
-//           res.json(data.rows);
-//         }
-//       }
-//     );
-
-//     // Hint: you will need to use a JOIN to get the album title as well
-//     // res.json([]); // replace this with your implementation
-//   } else {
-//     // TODO (TASK 10): reimplement TASK 9 with pagination
-//     // Hint: use LIMIT and OFFSET (see https://www.w3schools.com/php/php_mysql_select_limit.asp)
-//     const offset = (Number(page) - 1) * Number(pageSize);
-//     connection.query(
-//       `
-//       SELECT s.song_id, s.title, s.album_id, a.title AS album, s.plays
-//       FROM Songs s JOIN Albums a ON s.album_id = a.album_id
-//       ORDER BY s.plays DESC
-//       LIMIT $1 OFFSET $2
-
-//       `,
-//       [Number(pageSize), offset],
-//       (err, data) => {
-//         if (err) {
-//           console.log(err);
-//           res.json({});
-//         } else {
-//           res.json(data.rows);
-//         }
-//       }
-//     );
-//     // res.json([]); // replace this with your implementation
-//   }
-// };
-
-// // Route 8: GET /top_albums
-// const top_albums = async function (req, res) {
-//   // TODO (TASK 11): return the top albums ordered by aggregate number of plays of all songs on the album (descending), with optional pagination (as in route 7)
-//   // Hint: you will need to use a JOIN and aggregation to get the total plays of songs in an album
-//   const page = req.query.page;
-//   const pageSize = req.query.page_size ?? 10;
-
-//   if (!page) {
-//     connection.query(
-//       `
-//       SELECT a.album_id, a.title, SUM(s.plays) AS plays
-//       FROM Songs s JOIN Albums a ON s.album_id = a.album_id
-//       GROUP BY a.album_id
-//       ORDER BY plays DESC
-
-//       `,
-//       (err, data) => {
-//         if (err) {
-//           console.log(err);
-//           res.json({});
-//         } else {
-//           res.json(data.rows);
-//         }
-//       }
-//     );
-//   } else {
-//     const offset = (page - 1) * pageSize;
-//     connection.query(
-//       `
-//       SELECT a.album_id, a.title, SUM(s.plays) AS plays
-//       FROM Songs s JOIN Albums a ON s.album_id = a.album_id
-//       GROUP BY a.album_id
-//       ORDER BY plays DESC
-//       LIMIT $1 OFFSET $2
-
-//       `,
-//       [Number(pageSize), offset],
-//       (err, data) => {
-//         if (err) {
-//           console.log(err);
-//           res.json({});
-//         } else {
-//           res.json(data.rows);
-//         }
-//       }
-//     );
-//   }
-
-//   // res.json([]); // replace this with your implementation
-// };
-
-// // Route 9: GET /search_albums
-// const search_songs = async function (req, res) {
-//   // TODO (TASK 12): return all songs that match the given search query with parameters defaulted to those specified in API spec ordered by title (ascending)
-//   // Some default parameters have been provided for you, but you will need to fill in the rest
-//   const title = req.query.title ?? "";
-//   const durationLow = req.query.duration_low ?? 60;
-//   const durationHigh = req.query.duration_high ?? 660;
-//   const playsLow = req.query.plays_low ?? 0;
-//   const playsHigh = req.query.plays_high ?? 1100000000;
-//   const danceabilityLow = req.query.danceability_low ?? 0;
-//   const danceabilityHigh = req.query.danceability_high ?? 1;
-//   const energyLow = req.query.energy_low ?? 0;
-//   const energyHigh = req.query.energy_high ?? 1;
-//   const valenceLow = req.query.valence_low ?? 0;
-//   const valenceHigh = req.query.valence_high ?? 1;
-//   const explicit = req.query.explicit;
-
-//   let query = `
-//   SELECT song_id, album_id, title, "number", duration, plays, danceability, energy, valence, tempo, key_mode, explicit
-//     FROM Songs
-//     WHERE title LIKE $1
-//       AND duration >= $2
-//       AND duration <= $3
-//       AND plays >= $4
-//       AND plays <= $5
-//       AND danceability >= $6
-//       AND danceability <= $7
-//       AND energy >= $8
-//       AND energy <= $9
-//       AND valence >= $10
-//       AND valence <= $11
-//   `;
-//   const queryParams = [
-//     `%${title}%`,
-//     Number(durationLow),
-//     Number(durationHigh),
-//     Number(playsLow),
-//     Number(playsHigh),
-//     Number(danceabilityLow),
-//     Number(danceabilityHigh),
-//     Number(energyLow),
-//     Number(energyHigh),
-//     Number(valenceLow),
-//     Number(valenceHigh),
-//   ];
-
-//   if (explicit !== "true") {
-//     query += ` AND explicit = 0`;
-//   }
-
-//   query += ` ORDER BY title ASC`;
-
-//   connection.query(query, queryParams, (err, results) => {
-//     if (err) {
-//       console.log(err);
-//       res.json({});
-//     } else {
-//       res.json(results.rows);
-//     }
-//   });
-
-//   // res.json([]); // replace this with your implementation
-// };
 
 module.exports = {
   artwork,
