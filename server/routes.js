@@ -22,15 +22,8 @@ connection.connect((err) => err && console.log(err));
 //  * ROUTES *
 //  ********************************/
 
-// Route 1: GET /artwork
+// Route 1: GET/artwork
 const artwork = async function (req, res) {
-  // you can use a ternary operator to check the value of request query values
-  // which can be particularly useful for setting the default value of queries
-  // note if users do not provide a value for the query it will be undefined, which is falsey
-  //   const explicit = req.query.explicit === "true" ? 1 : 0;
-
-  // Here is a complete example of how to query the database in JavaScript.
-  // Only a small change (unrelated to querying) is required for TASK 3 in this route.
   connection.query(
     `
     SELECT objectID, title, subclassification
@@ -45,7 +38,34 @@ const artwork = async function (req, res) {
         res.json({});
       } else {
         res.json({
-          song_ID: data.rows[1],
+          artworks: data.rows,
+        });
+      }
+    }
+  );
+};
+
+
+// Route 2: GET/artist
+const artist = async function (req, res) {
+  connection.query(
+    `
+    SELECT c.preferredDisplayName AS artist_name, COUNT(*) AS artwork_count
+    FROM objects_constituents oc
+    JOIN constituents c ON oc.constituentID = c.constituentID
+    WHERE oc.roleType = 'artist'
+    GROUP BY c.preferredDisplayName
+    ORDER BY artwork_count DESC
+    LIMIT 10;
+  `,
+    (err, data) => {
+      if (err) {
+        console.log(err);
+
+        res.json({});
+      } else {
+        res.json({
+          Top_10_Artist: data.rows,
         });
       }
     }
@@ -57,4 +77,5 @@ const artwork = async function (req, res) {
 
 module.exports = {
   artwork,
+  artist,
 };
