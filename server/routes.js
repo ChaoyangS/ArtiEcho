@@ -22,20 +22,23 @@ connection.connect((err) => err && console.log(err));
 //  * ROUTES *
 //  ********************************/
 
-// Route 1: GET/artwork
-const artwork = async function (req, res) {
+// Route 1: GET/artworkByGenre
+// Filter artworks by genre(like specific categories: photography, painting, or sculpture);
+const artworkByGenre = async function (req, res) {
+  const genreInput = req.query.genre || ''; // get genre input
+
   connection.query(
     `
     SELECT objectID, title, subclassification
-    FROM  objects
-    WHERE  subclassification IN ('Drawing', 'Sculpture', 'Photograph',  'Print', 'Painting')
+    FROM objects
+    WHERE subclassification ILIKE $1
     LIMIT 10;
-  `,
+    `,
+    [`%${genreInput}%`],
     (err, data) => {
       if (err) {
         console.log(err);
-
-        res.json({});
+        res.status(500).json({ error: "Query failed" });
       } else {
         res.json({
           artworks: data.rows,
@@ -46,7 +49,10 @@ const artwork = async function (req, res) {
 };
 
 
+
 // Route 2: GET/artist
+// Find the top 10 artists with the most artworks in the collection;
+
 const artist = async function (req, res) {
   connection.query(
     `
@@ -73,9 +79,209 @@ const artist = async function (req, res) {
 };
 
 
+// Route 3: GET/artworkByTitle
+const artworkByTitle = async function (req, res) {
+  const titleInput = req.query.title || '';
+
+  connection.query(
+    `
+    SELECT o.title AS artwork_title,
+           o.beginYear,
+           o.endYear,
+           c.nationality,
+           img.iiifthumburl AS url
+    FROM objects o
+    LEFT JOIN objects_constituents oc ON o.objectid = oc.objectid
+      AND oc.roletype = 'artist'
+      AND oc.displayorder = 1
+    LEFT JOIN constituents c ON oc.constituentID = c.constituentID
+    LEFT JOIN published_images img ON o.objectid = img.depictstmsobjectID
+      AND img.viewtype = 'primary'
+    WHERE o.title ILIKE $1
+    LIMIT 25;
+    `,
+    [`%${titleInput}%`],
+    (err, data) => {
+      if (err) {
+        console.log(err);
+        res.status(500).json({ error: "Query failed" });
+      } else {
+        res.json(data.rows);
+      }
+    }
+  );
+};
+
+
+// Route 4: GET/artworkByStyle
+const artworkByStyle = async function (req, res) {
+  const styleInput = req.query.style || '';
+
+  connection.query(
+    `
+    SELECT o.objectID,
+           o.title AS artwork_title,
+           ot.visualBrowserStyle AS style,
+           c.preferredDisplayname AS artist_name
+    FROM objects o
+    JOIN objects_constituents oc
+      ON o.objectID = oc.objectID AND oc.displayorder = 1
+    JOIN objects_terms ot
+      ON o.objectID = ot.objectID
+    JOIN constituents c
+      ON oc.constituentID = c.constituentID
+    WHERE oc.roleType = 'artist'
+      AND ot.visualBrowserStyle ILIKE $1
+    GROUP BY style, artist_name, artwork_title, o.objectID
+    ORDER BY style DESC
+    LIMIT 10;
+    `,
+    [`%${styleInput}%`],
+    (err, data) => {
+      if (err) {
+        console.log(err);
+        res.status(500).json({ error: "Query failed" });
+      } else {
+        res.json(data.rows);
+      }
+    }
+  );
+};
+
+
+// Route 5: GET/artworkBibliographyByTitle
+const artworkBibliographyByTitle = async function (req, res) {
+  const title = req.query.title || '';
+
+  connection.query(
+    `
+    SELECT objectid,
+           artwork_title,
+           text,
+           textType,
+           year
+    FROM (
+        SELECT o.objectid,
+               o.title AS artwork_title,
+               t.text,
+               t.textType,
+               t.year,
+               ROW_NUMBER() OVER (PARTITION BY o.objectid ORDER BY t.year DESC) AS rn
+        FROM objects o
+        JOIN objects_text_entries t ON o.objectID = t.objectID
+        WHERE t.textType = 'bibliography'
+          AND o.title ILIKE $1
+    ) sub
+    WHERE rn = 1
+    LIMIT 25;
+    `,
+    [`%${title}%`],
+    (err, data) => {
+      if (err) {
+        console.error(err);
+        res.status(500).json({ error: "Query failed" });
+      } else {
+        res.json(data.rows);
+      }
+    }
+  );
+};
+
+// Route 6: GET/artworkByNationalityAndEndYear
+const artworkByNationalityAndEndYear = async function (req, res) {
+  const nationality = req.query.nationality || '';
+  const endYear = req.query.endYear || '';
+
+  connection.query(
+    `
+    SELECT c.nationality,
+           o.title AS artwork_title,
+           o.beginYear,
+           o.endYear
+    FROM objects o
+    JOIN objects_constituents oc
+      ON o.objectID = oc.objectID
+      AND oc.roletype = 'artist'
+      AND oc.displayorder = 1
+    JOIN constituents c
+      ON oc.constituentID = c.constituentID
+    WHERE c.nationality ILIKE $1
+      AND o.endYear = $2
+      AND o.beginYear IS NOT NULL
+      AND c.nationality IS NOT NULL
+    LIMIT 25;
+    `,
+    [`%${nationality}%`, endYear],
+    (err, data) => {
+      if (err) {
+        console.error(err);
+        res.status(500).json({ error: "Query failed" });
+      } else {
+        res.json(data.rows);
+      }
+    }
+  );
+};
+
+// Route 7: GET/topNationalities
+// Identify the top 10 most common nationalities of artists in the NGA collection;
+const topNationalities = async function (req, res) {
+  connection.query(
+    `
+    SELECT nationality,
+           COUNT(*) AS artist_count
+    FROM constituents
+    WHERE artistOfNGAObject = 1
+      AND nationality IS NOT NULL
+    GROUP BY nationality
+    ORDER BY artist_count DESC
+    LIMIT 10;
+    `,
+    (err, data) => {
+      if (err) {
+        console.error(err);
+        res.status(500).json({ error: "Query failed" });
+      } else {
+        res.json(data.rows);
+      }
+    }
+  );
+};
+
+
+// Route 8: GET/topDonors
+// List the most common donors and the number of artworks they donated.
+const topDonors = async function (req, res) {
+  connection.query(
+    `
+    SELECT c.preferredDisplayName AS donor_name,
+           COUNT(oc.objectID) AS artwork_count
+    FROM objects_constituents oc
+    JOIN constituents c ON oc.constituentID = c.constituentID
+    WHERE oc.roleType = 'donor'
+    GROUP BY c.preferredDisplayName
+    ORDER BY artwork_count DESC
+    LIMIT 25;
+    `,
+    (err, data) => {
+      if (err) {
+        console.error(err);
+        res.status(500).json({ error: "Query failed" });
+      } else {
+        res.json(data.rows);
+      }
+    }
+  );
+};
 
 
 module.exports = {
-  artwork,
+  artworkByGenre,
   artist,
+  artworkByTitle,
+  artworkByStyle,
+  artworkBibliographyByTitle,
+  artworkByNationalityAndEndYear,
+  topNationalities,
+  topDonors,
 };
