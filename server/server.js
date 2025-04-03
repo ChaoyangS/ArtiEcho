@@ -1,5 +1,4 @@
 const express = require("express");
-
 const cors = require("cors");
 const config = require("./config");
 const routes = require("./routes");
@@ -30,16 +29,16 @@ app.get('/health', (req, res) => {
 });
 
 // API Routes
-app.get("/artwork", auth, routes.artwork);
+//app.get("/artwork", auth, routes.artwork);
 
-app.get("/artwork-by-genre", routes.artworkByGenre);                
-app.get("/artist", routes.artist);                                  
-app.get("/artwork-by-title", routes.artworkByTitle);                
-app.get("/artwork-by-style", routes.artworkByStyle); 
-app.get("/artwork-bibliography-search", routes.artworkBibliographyByTitle);
-app.get("/artwork-by-nationality", routes.artworkByNationalityAndEndYear);
-app.get("/top-nationalities", routes.topNationalities);
-app.get("/top-donors", routes.topDonors);
+app.get("/artwork-by-genre", auth, routes.artworkByGenre);                
+app.get("/artist", auth, routes.artist);                                  
+app.get("/artwork-by-title", auth, routes.artworkByTitle);                
+app.get("/artwork-by-style", auth, routes.artworkByStyle); 
+app.get("/artwork-bibliography-search", auth, routes.artworkBibliographyByTitle);
+app.get("/artwork-by-nationality", auth, routes.artworkByNationalityAndEndYear);
+app.get("/top-nationalities", auth, routes.topNationalities);
+app.get("/top-donors", auth, routes.topDonors);
 
 
 /*
