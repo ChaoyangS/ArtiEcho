@@ -275,6 +275,77 @@ const topDonors = async function (req, res) {
 };
 
 
+// Route 9: GET/artworkByArtist
+const artworkByArtist = async function (req, res) {
+  const artist = req.query.artist || '';
+  connection.query(
+    `
+      WITH target_artist AS (
+          SELECT constituentID
+          FROM constituents
+          WHERE preferredDisplayName ILIKE $1
+      )
+
+      SELECT o.title AS artwork_title,
+            o.beginYear,
+            o.endYear,
+            c.nationality,
+            c.preferredDisplayName AS artist_name,
+            ot.visualBrowserStyle AS style
+      FROM objects o
+              LEFT JOIN objects_constituents oc
+                        ON o.objectID = oc.objectID
+                            AND oc.roleType = 'artist'
+                            AND oc.displayOrder = 1
+              LEFT JOIN constituents c
+                        ON oc.constituentID = c.constituentID
+              LEFT JOIN objects_terms ot
+                        ON o.objectID = ot.objectID
+      WHERE EXISTS (
+          SELECT 1
+          FROM target_artist ta
+          WHERE ta.constituentID = c.constituentID
+      )
+      and ot.visualBrowserStyle is not null
+      ORDER BY o.endYear DESC
+      LIMIT 25;
+    `,
+    [`%${artist}%`],
+    (err, data) => {
+      if (err) {
+        console.error(err);
+        res.status(500).json({ error: "Query failed" });
+      } else {
+        res.json(data.rows);
+      }
+    }
+  );
+};
+
+
+// Route 10: GET/artworkCountByYear
+const artworkCountByYear = async function (req, res) {
+  connection.query(
+    `
+    SELECT endyear, COUNT(objectid) AS count
+    FROM objects
+    WHERE endyear IS NOT NULL 
+        AND endyear <= EXTRACT(YEAR FROM CURRENT_DATE)
+    GROUP BY endyear
+    ORDER BY endyear DESC;
+    `,
+    (err, data) => {
+      if (err) {
+        console.error(err);
+        res.status(500).json({ error: "Query failed" });
+      } else {
+        res.json(data.rows);
+      }
+    }
+  );
+};
+
+
 module.exports = {
   artworkByGenre,
   artist,
@@ -284,4 +355,6 @@ module.exports = {
   artworkByNationalityAndEndYear,
   topNationalities,
   topDonors,
+  artworkByArtist,
+  artworkCountByYear,
 };

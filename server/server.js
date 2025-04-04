@@ -15,7 +15,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // CORS configuration
 const corsOptions = {
-  origin: '*',  // 允许所有域名访问
+  origin: '*',  // Allows all origins
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'X-API-Token'],
   maxAge: 86400 // 24 hours
@@ -39,7 +39,8 @@ app.get("/artwork-bibliography-search", auth, routes.artworkBibliographyByTitle)
 app.get("/artwork-by-nationality", auth, routes.artworkByNationalityAndEndYear);
 app.get("/top-nationalities", auth, routes.topNationalities);
 app.get("/top-donors", auth, routes.topDonors);
-
+app.get("/artwork-by-artist", auth, routes.artworkByArtist);
+app.get("/artwork-count-by-year", auth, routes.artworkCountByYear);
 
 /*
 http://localhost:3000/artwork-by-genre?genre=Drawing
@@ -50,6 +51,8 @@ http://localhost:3000/artwork-bibliography-search?title=sunflower
 http://localhost:3000/artwork-by-nationality?nationality=French&endYear=1900
 http://localhost:3000/top-nationalities
 http://localhost:3000/top-donors
+http://localhost:3000/artwork-by-artist?artist=Monet, Claude
+http://localhost:3000/artwork-count-by-year
 */
 
 // Error handling middleware
