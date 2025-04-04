@@ -20,7 +20,7 @@ const nationalityToLocation = {
   French: {
     lat: 48.8566,
     lng: 2.3522,
-    name: "Paris",
+    name: "France",
   },
   // need to add more here
 };
