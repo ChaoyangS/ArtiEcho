@@ -105,7 +105,7 @@ function CustomizedGlobe() {
             artist: item.preferreddisplayname,
             museum: "Unknown", // I'll add this later
             year: item.beginyear,
-            image: item.url,
+            image: item.url ? item.url.replace("!200,200", "!600,600") : null, //changed to 600*600
           });
         });
 
