@@ -1,13 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
+import axios from "axios";
 import Globe from "react-globe.gl";
 import * as THREE from "three";
 import "./CustomizedGlobe.css";
 import "../../styles/_global.css";
-
-import Waterlilies from "../../assets/Water.webp";
-import Sunflower from "../../assets/sunflower.jpeg";
-import Starrynight from "../../assets/starrynight.jpeg";
-import Mona from "../../assets/mona.jpeg";
 
 // Function to Create Globe Material
 const createGlobeMaterial = () => {
@@ -19,51 +15,15 @@ const createGlobeMaterial = () => {
   });
 };
 
-// Mock Data for Locations
-const locations = [
-  {
-    lat: 51.5074,
-    lng: -0.1278,
-    name: "London",
-    artworks: [
-      {
-        title: "Water Lilies",
-        artist: "Claude Monet",
-        museum: "National Gallery",
-        year: 1916,
-        image: Waterlilies,
-      },
-      {
-        title: "Sunflowers",
-        artist: "Vincent van Gogh",
-        museum: "National Gallery",
-        year: 1888,
-        image: Sunflower,
-      },
-    ],
-  },
-  {
+// Mapping nationality to location
+const nationalityToLocation = {
+  French: {
     lat: 48.8566,
     lng: 2.3522,
     name: "Paris",
-    artworks: [
-      {
-        title: "Mona Lisa",
-        artist: "Leonardo da Vinci",
-        museum: "Louvre Museum",
-        year: 1503,
-        image: Mona,
-      },
-      {
-        title: "The Starry Night",
-        artist: "Vincent van Gogh",
-        museum: "Musée d'Orsay",
-        year: 1889,
-        image: Starrynight,
-      },
-    ],
   },
-];
+  // need to add more here
+};
 
 // Function to Render HTML Element for Locations
 const renderHtmlElement = (location, setSelectedLocation) => {
@@ -101,8 +61,9 @@ function CustomizedGlobe() {
   const globeRef = useRef();
   const [selectedLocation, setSelectedLocation] = useState(null);
   const [polygons, setPolygons] = useState([]);
+  const [locations, setLocations] = useState([]); // 👈 dynamic locations
 
-  // Fetch GeoJSON Data
+  // Fetch globe polygons
   useEffect(() => {
     fetch(
       "https://raw.githubusercontent.com/johan/world.geo.json/master/countries.geo.json"
@@ -111,12 +72,54 @@ function CustomizedGlobe() {
       .then((data) => setPolygons(data.features));
   }, []);
 
+  // Fetch and transform artwork data from backend
+  useEffect(() => {
+    axios
+      .get(
+        "http://localhost:3000/artwork-by-nationality?nationality=French&endYear=1900",
+        {
+          headers: {
+            "X-API-Token": "artiecho",
+          },
+        }
+      )
+      .then((response) => {
+        const data = response.data;
+        const grouped = {};
+
+        data.forEach((item) => {
+          const locInfo = nationalityToLocation[item.nationality];
+          if (!locInfo) return;
+
+          const key = locInfo.name;
+
+          if (!grouped[key]) {
+            grouped[key] = {
+              ...locInfo,
+              artworks: [],
+            };
+          }
+
+          grouped[key].artworks.push({
+            title: item.artwork_title,
+            artist: item.preferreddisplayname,
+            museum: "Unknown", // I'll add this later
+            year: item.beginyear,
+            image: item.imageurl,
+          });
+        });
+
+        setLocations(Object.values(grouped));
+      })
+      .catch((error) => {
+        console.error("Error fetching artwork data:", error);
+      });
+  }, []);
+
   return (
     <div className="container">
-      {/* Globe Component */}
       <Globe
         ref={globeRef}
-        // globeImageUrl="https://upload.wikimedia.org/wikipedia/commons/2/2c/BlackMarble20161km.jpg"
         backgroundColor="#000000"
         globeMaterial={createGlobeMaterial}
         htmlElementsData={locations}
@@ -135,7 +138,6 @@ function CustomizedGlobe() {
         height={1000}
       />
 
-      {/* Navigation Pane */}
       <div className={`nav-pane ${selectedLocation ? "open" : ""}`}>
         {selectedLocation ? (
           <>

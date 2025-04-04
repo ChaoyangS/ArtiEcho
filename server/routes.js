@@ -25,7 +25,7 @@ connection.connect((err) => err && console.log(err));
 // Route 1: GET/artworkByGenre
 // Filter artworks by genre(like specific categories: photography, painting, or sculpture);
 const artworkByGenre = async function (req, res) {
-  const genreInput = req.query.genre || ''; // get genre input
+  const genreInput = req.query.genre || ""; // get genre input
 
   connection.query(
     `
@@ -47,8 +47,6 @@ const artworkByGenre = async function (req, res) {
     }
   );
 };
-
-
 
 // Route 2: GET/artist
 // Find the top 10 artists with the most artworks in the collection;
@@ -78,10 +76,9 @@ const artist = async function (req, res) {
   );
 };
 
-
 // Route 3: GET/artworkByTitle
 const artworkByTitle = async function (req, res) {
-  const titleInput = req.query.title || '';
+  const titleInput = req.query.title || "";
 
   connection.query(
     `
@@ -112,10 +109,9 @@ const artworkByTitle = async function (req, res) {
   );
 };
 
-
 // Route 4: GET/artworkByStyle
 const artworkByStyle = async function (req, res) {
-  const styleInput = req.query.style || '';
+  const styleInput = req.query.style || "";
 
   connection.query(
     `
@@ -148,10 +144,9 @@ const artworkByStyle = async function (req, res) {
   );
 };
 
-
 // Route 5: GET/artworkBibliographyByTitle
 const artworkBibliographyByTitle = async function (req, res) {
-  const title = req.query.title || '';
+  const title = req.query.title || "";
 
   connection.query(
     `
@@ -189,15 +184,17 @@ const artworkBibliographyByTitle = async function (req, res) {
 
 // Route 6: GET/artworkByNationalityAndEndYear
 const artworkByNationalityAndEndYear = async function (req, res) {
-  const nationality = req.query.nationality || '';
-  const endYear = req.query.endYear || '';
+  const nationality = req.query.nationality || "";
+  const endYear = req.query.endYear || "";
 
   connection.query(
     `
     SELECT c.nationality,
            o.title AS artwork_title,
            o.beginYear,
-           o.endYear
+           o.endYear,
+           c.preferreddisplayname,
+           m.imageurl
     FROM objects o
     JOIN objects_constituents oc
       ON o.objectID = oc.objectID
@@ -205,12 +202,17 @@ const artworkByNationalityAndEndYear = async function (req, res) {
       AND oc.displayorder = 1
     JOIN constituents c
       ON oc.constituentID = c.constituentID
+    JOIN media_relationships mr
+      ON o.objectID = mr.relatedid
+    JOIN media_items m
+      ON mr.mediaid = m.mediaid
     WHERE c.nationality ILIKE $1
       AND o.endYear = $2
       AND o.beginYear IS NOT NULL
       AND c.nationality IS NOT NULL
     LIMIT 25;
     `,
+
     [`%${nationality}%`, endYear],
     (err, data) => {
       if (err) {
@@ -248,7 +250,6 @@ const topNationalities = async function (req, res) {
   );
 };
 
-
 // Route 8: GET/topDonors
 // List the most common donors and the number of artworks they donated.
 const topDonors = async function (req, res) {
@@ -274,10 +275,9 @@ const topDonors = async function (req, res) {
   );
 };
 
-
 // Route 9: GET/artworkByArtist
 const artworkByArtist = async function (req, res) {
-  const artist = req.query.artist || '';
+  const artist = req.query.artist || "";
   connection.query(
     `
       WITH target_artist AS (
@@ -322,7 +322,6 @@ const artworkByArtist = async function (req, res) {
   );
 };
 
-
 // Route 10: GET/artworkCountByYear
 const artworkCountByYear = async function (req, res) {
   connection.query(
@@ -344,7 +343,6 @@ const artworkCountByYear = async function (req, res) {
     }
   );
 };
-
 
 module.exports = {
   artworkByGenre,
