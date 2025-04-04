@@ -194,7 +194,7 @@ const artworkByNationalityAndEndYear = async function (req, res) {
            o.beginYear,
            o.endYear,
            c.preferreddisplayname,
-           m.imageurl
+           img.iiifthumburl AS url
     FROM objects o
     JOIN objects_constituents oc
       ON o.objectID = oc.objectID
@@ -202,10 +202,9 @@ const artworkByNationalityAndEndYear = async function (req, res) {
       AND oc.displayorder = 1
     JOIN constituents c
       ON oc.constituentID = c.constituentID
-    JOIN media_relationships mr
-      ON o.objectID = mr.relatedid
-    JOIN media_items m
-      ON mr.mediaid = m.mediaid
+    LEFT JOIN published_images img
+      ON o.objectID = img.depictstmsobjectID
+      AND img.viewtype = 'primary'
     WHERE c.nationality ILIKE $1
       AND o.endYear = $2
       AND o.beginYear IS NOT NULL
