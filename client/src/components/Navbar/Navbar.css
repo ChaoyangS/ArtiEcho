@@ -35,27 +35,32 @@
   background-color: #5c5c5c;
   display: flex;
 }
-.Logo {
+.logo {
   padding-left: 0.5rem;
   padding-right: 0.5rem;
-  color: #e1bcbc;
+  width: 2.5rem;
+  height: 2.5rem;
 }
 
 .navbar {
   display: flex;
   align-items: center;
+
   padding: 1rem 2rem;
   background-color: #e0e0e0;
-  position: relative;
+  /* position: relative; */
   width: 100%;
 }
 
 .navbar-brand {
+  display: flex;
   font-size: 1.5rem;
   font-weight: 600;
   color: #333;
   text-decoration: none;
   margin-right: 2rem; /* Space between logo and menu */
+  position: relative;
+  align-items: center;
 }
 
 .navbar-menu {

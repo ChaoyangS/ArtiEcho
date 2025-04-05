@@ -61,7 +61,7 @@ function CustomizedGlobe() {
   const globeRef = useRef();
   const [selectedLocation, setSelectedLocation] = useState(null);
   const [polygons, setPolygons] = useState([]);
-  const [locations, setLocations] = useState([]); // 👈 dynamic locations
+  const [locations, setLocations] = useState([]); // dynamic locations
 
   // Fetch globe polygons
   useEffect(() => {

@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import "./Navbar.css"; // Import the CSS file
+import artiechologo from "../../assets/artiechologo.png";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -20,7 +21,10 @@ const Navbar = () => {
 
   return (
     <nav className="navbar">
-      <div className="navbar-brand">ArtiEcho</div>
+      <div className="navbar-brand">
+        <img src={artiechologo} alt="ArtiEcho" className="logo" />
+        ArtiEcho
+      </div>
       <div className="navbar-menu">
         <button
           className={`menu-button ${isOpen ? "active" : ""}`}
