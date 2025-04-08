@@ -4,19 +4,18 @@ import "./App.css";
 import "./styles/_global.css";
 import CustomizedGlobe from "./components/CustomizedGlobe/CustomizedGlobe";
 import ToptenArtworkPage from "./pages/ToptenArtworkPage/ToptenArtworkPage";
+import DonarsPage from "./pages/DonarsPage/DonarsPage";
 import Navbar from "./components/Navbar/Navbar";
 
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
     <>
       <Navbar />
-      {/*<h1>ArtiEcho</h1>*/}
-      {/* Routes for different pages */}
+
       <Routes>
         <Route path="/" element={<CustomizedGlobe />} /> {/* Homepage route */}
         <Route path="/topten-artworks" element={<ToptenArtworkPage />} />{" "}
+        <Route path="/donars" element={<DonarsPage />} />
         {/* Top 10 Artworks page route */}
       </Routes>
     </>

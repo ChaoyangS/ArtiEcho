@@ -32,10 +32,7 @@
   color: #e1bcbc;
   font-size: medium;
 }
-.Navbar {
-  background-color: #5c5c5c;
-  display: flex;
-}
+
 .logo {
   padding-left: 0.5rem;
   padding-right: 0.5rem;
@@ -46,10 +43,8 @@
 .navbar {
   display: flex;
   align-items: center;
-
   padding: 1rem 2rem;
   background-color: #e0e0e0;
-  /* position: relative; */
   width: 100%;
 }
 
