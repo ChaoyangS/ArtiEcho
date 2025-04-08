@@ -5,6 +5,7 @@ import "./styles/_global.css";
 import CustomizedGlobe from "./components/CustomizedGlobe/CustomizedGlobe";
 import ToptenArtworkPage from "./pages/ToptenArtworkPage/ToptenArtworkPage";
 import DonarsPage from "./pages/DonarsPage/DonarsPage";
+import ToptenArtworkByGenrePage from "./pages/ToptenArtworkByGenrePage/ToptenArtworkByGenrePage";
 import Navbar from "./components/Navbar/Navbar";
 
 function App() {

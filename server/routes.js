@@ -22,16 +22,21 @@ connection.connect((err) => err && console.log(err));
 //  * ROUTES *
 //  ********************************/
 
-// Route 1: GET/art-work-ByGenre
+// Route 1: GET/artworkByGenre
 // Filter artworks by genre(like specific categories: photography, painting, or sculpture);
 const artworkByGenre = async function (req, res) {
   const genreInput = req.query.genre || ""; // get genre input
 
   connection.query(
     `
-    SELECT objectID, title, subclassification
-    FROM objects
-    WHERE subclassification ILIKE $1
+    SELECT o.objectID, o.title, o.subclassification AS genre,
+      o.endYear,
+      img.iiifthumburl AS url
+    FROM objects o 
+    LEFT JOIN published_images img ON o.objectid = img.depictstmsobjectID
+      AND img.viewtype = 'primary'
+    WHERE o.subclassification ILIKE $1
+    ORDER BY o.endYear DESC NULLS LAST
     LIMIT 10;
     `,
     [`%${genreInput}%`],
@@ -109,16 +114,25 @@ const artworkByTitle = async function (req, res) {
   );
 };
 
-// Route 4: GET/artworkByStyle
+// Route 4: GET/artworkByStyle/ByGenre
+// update on Apr.7: add image url 
+//                  add subclassInput for choosing genre(e.g. 'drawing', 'sculpture', 'photograph',  'print', 'paint')
+//                  add beginYear, endYear for artwork's time period
+//                  add "AND img.iiifthumburl,o.beginyear,o.endyear IS NOT NULL"
+//                  delete "GROUP BY style, artist_name, artwork_title, o.objectID, artist_name, url" //ORDER BY artwork finish year DESC
 const artworkByStyle = async function (req, res) {
   const styleInput = req.query.style || "";
+  const subclassInput = req.query.subclass || "";
 
   connection.query(
     `
     SELECT o.objectID,
            o.title AS artwork_title,
            ot.visualBrowserStyle AS style,
-           c.preferredDisplayname AS artist_name
+           c.preferredDisplayname AS artist_name,
+           o.beginyear AS beginYear,
+           o.endyear AS endYear,
+           img.iiifthumburl AS url
     FROM objects o
     JOIN objects_constituents oc
       ON o.objectID = oc.objectID AND oc.displayorder = 1
@@ -126,13 +140,17 @@ const artworkByStyle = async function (req, res) {
       ON o.objectID = ot.objectID
     JOIN constituents c
       ON oc.constituentID = c.constituentID
+    LEFT JOIN published_images img
+      ON o.objectID = img.depictstmsobjectID
+      AND img.viewtype = 'primary'
     WHERE oc.roleType = 'artist'
       AND ot.visualBrowserStyle ILIKE $1
-    GROUP BY style, artist_name, artwork_title, o.objectID
-    ORDER BY style DESC
+      AND o.provenancetext ILIKE $2
+      AND img.iiifthumburl IS NOT NULL
+    ORDER BY o.endYear DESC NULLS LAST
     LIMIT 10;
     `,
-    [`%${styleInput}%`],
+    [`%${styleInput}%`, `%${subclassInput}%`],
     (err, data) => {
       if (err) {
         console.log(err);

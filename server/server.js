@@ -46,7 +46,7 @@ app.get("/artwork-count-by-year", auth, routes.artworkCountByYear);
 http://localhost:3000/artwork-by-genre?genre=Drawing
 http://localhost:3000/artist
 http://localhost:3000/artwork-by-title?title=Sunflowers
-http://localhost:3000/artwork-by-style?style=Impression
+http://localhost:3000/artwork-by-style?style=Impression&subclass=Painting  (add artwork's genre as subclass)
 http://localhost:3000/artwork-bibliography-search?title=sunflower
 http://localhost:3000/artwork-by-nationality?nationality=French&endYear=1900
 http://localhost:3000/top-nationalities
