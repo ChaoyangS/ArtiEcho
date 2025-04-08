@@ -1,9 +1,11 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useState } from "react";
 import "./ToptenNavbar.css";
 
 const ToptenNavbar = () => {
   const [activeStyle, setActiveStyle] = useState(null);
+  const location = useLocation();
+  const isByGenrePage = location.pathname.includes("/topten-artworks-by-genre");
 
   const stylesWithGenres = {
     "Impressionist": ["paint", "drawing", "sculpture", "print"],
@@ -27,9 +29,7 @@ const ToptenNavbar = () => {
     "print": ["Pop", "Impressionist", "Post-Impressionist", "Realist", "Neoclassic", "Surrealist"],
     "decorative art": ["Kangxi", "Renaissance", "Baroque"]
   };
-    // style = ("Impressionist", "Post-Impressionist", "Renaissance", "Abstract Expressionist", "Realist", 
-    //          "Baroque", "Romantic", "Neoclassic", "Rococo", "Surrealist", "Gothic", "Rococo", "Minimalist")
-    // subclass = ("paint", "drawing", "sculpture", "print", "decorative art", "photograph")
+
     return (
       <div className="hover-sidebar" onMouseLeave={() => setActiveStyle(null)}>
         
@@ -51,25 +51,29 @@ const ToptenNavbar = () => {
 
         <div className="hover-sidebar-inner">
           <div className="heading-font">
-            <h3>Art Styles</h3>
+            <h3>{isByGenrePage ? "Genres" : "Art Styles"}</h3>
           </div>
           <ul>
-            {Object.entries(stylesWithGenres).map(([style, genres]) => (
-              <ul key={style}>
+          {Object.entries(isByGenrePage ? genreWithStyles : stylesWithGenres).map(([header, values]) => (
+              <ul key={header}>
                 <div
                   className="style-header"
-                  onMouseEnter={() => setActiveStyle(style)}
+                  onMouseEnter={() => setActiveStyle(header)}
                 >
-                  {style}
+                  {header}
                 </div>
-                {activeStyle === style && (
+                {activeStyle === header && (
                   <div className="genre-list">
-                    {genres.map((genre) => (
-                      <li key={genre}>
+                    {values.map((value) => (
+                      <li key={value}>
                         <Link
-                          to={`/topten-artworks?style=${encodeURIComponent(style)}&subclass=${encodeURIComponent(genre)}`}
+                          to={
+                            isByGenrePage
+                              ? `/topten-artworks-by-genre?genre=${encodeURIComponent(header)}&style=${encodeURIComponent(value)}`
+                              : `/topten-artworks?style=${encodeURIComponent(header)}&subclass=${encodeURIComponent(value)}`
+                          }
                         >
-                          {genre}
+                          {value}
                         </Link>
                       </li>
                     ))}

@@ -114,7 +114,7 @@ const artworkByTitle = async function (req, res) {
   );
 };
 
-// Route 4: GET/artworkByStyle/ByGenre
+// Route 4.1: GET/artworkByStyle/ByGenre
 // update on Apr.7: add image url 
 //                  add subclassInput for choosing genre(e.g. 'drawing', 'sculpture', 'photograph',  'print', 'paint')
 //                  add beginYear, endYear for artwork's time period
@@ -157,6 +157,51 @@ const artworkByStyle = async function (req, res) {
         res.status(500).json({ error: "Query failed" });
       } else {
         res.json(data.rows);
+      }
+    }
+  );
+};
+
+// Route 4.2: GET /artwork-by-genre?genre=Painting&style=Impression
+const artworkByGenreByStyle = async function (req, res) {
+  const genreInput = req.query.genre || "";
+  const styleInput = req.query.style || "";
+
+  connection.query(
+    `
+    SELECT o.objectID,
+           o.title AS artwork_title,
+           o.provenancetext AS genre,
+           c.preferredDisplayname AS artist_name,
+           o.beginyear AS beginYear,
+           o.endyear AS endYear,
+           img.iiifthumburl AS url
+    FROM objects o
+    JOIN objects_constituents oc
+      ON o.objectID = oc.objectID AND oc.displayorder = 1
+    JOIN constituents c
+      ON oc.constituentID = c.constituentID
+    JOIN objects_terms ot
+      ON o.objectID = ot.objectID
+    LEFT JOIN published_images img
+      ON o.objectID = img.depictstmsobjectID
+      AND img.viewtype = 'primary'
+    WHERE oc.roleType = 'artist'
+      AND o.provenancetext ILIKE $1
+      AND ot.visualBrowserStyle ILIKE $2
+      AND img.iiifthumburl IS NOT NULL
+    ORDER BY o.endYear DESC NULLS LAST
+    LIMIT 10;
+    `,
+    [`%${genreInput}%`, `%${styleInput}%`],
+    (err, data) => {
+      if (err) {
+        console.log(err);
+        res.status(500).json({ error: "Query failed" });
+      } else {
+        res.json({
+          artworks: data.rows,
+        });
       }
     }
   );
@@ -366,6 +411,7 @@ module.exports = {
   artist,
   artworkByTitle,
   artworkByStyle,
+  artworkByGenreByStyle,
   artworkBibliographyByTitle,
   artworkByNationalityAndEndYear,
   topNationalities,

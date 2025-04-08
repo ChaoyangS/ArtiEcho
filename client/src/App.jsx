@@ -9,15 +9,21 @@ import ToptenArtworkByGenrePage from "./pages/ToptenArtworkByGenrePage/ToptenArt
 import Navbar from "./components/Navbar/Navbar";
 
 function App() {
+
+  const [count, setCount] = useState(0);
+  // Only show Navbar on homepage
+  const showNavbar = location.pathname === "/"; 
+
   return (
     <>
-      <Navbar />
-
+    {showNavbar && <Navbar />}
+    {/*<h1>ArtiEcho</h1>*/}
+      {/* Routes for different pages */}
       <Routes>
         <Route path="/" element={<CustomizedGlobe />} /> {/* Homepage route */}
-        <Route path="/topten-artworks" element={<ToptenArtworkPage />} />{" "}
+        <Route path="/topten-artworks" element={<ToptenArtworkPage />} /> {/* Top 10 Artworks by style-genre page route */}
+        <Route path="/topten-artworks-by-genre" element={<ToptenArtworkByGenrePage/>}/>
         <Route path="/donars" element={<DonarsPage />} />
-        {/* Top 10 Artworks page route */}
       </Routes>
     </>
   );
