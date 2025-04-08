@@ -22,7 +22,7 @@ connection.connect((err) => err && console.log(err));
 //  * ROUTES *
 //  ********************************/
 
-// Route 1: GET/artworkByGenre
+// Route 1: GET/art-work-ByGenre
 // Filter artworks by genre(like specific categories: photography, painting, or sculpture);
 const artworkByGenre = async function (req, res) {
   const genreInput = req.query.genre || ""; // get genre input
