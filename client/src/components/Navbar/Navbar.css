@@ -32,7 +32,6 @@
   color: #e1bcbc;
   font-size: medium;
 }
-
 .logo {
   padding-left: 0.5rem;
   padding-right: 0.5rem;
@@ -43,6 +42,7 @@
 .navbar {
   display: flex;
   align-items: center;
+
   padding: 1rem 2rem;
   background-color: #e0e0e0;
   width: 100%;

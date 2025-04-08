@@ -25,7 +25,7 @@ const Topten = ({ title, items, category }) => {
                     {/* If this is for top ten artworks */}          
                     {category === "Artworks" && (
                       <article className="detail-list-description">
-                        <p>Time period:</p>
+                        <p>Time period: {item.timePeriod || "Unknown"}</p>
                         <p>Artist:{" "}
                           <Link
                             to={`/artists/${item.artist.replace(/\s+/g, "-").toLowerCase()}`}
@@ -33,7 +33,7 @@ const Topten = ({ title, items, category }) => {
                           >
                             {item.artist}
                           </Link></p>
-                        <p>Art Style:</p>
+                        <p>Art Style:{item.style || "Unknown"}</p>
                         </article>
                     )}
                     {/* If this is for top ten artists */}  
@@ -44,8 +44,13 @@ const Topten = ({ title, items, category }) => {
                       </>
                     )}                  
                   </div>
-                  <img src={item.image} alt={`${item.title} secondary`} className="topten-secondary-image  hide-on-small"/>
-                </div>
+                  {/* downloadable secondary image */}
+                  <a href={item.image} download>
+                    <img src={item.image} alt={`${item.title} secondary`} className="topten-secondary-image hide-on-small" />
+                  </a>
+                  </div>
+                  {/*<img src={item.image} alt={`${item.title} secondary`} className="topten-secondary-image  hide-on-small"/>*/}
+                
                 <div className="topten-right">
                   <img src={item.image} alt={item.title} className="topten-main-image"/>                    
                 </div>  
