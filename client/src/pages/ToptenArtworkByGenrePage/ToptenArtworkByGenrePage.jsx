@@ -1,32 +1,26 @@
 /*
-  Top Ten Artworks page(by style, then by genre).
+  Top Ten Artworks page(by genre, then by style).
 */
 
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import ToptenNavbar from "../../components/Topten/ToptenNavbar";
 import Topten from "../../components/Topten/Topten";
-import "./ToptenArtworkPage.css";
+import "./ToptenArtworkByGenrePage.css";
 
-const ToptenArtworkPage = () => {
+const ToptenArtworkByGenrePage = () => {
   const [artworks, setArtworks] = useState([]);
   const location = useLocation();
 
   const queryParams = new URLSearchParams(location.search);
-  const style = queryParams.get("style") || "Impressionist";
-  const subclass = queryParams.get("subclass") || "paint";
+  const style = queryParams.get("genre") || "paint";
+  //const subclass = queryParams.get("subclass") || "Impressionist";
   useEffect(() => {
 
     const fetchArtworks = async () => {
-      // style = ("Impressionist", "Post-Impressionist", "Renaissance", "Abstract Expressionist", "Realist", 
-      //          "Baroque", "Romantic", "Neoclassic", "Rococo", "Surrealist", "Gothic", "Rococo", "Minimalist")
 
-      // subclass = ("paint", "drawing", "sculpture", "print", "decorative art", "photograph")
-      // example as most recent ten-paint-artworks of Impressionist
-      //const style = "Impressionist"; 
-      //const subclass = "paint";
       try { /* Fetch data for Impression style ('drawing', 'sculpture', 'photograph',  'print', 'paint', 'decorative art')*/
-        const response = await fetch(`http://localhost:3000/artwork-by-style?style=${encodeURIComponent(style)}&subclass=${encodeURIComponent(subclass)}`, {
+        const response = await fetch(`http://localhost:3000/artwork-by-genre?genre=${encodeURIComponent(genre)}`, {
           headers: {
             "X-API-Token": "artiecho",
           },
@@ -50,10 +44,8 @@ const ToptenArtworkPage = () => {
           }
 
           return {
-            title: item.artwork_title,
-            style: item.style,
-            artist: item.artist_name || "Unknown",
-            timePeriod,
+            title: item.title,
+            style: item.genre,
             image: item.url ? item.url.replace("!200,200", "!600,600") : null,
           };
         });
@@ -75,4 +67,4 @@ const ToptenArtworkPage = () => {
   );
 };
 
-export default ToptenArtworkPage;
+export default ToptenArtworkByGenrePage;
