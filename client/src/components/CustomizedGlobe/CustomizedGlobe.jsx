@@ -8,7 +8,7 @@ import "../../styles/_global.css";
 // Function to Create Globe Material
 const createGlobeMaterial = () => {
   return new THREE.MeshBasicMaterial({
-    color: new THREE.Color(0xffffff),
+    color: new THREE.Color(),
     map: new THREE.TextureLoader().load(
       "https://upload.wikimedia.org/wikipedia/commons/2/2c/BlackMarble20161km.jpg"
     ),
@@ -63,7 +63,7 @@ const ArtworkList = ({ artworks }) => (
   <div className="artwork-list">
     {artworks.map((art, index) => (
       <div key={index} className="artwork-card">
-        <img src={art.image} alt={art.title} width="450" />
+        <img src={art.image} alt={art.title} width="550" />
         <div className="artwork-details">
           <h3>{art.title}</h3>
           <p>
@@ -158,21 +158,21 @@ function CustomizedGlobe() {
     <div className="container">
       <Globe
         ref={globeRef}
-        backgroundColor="#000000"
+        backgroundColor="#9aa8c3"
         globeMaterial={createGlobeMaterial}
         htmlElementsData={locations}
         htmlLat={(d) => d.lat}
         htmlLng={(d) => d.lng}
         htmlElement={(d) => renderHtmlElement(d, setSelectedLocation)}
         polygonsData={polygons}
-        polygonCapColor={() => "lightgrey"}
-        polygonSideColor={() => "white"}
-        polygonStrokeColor={() => "black"}
+        polygonCapColor={() => "#cfcae5"}
+        polygonSideColor={() => "#6183b4"}
+        polygonStrokeColor={() => "#243167"}
         polygonAltitude={0.01}
         polygonLabel={null}
         atmosphereColor="#ffffff"
         atmosphereAltitude={0.1}
-        width={1000}
+        width={1500}
         height={1000}
       />
 

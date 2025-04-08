@@ -1,5 +1,6 @@
 /*
   Top Ten Artworks page(by genre, then by style).
+  Not yet finished, needs to be changed by the tokens from routes query.
 */
 
 import React, { useEffect, useState } from "react";
