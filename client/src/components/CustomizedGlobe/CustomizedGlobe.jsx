@@ -17,12 +17,36 @@ const createGlobeMaterial = () => {
 
 // Mapping nationality to location
 const nationalityToLocation = {
+  American: {
+    lat: 40.7128,
+    lng: -74.006,
+    name: "United States",
+  },
+  British: {
+    lat: 51.5072,
+    lng: -0.1276,
+    name: "United Kingdom",
+  },
+  Dutch: {
+    lat: 52.3676,
+    lng: 4.9041,
+    name: "Netherlands",
+  },
   French: {
     lat: 48.8566,
     lng: 2.3522,
     name: "France",
   },
-  // need to add more here
+  German: {
+    lat: 52.52,
+    lng: 13.405,
+    name: "Germany",
+  },
+  Italian: {
+    lat: 41.9028,
+    lng: 12.4964,
+    name: "Italy",
+  },
 };
 
 // Function to Render HTML Element for Locations
@@ -72,48 +96,62 @@ function CustomizedGlobe() {
       .then((data) => setPolygons(data.features));
   }, []);
 
-  // Fetch and transform artwork data from backend
   useEffect(() => {
-    axios
-      .get(
-        "http://localhost:3000/artwork-by-nationality?nationality=French&endYear=1900",
-        {
-          headers: {
-            "X-API-Token": "artiecho",
-          },
+    const fetchArtworksForAllNationalities = async () => {
+      const nationalities = Object.keys(nationalityToLocation);
+      const token = "artiecho";
+
+      const requests = nationalities.map((nationality) =>
+        axios
+          .get(
+            `http://localhost:3000/artwork-by-nationality?nationality=${nationality}&endYear=1900`,
+            {
+              headers: {
+                "X-API-Token": token,
+              },
+            }
+          )
+          .then((res) => ({ nationality, data: res.data }))
+          .catch((err) => {
+            console.error(`Failed to fetch for ${nationality}`, err);
+            return null;
+          })
+      );
+
+      const responses = await Promise.all(requests);
+      const grouped = {};
+
+      responses.forEach((response) => {
+        if (!response) return;
+
+        const { nationality, data } = response;
+        const locInfo = nationalityToLocation[nationality];
+        if (!locInfo) return;
+
+        const key = locInfo.name;
+
+        if (!grouped[key]) {
+          grouped[key] = {
+            ...locInfo,
+            artworks: [],
+          };
         }
-      )
-      .then((response) => {
-        const data = response.data;
-        const grouped = {};
 
         data.forEach((item) => {
-          const locInfo = nationalityToLocation[item.nationality];
-          if (!locInfo) return;
-
-          const key = locInfo.name;
-
-          if (!grouped[key]) {
-            grouped[key] = {
-              ...locInfo,
-              artworks: [],
-            };
-          }
-
           grouped[key].artworks.push({
             title: item.artwork_title,
             artist: item.preferreddisplayname,
-            museum: "Unknown", // I'll add this later
+            museum: "Unknown",
             year: item.beginyear,
-            image: item.url ? item.url.replace("!200,200", "!600,600") : null, //changed to 600*600
+            image: item.url ? item.url.replace("!200,200", "!600,600") : null,
           });
         });
-
-        setLocations(Object.values(grouped));
-      })
-      .catch((error) => {
-        console.error("Error fetching artwork data:", error);
       });
+
+      setLocations(Object.values(grouped));
+    };
+
+    fetchArtworksForAllNationalities();
   }, []);
 
   return (

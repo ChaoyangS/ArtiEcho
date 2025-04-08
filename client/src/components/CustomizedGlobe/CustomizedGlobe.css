@@ -65,6 +65,7 @@
 .nav-pane h2 {
   margin: 0 0 10px;
   color: lightgrey;
+  /* font-family: "Monoton", sans-serif; need to check again */
 }
 
 /* Close Button */

@@ -1,4 +1,5 @@
 /* Dropdown Menu */
+
 .dropdown-container {
   position: absolute;
   left: 10rem;
@@ -55,7 +56,7 @@
 .navbar-brand {
   display: flex;
   font-size: 1.5rem;
-  font-weight: 600;
+  font-weight: 300;
   color: #333;
   text-decoration: none;
   margin-right: 2rem; /* Space between logo and menu */

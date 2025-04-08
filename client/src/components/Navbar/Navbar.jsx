@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import "./Navbar.css"; // Import the CSS file
+import "../../styles/_global.css";
 import artiechologo from "../../assets/artiechologo.png";
 
 const Navbar = () => {
