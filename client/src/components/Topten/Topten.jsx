@@ -34,6 +34,7 @@ const Topten = ({ title, items, category }) => {
                             {item.artist}
                           </Link></p>
                         <p>Art Style:{item.style || "Unknown"}</p>
+                        <p>Genre: {item.genre || "Unknown"}</p>
                         </article>
                     )}
                     {/* If this is for top ten artists */}  
