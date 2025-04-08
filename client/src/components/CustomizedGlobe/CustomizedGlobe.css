@@ -9,7 +9,7 @@
 
 /* Custom X markers */
 .custom-marker {
-  color: salmon;
+  color: #d6555d;
   font-size: 20px;
   font-weight: bold;
   position: absolute;
@@ -19,17 +19,17 @@
 }
 
 .custom-marker:hover {
-  color: darkblue;
+  color: #ae838c;
 }
 
 /* Navigation Pane */
 .nav-pane {
   position: fixed;
   top: 0;
-  right: -30rem; /* Start off-screen */
-  width: 30rem;
+  right: -35rem; /* Start off-screen */
+  width: 35rem;
   height: 100vh;
-  background: rgba(141, 152, 167, 0.4);
+  background: rgba(97, 131, 180, 0.9);
   opacity: 100%;
   box-shadow: -0.25rem 0 0.625rem rgba(0, 0, 0, 0.2);
   padding: 1.25rem;
