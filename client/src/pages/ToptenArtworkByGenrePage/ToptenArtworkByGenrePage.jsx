@@ -14,18 +14,21 @@ const ToptenArtworkByGenrePage = () => {
   const location = useLocation();
 
   const queryParams = new URLSearchParams(location.search);
-  const genre = queryParams.get("genre") || "paint";
+  const subclass = queryParams.get("subclass") || "paint";
   const style = queryParams.get("style") || "Impressionist";
   useEffect(() => {
-
     const fetchArtworks = async () => {
-
-      try { /* Fetch data for Impression style ('drawing', 'sculpture', 'photograph',  'print', 'paint', 'decorative art')*/
-        const response = await fetch(`http://localhost:3000/artwork-by-genre?genre=${encodeURIComponent(genre)}&style=${encodeURIComponent(style)}`, {
-          headers: {
-            "X-API-Token": "artiecho",
-          },
-        });
+      try {
+        /* Fetch data for Impression style ('drawing', 'sculpture', 'photograph',  'print', 'paint', 'decorative art')*/
+        const response = await fetch(
+          `http://localhost:3000/artwork-by-genre-style?subclass='paint'
+          )}&style='Impressionist'`,
+          {
+            headers: {
+              "X-API-Token": "artiecho",
+            },
+          }
+        );
 
         if (!response.ok) {
           throw new Error("Network response was not ok");
@@ -44,7 +47,7 @@ const ToptenArtworkByGenrePage = () => {
           } else if (item.endyear) {
             timePeriod = `${item.endyear}`;
           }
-          
+
           return {
             title: item.title,
             genre: item.genre,
@@ -60,12 +63,13 @@ const ToptenArtworkByGenrePage = () => {
       }
     };
     fetchArtworks();
-  }, [genre, style]);
+  }, [subclass, style]);
 
   return (
     <div className="topten-artwork-genre">
       <ToptenNavbar />
-      {/* <h3>Top 10 Artworks by Genre</h3> */} {/*  Will consider move to navbar or somewhere */}
+      {/* <h3>Top 10 Artworks by Genre</h3> */}{" "}
+      {/*  Will consider move to navbar or somewhere */}
       <Topten title="Top 10 Artworks" items={artworks} category="Artworks" />
     </div>
   );

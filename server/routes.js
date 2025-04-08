@@ -115,7 +115,7 @@ const artworkByTitle = async function (req, res) {
 };
 
 // Route 4.1: GET/artworkByStyle/ByGenre
-// update on Apr.7: add image url 
+// update on Apr.7: add image url
 //                  add subclassInput for choosing genre(e.g. 'drawing', 'sculpture', 'photograph',  'print', 'paint')
 //                  add beginYear, endYear for artwork's time period
 //                  add "AND img.iiifthumburl,o.beginyear,o.endyear IS NOT NULL"
@@ -164,7 +164,7 @@ const artworkByStyle = async function (req, res) {
 
 // Route 4.2: GET /artwork-by-genre?genre=Painting&style=Impression
 const artworkByGenreByStyle = async function (req, res) {
-  const genreInput = req.query.genre || "";
+  const subclassInput = req.query.subclass || "";
   const styleInput = req.query.style || "";
 
   connection.query(
@@ -193,7 +193,7 @@ const artworkByGenreByStyle = async function (req, res) {
     ORDER BY o.endYear DESC NULLS LAST
     LIMIT 10;
     `,
-    [`%${genreInput}%`, `%${styleInput}%`],
+    [`%${subclassInput}%`, `%${styleInput}%`],
     (err, data) => {
       if (err) {
         console.log(err);
