@@ -13,10 +13,10 @@
     color: #f2ded8;
     margin-bottom: 20px;
   }
-
-  #genre-navbar {
-    background-color: #ae838c;
-  }
   body {
     background-color: #cfcae5;
+  }
+
+  #genre-navbar {
+    background-color: #9d9acc;
   }
