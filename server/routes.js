@@ -249,7 +249,7 @@ const artworkBibliographyByTitle = async function (req, res) {
 // Route 6: GET/artworkByNationalityAndEndYear
 const artworkByNationalityAndEndYear = async function (req, res) {
   const nationality = req.query.nationality || "";
-  const endYear = req.query.endYear || "";
+  // const endYear = req.query.endYear || "";
 
   connection.query(
     `
@@ -270,13 +270,14 @@ const artworkByNationalityAndEndYear = async function (req, res) {
       ON o.objectID = img.depictstmsobjectID
       AND img.viewtype = 'primary'
     WHERE c.nationality ILIKE $1
-      AND o.endYear = $2
+      AND o.endYear IS NOT NULL
       AND o.beginYear IS NOT NULL
       AND c.nationality IS NOT NULL
+      AND img.iiifthumburl IS NOT NULL
     LIMIT 25;
     `,
 
-    [`%${nationality}%`, endYear],
+    [`%${nationality}%`],
     (err, data) => {
       if (err) {
         console.error(err);
