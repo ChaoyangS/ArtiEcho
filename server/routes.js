@@ -53,18 +53,63 @@ const artworkByGenre = async function (req, res) {
   );
 };
 
-// Route 2: GET/artist
+// Route 2: GET/topten-artist
 // Find the top 10 artists with the most artworks in the collection;
+// Update: more complex query to get top 10 artist with their most latest work(where url is not null)
+//          get their life span(attribute: displayDate in constituent table)
 
-const artist = async function (req, res) {
+const topTenArtist = async function (req, res) {
   connection.query(
     `
-    SELECT c.preferredDisplayName AS artist_name, COUNT(*) AS artwork_count
-    FROM objects_constituents oc
-    JOIN constituents c ON oc.constituentID = c.constituentID
-    WHERE oc.roleType = 'artist'
-    GROUP BY c.preferredDisplayName
-    ORDER BY artwork_count DESC
+    WITH artist_artwork_counts AS (
+      SELECT
+        c.preferredDisplayName,
+        oc.constituentID,
+        COUNT(*) AS artwork_count
+      FROM objects_constituents oc
+      JOIN constituents c ON oc.constituentID = c.constituentID
+      WHERE oc.roleType = 'artist'
+      GROUP BY c.preferredDisplayName, oc.constituentID
+    ),
+    ranked_artworks AS (
+      SELECT
+        oc.constituentID,
+        o.objectID,
+        o.title AS artwork_title,
+        o.endYear,
+        img.iiifThumbURL AS url,
+        ROW_NUMBER() OVER (
+          PARTITION BY oc.constituentID
+          ORDER BY o.endYear DESC NULLS LAST
+        ) AS rn
+      FROM objects_constituents oc
+      JOIN objects o ON oc.objectID = o.objectID
+      LEFT JOIN published_images img
+        ON o.objectID = img.depictstmsobjectID AND img.viewtype = 'primary'
+      WHERE oc.roleType = 'artist' AND img.iiifThumbURL IS NOT NULL
+    ),
+    latest_valid_artworks AS (
+      SELECT *
+      FROM ranked_artworks
+      WHERE rn = 1
+    )
+    SELECT
+      c.preferredDisplayName AS artist_name,
+      CASE
+        WHEN c.displayDate IS NOT NULL THEN c.displayDate
+        WHEN c.beginYear IS NOT NULL AND c.endYear IS NOT NULL THEN CONCAT(c.beginYear, ' - ', c.endYear)
+        WHEN c.beginYear IS NOT NULL THEN CONCAT(c.beginYear, ' - ?')
+        WHEN c.endYear IS NOT NULL THEN CONCAT('? - ', c.endYear)
+        ELSE 'Unknown'
+      END AS display_lifespan,
+      la.artwork_title,
+      la.endYear,
+      la.url,
+      aac.artwork_count
+    FROM artist_artwork_counts aac
+    JOIN constituents c ON aac.constituentID = c.constituentID
+    JOIN latest_valid_artworks la ON aac.constituentID = la.constituentID
+    ORDER BY aac.artwork_count DESC
     LIMIT 10;
   `,
     (err, data) => {
@@ -410,7 +455,7 @@ const artworkCountByYear = async function (req, res) {
 
 module.exports = {
   artworkByGenre,
-  artist,
+  topTenArtist,
   artworkByTitle,
   artworkByStyle,
   artworkByGenreByStyle,

@@ -23,7 +23,8 @@ function App() {
       <Routes>
         <Route path="/" element={<CustomizedGlobe />} /> {/* Homepage route */}
         <Route path="/topten-artworks" element={<ToptenArtworkPage />} /> {/* Top 10 Artworks by style-genre page route */}
-        <Route path="/topten-artworks-by-genre" element={<ToptenArtworkByGenrePage/>}/>
+        <Route path="/topten-artworks-by-genre" element={<ToptenArtworkByGenrePage/>}/> {/* Top 10 Artworks by genre-style page route */}
+        <Route path="/topten-artists" element={<ToptenArtworkPage />} /> {/* Top 10 Artists by number of artworks */}
         <Route path="/donars" element={<DonarsPage />} />
       </Routes>
       <ChatButton />
