@@ -172,6 +172,7 @@ const artworkByGenreByStyle = async function (req, res) {
     SELECT o.objectID,
            o.title AS artwork_title,
            o.provenancetext AS genre,
+           ot.visualBrowserStyle AS style,
            c.preferredDisplayname AS artist_name,
            o.beginyear AS beginYear,
            o.endyear AS endYear,

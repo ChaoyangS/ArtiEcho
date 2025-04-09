@@ -2,7 +2,7 @@ import { Link, useLocation } from "react-router-dom";
 import { useState } from "react";
 import "./ToptenNavbar.css";
 
-const ToptenNavbar = () => {
+const ToptenNavbar = (props) => {
   const [activeStyle, setActiveStyle] = useState(null);
   const location = useLocation();
   const isByGenrePage = location.pathname.includes("/topten-artworks-by-genre");
@@ -23,7 +23,7 @@ const ToptenNavbar = () => {
   };
 
   const genreWithStyles = {
-    "paint" : ["Impressionist", "Post-Impressionist", "Renaissance", "Abstract Expressionist", "Realist", "Baroque", "Romantic", "Neoclassic", "Rococo", "Surrealist", "Gothic", "Minimalist"],
+    "paint" : ["Post-Impressionist", "Renaissance", "Abstract Expressionist", "Realist", "Baroque", "Romantic", "Neoclassic", "Rococo", "Surrealist", "Gothic", "Minimalist"],
     "drawing": ["Impressionist", "Post-Impressionist", "Renaissance", "Victorian", "Realist", "Baroque", "Romantic", "Neoclassic", "Rococo", "Gothic"],
     "sculpture": ["Impressionist", "Post-Impressionist", "Renaissance", "Realist", "Baroque", "Romantic", "Neoclassic", "Rococo", "Gothic", "Minimalist"],
     "print": ["Pop", "Impressionist", "Post-Impressionist", "Realist", "Neoclassic", "Surrealist"],
@@ -31,7 +31,11 @@ const ToptenNavbar = () => {
   };
 
     return (
-      <div className="hover-sidebar" onMouseLeave={() => setActiveStyle(null)}>
+      <div
+        id={props.id} 
+        className="hover-sidebar"
+        onMouseLeave={() => setActiveStyle(null)}
+      >
         
       <div className="sidebar-title">
         <svg
@@ -69,7 +73,7 @@ const ToptenNavbar = () => {
                         <Link
                           to={
                             isByGenrePage
-                              ? `/topten-artworks-by-genre?genre=${encodeURIComponent(header)}&style=${encodeURIComponent(value)}`
+                              ? `/topten-artworks-by-genre?subclass=${encodeURIComponent(header)}&style=${encodeURIComponent(value)}`
                               : `/topten-artworks?style=${encodeURIComponent(header)}&subclass=${encodeURIComponent(value)}`
                           }
                         >

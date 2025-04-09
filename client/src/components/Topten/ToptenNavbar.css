@@ -42,7 +42,9 @@
 .heading-font{
   font-size: 4vw;
 }
-
+#genre-navbar {
+  background-color: #9d9acc;
+}
 .hover-sidebar-inner {
   opacity: 0;
   pointer-events: none;

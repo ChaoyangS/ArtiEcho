@@ -16,13 +16,13 @@ const ToptenArtworkByGenrePage = () => {
   const queryParams = new URLSearchParams(location.search);
   const subclass = queryParams.get("subclass") || "paint";
   const style = queryParams.get("style") || "Impressionist";
+
   useEffect(() => {
     const fetchArtworks = async () => {
       try {
         /* Fetch data for Impression style ('drawing', 'sculpture', 'photograph',  'print', 'paint', 'decorative art')*/
         const response = await fetch(
-          `http://localhost:3000/artwork-by-genre-style?subclass='paint'
-          )}&style='Impressionist'`,
+          `http://localhost:3000/artwork-by-genre-style?subclass=${encodeURIComponent(subclass)}&style=${encodeURIComponent(style)}`,
           {
             headers: {
               "X-API-Token": "artiecho",
@@ -49,8 +49,9 @@ const ToptenArtworkByGenrePage = () => {
           }
 
           return {
-            title: item.title,
+            title: item.artwork_title,
             genre: item.genre,
+            style: item.style,
             artist: item.artist_name || "Unknown",
             timePeriod,
             image: item.url ? item.url.replace("!200,200", "!600,600") : null,
@@ -67,8 +68,7 @@ const ToptenArtworkByGenrePage = () => {
 
   return (
     <div className="topten-artwork-genre">
-      <ToptenNavbar />
-      {/* <h3>Top 10 Artworks by Genre</h3> */}{" "}
+      <ToptenNavbar id="genre-navbar" />
       {/*  Will consider move to navbar or somewhere */}
       <Topten title="Top 10 Artworks" items={artworks} category="Artworks" />
     </div>

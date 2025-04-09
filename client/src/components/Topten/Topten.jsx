@@ -5,8 +5,15 @@
 import React from "react";
 import "./Topten.css";
 import { Link } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
-const Topten = ({ title, items, category }) => {
+
+
+const Topten = ({ title, items, category, showStyle = true }) => {
+  const location = useLocation();
+  const isGenrePage = location.pathname.includes("topten-artworks-by-genre");
+  const isStylePage = !isGenrePage && location.pathname.includes("topten-artworks");
+  
   return (
     <div className="topten-container">
       {/*<h2 className="topten-header">{title}</h2>*/}
@@ -32,9 +39,10 @@ const Topten = ({ title, items, category }) => {
                             className="topten-link"
                           >
                             {item.artist}
-                          </Link></p>
-                        <p>Art Style:{item.style || "Unknown"}</p>
-                        <p>Genre: {item.genre || "Unknown"}</p>
+                          </Link>
+                        </p>
+                          {!isGenrePage && <p>Art Style: {item.style || "Unknown"}</p>}
+                          {!isStylePage && <p>Genre: {item.genre || "Unknown"}</p>}
                         </article>
                     )}
                     {/* If this is for top ten artists */}  
