@@ -311,25 +311,25 @@ function CustomizedGlobe() {
 
   return (
     <div className="container">
-      <Globe
-        ref={globeRef}
-        backgroundColor="#9aa8c3"
-        globeMaterial={createGlobeMaterial}
-        htmlElementsData={locations}
-        htmlLat={(d) => d.lat}
-        htmlLng={(d) => d.lng}
-        htmlElement={(d) => renderHtmlElement(d, setSelectedLocation)}
-        polygonsData={polygons}
-        polygonCapColor={() => "#cfcae5"}
-        polygonSideColor={() => "#6183b4"}
-        polygonStrokeColor={() => "#243167"}
-        polygonAltitude={0.01}
-        polygonLabel={null}
-        atmosphereColor="#ffffff"
-        atmosphereAltitude={0.1}
-        width={1500}
-        height={1000}
-      />
+      <div className="Globe" style={{ width: "100vw", height: "100vh" }}>
+        <Globe
+          ref={globeRef}
+          backgroundColor="#9aa8c3"
+          globeMaterial={createGlobeMaterial}
+          htmlElementsData={locations}
+          htmlLat={(d) => d.lat}
+          htmlLng={(d) => d.lng}
+          htmlElement={(d) => renderHtmlElement(d, setSelectedLocation)}
+          polygonsData={polygons}
+          polygonCapColor={() => "#cfcae5"}
+          polygonSideColor={() => "#6183b4"}
+          polygonStrokeColor={() => "#243167"}
+          polygonAltitude={0.01}
+          polygonLabel={null}
+          atmosphereColor="#ffffff"
+          atmosphereAltitude={0.1}
+        />
+      </div>
 
       <div className={`nav-pane ${selectedLocation ? "open" : ""}`}>
         {selectedLocation ? (
