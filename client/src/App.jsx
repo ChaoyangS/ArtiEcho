@@ -26,6 +26,7 @@ function App() {
         <Route path="/topten-artworks-by-genre" element={<ToptenArtworkByGenrePage/>}/> {/* Top 10 Artworks by genre-style page route */}
         <Route path="/topten-artists" element={<ToptenArtworkPage />} /> {/* Top 10 Artists by number of artworks */}
         <Route path="/donars" element={<DonarsPage />} />
+        <Route path="search" element={<SearchPage />} />
       </Routes>
       <ChatButton />
     </>
