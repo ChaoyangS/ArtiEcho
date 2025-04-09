@@ -215,10 +215,29 @@ const renderHtmlElement = (location, setSelectedLocation) => {
 
 // Artwork List Component
 const ArtworkList = ({ artworks }) => (
+  // <div className="artwork-list">
+  //   {artworks.map((art, index) => (
+  //     <div key={index} className="artwork-card">
+  //       <img src={art.image} alt={art.title} width="550" />
+  //       <div className="artwork-details">
+  //         <h3>{art.title}</h3>
+  //         <p>
+  //           <strong>Artist:</strong> {art.artist}
+  //         </p>
+  //         <p>
+  //           <strong>Museum:</strong> {art.museum}
+  //         </p>
+  //         <p>
+  //           <strong>Year:</strong> {art.year}
+  //         </p>
+  //       </div>
+  //     </div>
+  //   ))}
+  // </div>
   <div className="artwork-list">
     {artworks.map((art, index) => (
       <div key={index} className="artwork-card">
-        <img src={art.image} alt={art.title} width="550" />
+        <img src={art.image} alt={art.title} className="artwork-image" />
         <div className="artwork-details">
           <h3>{art.title}</h3>
           <p>
@@ -311,7 +330,13 @@ function CustomizedGlobe() {
 
   return (
     <div className="container">
-      <div className="Globe" style={{ width: "100vw", height: "100vh" }}>
+      <div
+        className="Globe"
+        style={{
+          width: "100vw",
+          height: "100vh",
+        }}
+      >
         <Globe
           ref={globeRef}
           backgroundColor="#9aa8c3"

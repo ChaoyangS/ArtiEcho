@@ -35,7 +35,7 @@
   padding: 1.25rem;
   transition: right 0.3s ease-in-out;
   overflow-y: auto;
-  color: lightgrey; /* Default text color for the pane */
+  /* Default text color for the pane */
 }
 
 .nav-pane.open {
@@ -52,14 +52,12 @@
   top: 50%;
   transform: translateY(-50%);
   white-space: nowrap;
-  color: lightgrey;
 }
 
 .nav-pane.open p {
   writing-mode: horizontal-tb;
   position: static;
   transform: none;
-  color: lightgrey;
 }
 
 .nav-pane h2 {
@@ -78,4 +76,50 @@
   border: none;
   cursor: pointer;
   color: #ffffff;
+}
+
+/* Cards */
+.artwork-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+  padding: 20px;
+}
+
+.artwork-card {
+  background-color: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transform: scale(1);
+}
+
+.artwork-card:hover {
+  transform: scale(1.03);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+.artwork-image {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: contain;
+}
+
+.artwork-details {
+  padding: 16px;
+  color: #111;
+}
+
+.artwork-details h3 {
+  font-size: 1.25rem;
+  margin-bottom: 8px;
+  color: #6a4b3d;
+}
+
+.artwork-details p {
+  color: #ae838c;
+  font-size: 0.9rem;
+  margin: 4px 0;
 }
