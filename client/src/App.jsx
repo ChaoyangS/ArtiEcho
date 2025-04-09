@@ -7,6 +7,7 @@ import ToptenArtworkPage from "./pages/ToptenArtworkPage/ToptenArtworkPage";
 import DonarsPage from "./pages/DonarsPage/DonarsPage";
 import ToptenArtworkByGenrePage from "./pages/ToptenArtworkByGenrePage/ToptenArtworkByGenrePage";
 import Navbar from "./components/Navbar/Navbar";
+import ChatButton from "./components/ChatButton/ChatButton";
 
 function App() {
 
@@ -26,6 +27,7 @@ function App() {
         <Route path="/topten-artists" element={<ToptenArtworkPage />} /> {/* Top 10 Artists by number of artworks */}
         <Route path="/donars" element={<DonarsPage />} />
       </Routes>
+      <ChatButton />
     </>
   );
 }
