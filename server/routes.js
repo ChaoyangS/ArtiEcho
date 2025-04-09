@@ -53,12 +53,12 @@ const artworkByGenre = async function (req, res) {
   );
 };
 
-// Route 2: GET/artist
+// Route 2: GET/topten-artist
 // Find the top 10 artists with the most artworks in the collection;
 // Update: more complex query to get top 10 artist with their most latest work(where url is not null)
 //          get their life span(attribute: displayDate in constituent table)
 
-const artist = async function (req, res) {
+const topTenArtist = async function (req, res) {
   connection.query(
     `
     WITH artist_artwork_counts AS (
@@ -455,7 +455,7 @@ const artworkCountByYear = async function (req, res) {
 
 module.exports = {
   artworkByGenre,
-  artist,
+  topTenArtist,
   artworkByTitle,
   artworkByStyle,
   artworkByGenreByStyle,
