@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "lucide-react": "^0.487.0",
     "postprocessing": "^6.37.1"
   },
   "devDependencies": {

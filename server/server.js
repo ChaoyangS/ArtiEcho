@@ -37,16 +37,14 @@ app.get("/artwork-by-title", auth, routes.artworkByTitle);
 app.get("/artwork-by-style", auth, routes.artworkByStyle);
 // adding
 app.get("/artwork-by-genre-style", auth, routes.artworkByGenreByStyle);
-app.get(
-  "/artwork-bibliography-search",
-  auth,
-  routes.artworkBibliographyByTitle
-);
+app.get("/artwork-bibliography-search", auth,routes.artworkBibliographyByTitle);
+
 app.get("/artwork-by-nationality", auth, routes.artworkByNationalityAndEndYear);
 app.get("/top-nationalities", auth, routes.topNationalities);
 app.get("/top-donors", auth, routes.topDonors);
 app.get("/artwork-by-artist", auth, routes.artworkByArtist);
 app.get("/artwork-count-by-year", auth, routes.artworkCountByYear);
+app.get("/artwork-by-id", auth, routes.artworkbyID);
 
 /*
 http://localhost:3000/artwork-by-genre?genre=Drawing
