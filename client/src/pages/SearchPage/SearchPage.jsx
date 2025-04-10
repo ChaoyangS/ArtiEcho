@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import "./SearchPage.css";
+import { Link } from "react-router-dom";
+import { Search } from 'lucide-react';
 
 const SearchPage = () => {
   const [mode, setMode] = useState("artist"); // "artist" or "artwork"
@@ -37,7 +39,9 @@ const SearchPage = () => {
             onChange={(e) => setQuery(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && handleSearch()}
           />
-          <button onClick={handleSearch}>🔍</button>
+          <button onClick={handleSearch}>
+            <Search size={18} />
+          </button>
         </div>
 
         <div className="mode-toggle">
@@ -63,7 +67,10 @@ const SearchPage = () => {
           ) : (
             results.map((item, index) => (
               <div className="art-card" key={index}>
-                <h3>{item.artwork_title || "Untitled"}</h3>
+                <Link to={`/artwork/${item.objectid}`} className="topten-link">
+                    <h3>{item.artwork_title || "Untitled"}</h3>
+                </Link>
+                <p><strong>ObjectID:</strong> {item.objectid || "Unknown"}</p>
                 <p><strong>Artist:</strong> {item.artist_name || "Unknown"}</p>
                 <p><strong>Time:</strong> {item.beginyear || "?"} – {item.endyear || "?"}</p>
                 {item.url && (

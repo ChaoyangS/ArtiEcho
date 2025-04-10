@@ -10,6 +10,10 @@ import Navbar from "./components/Navbar/Navbar";
 import ChatButton from "./components/ChatButton/ChatButton";
 import SearchPage from "./pages/SearchPage/SearchPage";
 
+import ArtworkDetailPage from "./pages/ArtworkPage/ArtworkPage";
+
+
+
 function App() {
   const [count, setCount] = useState(0);
   // Only show Navbar on homepage
@@ -32,7 +36,8 @@ function App() {
         <Route path="/topten-artists" element={<ToptenArtworkPage />} />{" "}
         {/* Top 10 Artists by number of artworks */}
         <Route path="/donars" element={<DonarsPage />} />
-        <Route path="search" element={<SearchPage />} />
+        <Route path="/search" element={<SearchPage />} />
+        <Route path="/artwork/:id" element={<ArtworkDetailPage />} />
       </Routes>
       <ChatButton />
     </>

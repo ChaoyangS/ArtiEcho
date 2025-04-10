@@ -133,6 +133,7 @@ const artworkByTitle = async function (req, res) {
   connection.query(
     `
     SELECT o.title AS artwork_title,
+           o.objectID,
            o.beginYear,
            o.endYear,
            c.nationality,
@@ -396,6 +397,7 @@ const artworkByArtist = async function (req, res) {
       )
 
       SELECT o.title AS artwork_title,
+            o.objectID,
             o.beginYear,
             o.endYear,
             c.nationality,
@@ -453,6 +455,44 @@ const artworkCountByYear = async function (req, res) {
   );
 };
 
+
+
+const artworkbyID = async function (req, res) {
+  const id = req.query.id;
+  connection.query(
+    `
+    SELECT o.objectID,
+           o.title,
+           o.provenancetext AS genre,
+           c.preferredDisplayname AS artist_name,
+           o.beginyear,
+           o.endyear,
+           img.iiifthumburl AS url
+    FROM objects o
+    JOIN objects_constituents oc 
+        ON o.objectID = oc.objectID 
+        AND oc.roletype = 'artist' 
+        AND oc.displayorder = 1
+    JOIN constituents c 
+        ON oc.constituentID = c.constituentID
+    LEFT JOIN published_images img 
+        ON o.objectID = img.depictstmsobjectID
+        AND img.viewtype = 'primary'
+    WHERE o.objectID = $1;
+    `,
+    [id],
+    (err, data) => {
+      if (err) {
+        console.error(err);
+        res.status(500).json({ error: "Query failed" });
+      } else {
+        res.json(data.rows);
+      }
+    }
+  );
+};
+
+
 module.exports = {
   artworkByGenre,
   topTenArtist,
@@ -465,4 +505,5 @@ module.exports = {
   topDonors,
   artworkByArtist,
   artworkCountByYear,
+  artworkbyID,
 };
