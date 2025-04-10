@@ -9,7 +9,9 @@
 
 /* Custom X markers */
 .custom-marker {
-  color: #d6555d;
+  font-family: "Caveat", cursive;
+  color: #407076;
+  border-color: #ffffff;
   font-size: 20px;
   font-weight: bold;
   position: absolute;
