@@ -1,0 +1,33 @@
+.nationality-table-container {
+  background-color: #9d9acc;
+  min-height: 100vh;
+  padding: 1.5rem;
+  color: white;
+  font-family: sans-serif;
+}
+
+.table-wrapper {
+  /* max-height: 50rem;
+    overflow-y: auto; */
+  height: 100%;
+}
+
+.nationality-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 0.75rem;
+}
+
+.nationality-table th {
+  text-align: left;
+  font-size: 1.25rem;
+  font-weight: bold;
+  padding-left: 0.5rem;
+  border-bottom: 0.125rem solid white;
+}
+
+.nationality-table td {
+  padding: 0.5rem;
+  padding-left: 0.5rem;
+  border-top: 0.0625rem solid white;
+}

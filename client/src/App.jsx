@@ -11,10 +11,9 @@ import ChatButton from "./components/ChatButton/ChatButton";
 import SearchPage from "./pages/SearchPage/SearchPage";
 import ToptenArtistsPage from "./pages/ToptenArtistsPage/ToptenArtistsPage";
 import HomePage from "./pages/HomePage/HomePage";
+import NationalityPage from "./pages/NationalityPage/NationalityPage";
 
 import ArtworkDetailPage from "./pages/ArtworkPage/ArtworkPage";
-
-
 
 function App() {
   const [count, setCount] = useState(0);
@@ -30,11 +29,15 @@ function App() {
         <Route path="/" element={<HomePage />} /> {/* Homepage route */}
         <Route path="/topten-artworks" element={<ToptenArtworkPage />} />{" "}
         {/* Top 10 Artworks by style-genre page route */}
-        <Route path="/topten-artworks-by-genre" element={<ToptenArtworkByGenrePage />} />{" "}
+        <Route
+          path="/topten-artworks-by-genre"
+          element={<ToptenArtworkByGenrePage />}
+        />{" "}
         {/* Top 10 Artworks by genre-style page route */}
         <Route path="/topten-artists" element={<ToptenArtistsPage />} />
         {/* Top 10 Artists by number of artworks */}
         <Route path="/donars" element={<DonarsPage />} />
+        <Route path="/nationality" element={<NationalityPage />} />
         <Route path="/search" element={<SearchPage />} />
         <Route path="/artwork/:id" element={<ArtworkDetailPage />} />
       </Routes>
