@@ -29,8 +29,8 @@
 .nav-pane {
   position: fixed;
   top: 0;
-  right: -35rem; /* Start off-screen */
-  width: 35rem;
+  right: -40vw; /* Start off-screen */
+  width: 40vw;
   height: 100vh;
   background: rgba(97, 131, 180, 0.9);
   /* backdrop-filter: blur(10px); */
@@ -85,7 +85,8 @@
 /* Cards */
 .artwork-list {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  justify-content: center;
+  grid-template-columns: repeat(auto-fit, minmax(38vw, 1fr));
   gap: 1.5rem;
   padding: 20px;
 }
