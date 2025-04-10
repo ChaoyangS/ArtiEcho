@@ -1,6 +1,7 @@
 /*
-  Top Ten Artworks page(by genre, then by style).
-  Not yet finished, needs to be changed by the tokens from routes query.
+  /topten-artworks-by-genre page ( filter by genre, then by style ).
+  We list the artwork's title, begin yer to start and the year finished, and other info.
+  We also display the artwork image and we can simply download the image by clicking the smaller image under the descriptions.
 */
 
 import React, { useEffect, useState } from "react";
@@ -69,7 +70,6 @@ const ToptenArtworkByGenrePage = () => {
   return (
     <div className="topten-artwork-genre">
       <ToptenNavbar id="genre-navbar" />
-      {/*  Will consider move to navbar or somewhere */}
       <Topten title="Top 10 Artworks" items={artworks} category="Artworks" />
     </div>
   );

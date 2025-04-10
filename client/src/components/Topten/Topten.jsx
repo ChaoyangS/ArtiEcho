@@ -24,14 +24,30 @@ const Topten = ({ title, items, category, showStyle = true }) => {
               <div className="topten-content">
                 <div className="topten-left">
                   <div className="topten-rank"><h1>{index + 1}</h1></div>
+                  <p><br /></p>
                   <div className="topten-text">
                     <p className="topten-category">{category}</p> 
                     <h3 className="topten-title">
-                    <Link to={`/artworks/${item.title.replace(/\s+/g, "-").toLowerCase()}`} className="topten-link">{item.title}</Link>  
-                    </h3> 
+                      {category === "Artworks" ? (
+                        <Link
+                          to={`/artworks/${item.title.replace(/\s+/g, "-").toLowerCase()}`}
+                          className="topten-link"
+                        >
+                          {item.title}
+                        </Link>
+                      ) : (
+                        <Link
+                          to={`/artists/${item.artist.replace(/\s+/g, "-").toLowerCase()}`}
+                          className="topten-link"
+                        >
+                          {item.artist}
+                        </Link>
+                      )}
+                  </h3>
                     {/* If this is for top ten artworks */}          
                     {category === "Artworks" && (
                       <article className="detail-list-description">
+                        <p><br /></p>
                         <p>Time period: {item.timePeriod || "Unknown"}</p>
                         <p>Artist:{" "}
                           <Link
@@ -46,10 +62,31 @@ const Topten = ({ title, items, category, showStyle = true }) => {
                         </article>
                     )}
                     {/* If this is for top ten artists */}  
-                    {category === "Artists" && (
+                    {category === "Artist" && (
                       <>
-                        <p>Notable Works: {item.notableWorks}</p>
-                        <p>Influence: {item.influence}</p>
+                        <p><br /></p>
+                        <p>Influence: {item.lifeSpan}</p>
+                        <p>Artworks total: {item.artworkCount}</p>
+                        <p>
+                          Related work:{" "}
+                          <Link
+                            to={`/artists/${item.title.replace(/\s+/g, "-").toLowerCase()}`}
+                            className="topten-link"
+                          >
+                            {item.title}
+                          </Link>
+                        </p>
+                        <p><br /></p>
+                        <p>
+                          <a
+                            href={`https://en.wikipedia.org/wiki/${item.artist.replace(/\s+/g, "_")}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="wiki-link"
+                          >
+                            → More about {item.artist} on Wikipedia
+                          </a>
+                        </p>
                       </>
                     )}                  
                   </div>
