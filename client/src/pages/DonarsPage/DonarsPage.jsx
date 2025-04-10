@@ -5,7 +5,6 @@ import DonorTable from "../../components/DonorTable/DonorTable";
 const DonarsPage = () => {
   return (
     <>
-      <Navbar />
       <DonorTable />
     </>
   );

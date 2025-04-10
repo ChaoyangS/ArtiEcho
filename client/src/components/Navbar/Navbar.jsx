@@ -7,11 +7,12 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const menuItems = [
-    "Art Style",
-    "Art Genre",
-    "Nationality",
-    "Donors",
-    "Search",
+    { label: "Art Style", route: "/topten-artworks" },
+    { label: "Art Genre", route: "/topten-artworks-by-genre" },
+    { label: "Artist", route: "/topten-artists" },
+    { label: "Nationality", route: "/nationality" },
+    { label: "Donors", route: "/donors" },
+    { label: "Search", route: "/search" },
   ];
 
   useEffect(() => {
@@ -29,8 +30,10 @@ const Navbar = () => {
   return (
     <nav className="navbar">
       <div className="navbar-brand">
-        <img src={artiechologo} alt="ArtiEcho" className="logo" />
-        ArtiEcho
+        <Link to="/" className="navbar-brand">
+          <img src={artiechologo} alt="ArtiEcho" className="logo" />
+          ArtiEcho
+        </Link>
       </div>
       <div className="navbar-menu">
         <button
@@ -53,19 +56,17 @@ const Navbar = () => {
           </svg>
           Menu
         </button>
+
         {isOpen && (
           <div className="menu-dropdown">
             {menuItems.map((item, index) => (
-              // <a key={index} href="#" className="menu-item">
-              //   {item}
-              // </a>
               <Link
                 key={index}
-                to={`/${item.toLowerCase()}`}
+                to={item.route}
                 className="menu-item"
-                onClick={() => setIsOpen(false)} // close dropdown after click
+                onClick={() => setIsOpen(false)}
               >
-                {item}
+                {item.label}
               </Link>
             ))}
           </div>

@@ -5,7 +5,6 @@ import NationalityTable from "../../components/NationalityTable/NationalityTable
 const NationalityPage = () => {
   return (
     <>
-      <Navbar />
       <NationalityTable />
     </>
   );
