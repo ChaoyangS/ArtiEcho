@@ -50,6 +50,7 @@ const ToptenArtworkByGenrePage = () => {
           }
 
           return {
+            objectid: item.objectid,
             title: item.artwork_title,
             genre: item.genre,
             style: item.style,

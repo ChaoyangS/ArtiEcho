@@ -29,10 +29,7 @@ const Topten = ({ title, items, category, showStyle = true }) => {
                     <p className="topten-category">{category}</p> 
                     <h3 className="topten-title">
                       {category === "Artworks" ? (
-                        <Link
-                          to={`/artworks/${item.title.replace(/\s+/g, "-").toLowerCase()}`}
-                          className="topten-link"
-                        >
+                        <Link to={`/artwork/${item.objectid}`} className="topten-link">
                           {item.title}
                         </Link>
                       ) : (
@@ -69,10 +66,7 @@ const Topten = ({ title, items, category, showStyle = true }) => {
                         <p>Artworks total: {item.artworkCount}</p>
                         <p>
                           Related work:{" "}
-                          <Link
-                            to={`/artists/${item.title.replace(/\s+/g, "-").toLowerCase()}`}
-                            className="topten-link"
-                          >
+                          <Link to={`/artwork/${item.objectid}`} className="topten-link">
                             {item.title}
                           </Link>
                         </p>

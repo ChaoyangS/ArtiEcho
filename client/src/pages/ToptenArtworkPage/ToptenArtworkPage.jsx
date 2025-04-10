@@ -46,6 +46,7 @@ const ToptenArtworkPage = () => {
           }
 
           return {
+            objectid: item.objectid,
             title: item.artwork_title,
             style: item.style,
             artist: item.artist_name || "Unknown",

@@ -94,6 +94,7 @@ const topTenArtist = async function (req, res) {
       WHERE rn = 1
     )
     SELECT
+      la.objectID,
       c.preferredDisplayName AS artist_name,
       CASE
         WHEN c.displayDate IS NOT NULL THEN c.displayDate
