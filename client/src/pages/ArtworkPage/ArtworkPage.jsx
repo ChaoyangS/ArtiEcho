@@ -37,26 +37,11 @@ const ArtworkDetailPage = () => {
           <h1 className="artwork-title">{artwork.title}</h1>
           
           <div className="artwork-meta">
-            <div className="meta-row">
-              <span className="meta-label">Genre:</span>
-              <span className="meta-value">{artwork.genre || "Art Genre"}</span>
-            </div>
-            <div className="meta-row">
-              <span className="meta-label">Style:</span>
-              <span className="meta-value">{artwork.style || "Art Medium"}</span>
-            </div>
-            <div className="meta-row">
-              <span className="meta-label">Time period:</span>
-              <span className="meta-value">{timePeriod}</span>
-            </div>
-            <div className="meta-row">
-              <span className="meta-label">Artist:</span>
-              <span className="meta-value">{artwork.artist_name || "Unknown"}</span>
-            </div>
-            <div className="meta-row">
-              <span className="meta-label">Artist Nationality:</span>
-              <span className="meta-value">{artwork.nationality || "Unknown"}</span>
-            </div>
+            <div className="meta-line"><span className="meta-label">Genre:</span>{artwork.genre || "Art Genre"}</div>
+            <div className="meta-line"><span className="meta-label">Style:</span>{artwork.style || "Art Medium"}</div>
+            <div className="meta-line"><span className="meta-label">Time period:</span>{timePeriod}</div>
+            <div className="meta-line"><span className="meta-label">Artist:</span>{artwork.artist_name || "Unknown"}</div>
+            <div className="meta-line"><span className="meta-label">Artist Nationality:</span>{artwork.nationality || "Unknown"}</div>
           </div>
 
         </div>

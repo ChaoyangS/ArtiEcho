@@ -41,25 +41,23 @@
   }
   
   .artwork-meta {
-    display: grid;
-    grid-template-columns: auto 1fr;
-    gap: 0.5rem 1rem;
     font-size: 1rem;
     margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .meta-line {
+    white-space: nowrap;
   }
   
   .meta-label {
+    display: inline-block;
+    width: 170px; /* 👈 adjust this to match the longest label */
     font-weight: bold;
     color: #e0d4cc;
-    white-space: nowrap;
-    text-align: right;
   }
-  
-  .meta-value {
-    color: #ffffff;
-    opacity: 0.9;
-  }
-  
   
   .artwork-image-wrapper {
     background-color: #bfb1cd; /* image section background */
