@@ -10,6 +10,11 @@ import Navbar from "./components/Navbar/Navbar";
 import ChatButton from "./components/ChatButton/ChatButton";
 import SearchPage from "./pages/SearchPage/SearchPage";
 import ToptenArtistsPage from "./pages/ToptenArtistsPage/ToptenArtistsPage";
+import HomePage from "./pages/HomePage/HomePage";
+
+import ArtworkDetailPage from "./pages/ArtworkPage/ArtworkPage";
+
+
 
 function App() {
   const [count, setCount] = useState(0);
@@ -22,7 +27,7 @@ function App() {
       {/*<h1>ArtiEcho</h1>*/}
       {/* Routes for different pages */}
       <Routes>
-        <Route path="/" element={<CustomizedGlobe />} /> {/* Homepage route */}
+        <Route path="/" element={<HomePage />} /> {/* Homepage route */}
         <Route path="/topten-artworks" element={<ToptenArtworkPage />} />{" "}
         {/* Top 10 Artworks by style-genre page route */}
         <Route
@@ -33,7 +38,8 @@ function App() {
         <Route path="/topten-artists" element={<ToptenArtistsPage />} />
         {/* Top 10 Artists by number of artworks */}
         <Route path="/donars" element={<DonarsPage />} />
-        <Route path="search" element={<SearchPage />} />
+        <Route path="/search" element={<SearchPage />} />
+        <Route path="/artwork/:id" element={<ArtworkDetailPage />} />
       </Routes>
       <ChatButton />
     </>

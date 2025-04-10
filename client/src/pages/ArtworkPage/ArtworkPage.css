@@ -1,0 +1,71 @@
+.artwork-detail-container {
+    background-color: #17181a;
+    color: #ffffff;
+    font-family: 'Inter', sans-serif;
+    padding: 2rem;
+    max-width: 1200px;
+    margin: auto;
+  }
+  
+  .artwork-header {
+    background-color: #a87983; /* header background */
+    padding: 2rem;
+    display: flex;
+    align-items: flex-start;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+  }
+  
+  .artwork-rank {
+    font-size: 6rem;
+    font-weight: 700;
+    margin-right: 1.5rem;
+    color: white;
+    opacity: 0.95;
+  }
+  
+  .artwork-info {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .artwork-genre {
+    font-size: 1.1rem;
+    margin-bottom: 0.3rem;
+  }
+  
+  .artwork-title {
+    font-size: 2rem;
+    font-weight: 900;
+    margin: 0;
+  }
+  
+  .artwork-meta {
+    font-size: 1rem;
+    margin-top: 0.75rem;
+    line-height: 1.5;
+  }
+  
+  .artwork-image-wrapper {
+    background-color: #bfb1cd; /* image section background */
+    padding: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
+  }
+  
+  .artwork-main-image {
+    max-width: 100%;
+    max-height: 700px;
+    object-fit: contain;
+    border-radius: 8px;
+  }
+  
+  .loading {
+    color: #aaa;
+    text-align: center;
+    margin-top: 4rem;
+  }
+  
