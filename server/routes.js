@@ -137,7 +137,8 @@ const artworkByTitle = async function (req, res) {
            o.beginYear,
            o.endYear,
            c.nationality,
-           img.iiifthumburl AS url
+           img.iiifthumburl AS url,
+           c.preferredDisplayname AS artist_name
     FROM objects o
     LEFT JOIN objects_constituents oc ON o.objectid = oc.objectid
       AND oc.roletype = 'artist'
@@ -146,6 +147,9 @@ const artworkByTitle = async function (req, res) {
     LEFT JOIN published_images img ON o.objectid = img.depictstmsobjectID
       AND img.viewtype = 'primary'
     WHERE o.title ILIKE $1
+      AND o.title IS NOT NULL
+      AND img.iiifthumburl IS NOT NULL
+      AND c.preferredDisplayname IS NOT NULL
     LIMIT 25;
     `,
     [`%${titleInput}%`],
@@ -402,22 +406,27 @@ const artworkByArtist = async function (req, res) {
             o.endYear,
             c.nationality,
             c.preferredDisplayName AS artist_name,
-            ot.visualBrowserStyle AS style
+            ot.visualBrowserStyle AS style,
+            img.iiifthumburl AS url
       FROM objects o
-              LEFT JOIN objects_constituents oc
-                        ON o.objectID = oc.objectID
-                            AND oc.roleType = 'artist'
-                            AND oc.displayOrder = 1
-              LEFT JOIN constituents c
-                        ON oc.constituentID = c.constituentID
-              LEFT JOIN objects_terms ot
-                        ON o.objectID = ot.objectID
+      LEFT JOIN objects_constituents oc
+          ON o.objectID = oc.objectID
+          AND oc.roleType = 'artist'
+          AND oc.displayOrder = 1
+      LEFT JOIN constituents c
+          ON oc.constituentID = c.constituentID
+      LEFT JOIN objects_terms ot
+          ON o.objectID = ot.objectID
+      LEFT JOIN published_images img 
+          ON o.objectID = img.depictstmsobjectID
+          AND img.viewtype = 'primary'
       WHERE EXISTS (
           SELECT 1
           FROM target_artist ta
           WHERE ta.constituentID = c.constituentID
       )
       and ot.visualBrowserStyle is not null
+      AND img.iiifthumburl IS NOT NULL
       ORDER BY o.endYear DESC
       LIMIT 25;
     `,
@@ -467,7 +476,9 @@ const artworkbyID = async function (req, res) {
            c.preferredDisplayname AS artist_name,
            o.beginyear,
            o.endyear,
-           img.iiifthumburl AS url
+           img.iiifthumburl AS url,
+           ot.visualBrowserStyle AS style,
+           c.nationality
     FROM objects o
     JOIN objects_constituents oc 
         ON o.objectID = oc.objectID 
@@ -475,6 +486,9 @@ const artworkbyID = async function (req, res) {
         AND oc.displayorder = 1
     JOIN constituents c 
         ON oc.constituentID = c.constituentID
+    LEFT JOIN objects_terms ot
+        ON o.objectID = ot.objectID
+        and ot.termtype = 'Style'
     LEFT JOIN published_images img 
         ON o.objectID = img.depictstmsobjectID
         AND img.viewtype = 'primary'

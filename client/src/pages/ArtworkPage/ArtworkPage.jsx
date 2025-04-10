@@ -36,12 +36,29 @@ const ArtworkDetailPage = () => {
         <div className="artwork-info">
           <h1 className="artwork-title">{artwork.title}</h1>
           
-          <p className="artwork-meta">
-            <strong>Genre:</strong> {artwork.genre || "Art Genre"} <br />
-            <strong>Time period:</strong> {timePeriod} <br />
-            <strong>Artist:</strong> {artwork.artist_name || "Unknown"} <br />
-            <strong>Representative Genre of Art:</strong> {artwork.genre || "—"}
-          </p>
+          <div className="artwork-meta">
+            <div className="meta-row">
+              <span className="meta-label">Genre:</span>
+              <span className="meta-value">{artwork.genre || "Art Genre"}</span>
+            </div>
+            <div className="meta-row">
+              <span className="meta-label">Style:</span>
+              <span className="meta-value">{artwork.style || "Art Medium"}</span>
+            </div>
+            <div className="meta-row">
+              <span className="meta-label">Time period:</span>
+              <span className="meta-value">{timePeriod}</span>
+            </div>
+            <div className="meta-row">
+              <span className="meta-label">Artist:</span>
+              <span className="meta-value">{artwork.artist_name || "Unknown"}</span>
+            </div>
+            <div className="meta-row">
+              <span className="meta-label">Artist Nationality:</span>
+              <span className="meta-value">{artwork.nationality || "Unknown"}</span>
+            </div>
+          </div>
+
         </div>
       </div>
 
