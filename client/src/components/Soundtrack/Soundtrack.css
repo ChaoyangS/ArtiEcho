@@ -16,3 +16,9 @@
   border-radius: 1rem;
   cursor: pointer;
 }
+.soundtrack-toggle:hover {
+  background-color: #4a6a95;
+  color: #e0e0e0;
+  transform: scale(1.05);
+  transition: all 0.2s ease-in-out;
+}
