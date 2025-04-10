@@ -36,7 +36,7 @@ function App() {
         {/* Top 10 Artworks by genre-style page route */}
         <Route path="/topten-artists" element={<ToptenArtistsPage />} />
         {/* Top 10 Artists by number of artworks */}
-        <Route path="/donars" element={<DonarsPage />} />
+        <Route path="/donors" element={<DonarsPage />} />
         <Route path="/nationality" element={<NationalityPage />} />
         <Route path="/search" element={<SearchPage />} />
         <Route path="/artwork/:id" element={<ArtworkDetailPage />} />

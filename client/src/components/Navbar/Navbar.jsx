@@ -1,11 +1,18 @@
 import { useState, useEffect } from "react";
 import "./Navbar.css"; // Import the CSS file
 import artiechologo from "../../assets/artiechologo.png";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const menuItems = ["Art Style", "Art Genre", "Artists", "Donors", "Search"];
+  const menuItems = [
+    "Art Style",
+    "Art Genre",
+    "Nationality",
+    "Donors",
+    "Search",
+  ];
 
   useEffect(() => {
     if (isOpen) {
@@ -49,9 +56,17 @@ const Navbar = () => {
         {isOpen && (
           <div className="menu-dropdown">
             {menuItems.map((item, index) => (
-              <a key={index} href="#" className="menu-item">
+              // <a key={index} href="#" className="menu-item">
+              //   {item}
+              // </a>
+              <Link
+                key={index}
+                to={`/${item.toLowerCase()}`}
+                className="menu-item"
+                onClick={() => setIsOpen(false)} // close dropdown after click
+              >
                 {item}
-              </a>
+              </Link>
             ))}
           </div>
         )}
