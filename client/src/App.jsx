@@ -9,6 +9,7 @@ import ToptenArtworkByGenrePage from "./pages/ToptenArtworkByGenrePage/ToptenArt
 import Navbar from "./components/Navbar/Navbar";
 import ChatButton from "./components/ChatButton/ChatButton";
 import SearchPage from "./pages/SearchPage/SearchPage";
+import ToptenArtistsPage from "./pages/ToptenArtistsPage/ToptenArtistsPage";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -29,7 +30,7 @@ function App() {
           element={<ToptenArtworkByGenrePage />}
         />{" "}
         {/* Top 10 Artworks by genre-style page route */}
-        <Route path="/topten-artists" element={<ToptenArtworkPage />} />{" "}
+        <Route path="/topten-artists" element={<ToptenArtistsPage />} />
         {/* Top 10 Artists by number of artworks */}
         <Route path="/donars" element={<DonarsPage />} />
         <Route path="search" element={<SearchPage />} />

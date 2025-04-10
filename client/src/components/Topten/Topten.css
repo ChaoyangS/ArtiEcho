@@ -147,6 +147,19 @@ body {
   End of clickable topten artwork names and artist
 */
 
+/*
+  render about the wiki link
+*/
+.wiki-link {
+
+  color: #ae838c;
+  text-decoration: underline;
+}
+
+.wiki-link:hover {
+  color: #9d9acc;
+}
+
 
 /* Responsive Layout Adjustments */
 /* For small screen device */
