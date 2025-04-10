@@ -4,6 +4,18 @@ import axios from "axios";
 
 const NationalityTable = () => {
   const [nationalities, setNationalities] = useState([]);
+  const nationalityToCountryCode = {
+    American: "US",
+    French: "fr",
+    Italian: "it",
+    German: "de",
+    British: "gb",
+    Dutch: "nl",
+    Flemish: "be",
+    Czech: "cz",
+    Swiss: "ch",
+    Austrian: "at",
+  };
 
   useEffect(() => {
     axios
@@ -32,13 +44,30 @@ const NationalityTable = () => {
             </tr>
           </thead>
           <tbody>
-            {nationalities.map((nationality, index) => (
-              <tr key={index}>
-                <td>{index + 1}</td>
-                <td>{nationality.nationality}</td>
-                <td>{nationality.artist_count}</td>
-              </tr>
-            ))}
+            {nationalities.map((nationality, index) => {
+              const code = nationalityToCountryCode[nationality.nationality];
+
+              return (
+                <tr key={index}>
+                  <td>{index + 1}</td>
+                  <td>
+                    {code && (
+                      <img
+                        src={`https://countryflagsapi.netlify.app/flag/${code.toUpperCase()}.svg`}
+                        alt={`${nationality.nationality} flag`}
+                        style={{
+                          marginRight: "0.5rem",
+                          verticalAlign: "middle",
+                          height: "1rem",
+                        }}
+                      />
+                    )}
+                    {nationality.nationality}
+                  </td>
+                  <td>{nationality.artist_count}</td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>
