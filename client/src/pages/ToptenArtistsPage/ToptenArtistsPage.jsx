@@ -1,9 +1,10 @@
 /*
-  Top Ten Artists page, we use the Topten.jsx component here as well.
+  /topten-artists page, we use the Topten.jsx component here as well.
+  We list the top ten artists with the most number of artworks and display their work randomly(random genre/style).
+  We list the infomation in our database, also involved links to the related wiki page.
 */
 
 import React, { useEffect, useState } from "react";
-// import ToptenNavbar from "../../components/Topten/ToptenNavbar";
 import Topten from "../../components/Topten/Topten";
 import "./ToptenArtistsPage.css";
 
@@ -47,8 +48,6 @@ const ToptenArtistsPage = () => {
 
   return (
     <div className="topten-artists-page">
-      {/*<ToptenNavbar />*/}
-      {/* <h3>Top 10 Artists</h3> */} {/*  Will consider move to navbar or somewhere */}
       <Topten title="Top 10 Artists" items={artists} category="Artist" />
     </div>
   );

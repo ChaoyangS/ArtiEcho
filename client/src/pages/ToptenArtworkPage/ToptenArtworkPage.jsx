@@ -1,5 +1,7 @@
 /*
-  Top Ten Artworks page(by style, then by genre).
+  /topten-artworks page ( filter by style, then by genre ).
+  We list the artwork's title, begin yer to start and the year finished, and other info.
+  We also display the artwork image and we can simply download the image by clicking the smaller image under the descriptions.
 */
 
 import React, { useEffect, useState } from "react";
@@ -18,13 +20,7 @@ const ToptenArtworkPage = () => {
   useEffect(() => {
 
     const fetchArtworks = async () => {
-      // style = ("Impressionist", "Post-Impressionist", "Renaissance", "Abstract Expressionist", "Realist", 
-      //          "Baroque", "Romantic", "Neoclassic", "Rococo", "Surrealist", "Gothic", "Rococo", "Minimalist")
 
-      // subclass = ("paint", "drawing", "sculpture", "print", "decorative art", "photograph")
-      // example as most recent ten-paint-artworks of Impressionist
-      //const style = "Impressionist"; 
-      //const subclass = "paint";
       try { /* Fetch data for Impression style ('drawing', 'sculpture', 'photograph',  'print', 'paint', 'decorative art')*/
         const response = await fetch(`http://localhost:3000/artwork-by-style?style=${encodeURIComponent(style)}&subclass=${encodeURIComponent(subclass)}`, {
           headers: {
@@ -39,7 +35,7 @@ const ToptenArtworkPage = () => {
         const data = await response.json();
 
         const formatted = data.map((item) => {
-          /** Get valid time period */
+          /** Get valid time period as timePeriod var */
           let timePeriod = "?";
           if (item.beginyear && item.endyear) {
             timePeriod = `${item.beginyear} - ${item.endyear}`;
@@ -69,7 +65,6 @@ const ToptenArtworkPage = () => {
   return (
     <div className="topten-artwork-page">
       <ToptenNavbar />
-      {/* <h3>Top 10 Artworks by Genre</h3> */} {/*  Will consider move to navbar or somewhere */}
       <Topten title="Top 10 Artworks" items={artworks} category="Artworks" />
     </div>
   );

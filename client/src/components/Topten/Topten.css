@@ -1,7 +1,9 @@
-
+/*
+  style sheet for Topten component.
+*/
 body {
   font-size: 16px;
-  color: #ffffff;/* backup color: #f2ded8;*/
+  color: #ffffff;
   background-color: #17181a;
   margin: 0;
   padding: 0;
@@ -9,9 +11,7 @@ body {
 }
 
 .topten-container {
-  /*background-color: #17181a; opional color: #ae838c*/
   text-align: center;
-  margin: auto;
   width: 90vw;
   height: 100%;
   display: flex;
@@ -21,7 +21,7 @@ body {
   box-sizing: border-box;
 }
 
-.topten-header {
+.topten-header {  /** may be discard later */
   font-size: 2vw;
   font-weight: bold;
   margin-bottom: 10px;
@@ -39,7 +39,7 @@ body {
 .topten-item {
   display: flex;
   align-items: flex-start;
-  background: rgba(255, 255, 255, 0.1);/* rgba(174, 131, 140, 0.6);*/
+  background: rgba(255, 255, 255, 0.1);/* adding a layer of black here*/
   padding: 15px;
   border-radius: 10px;
   transition: transform 0.3s ease-in-out;
@@ -69,10 +69,10 @@ body {
 }
 
 .vertical-line {
-  width: 2px; /* Narrow width */
-  background-color: white; /* White color */
+  width: 2px; 
+  background-color: white; 
   height: 100%; /* Full height of the container */
-  margin: 0 20px; /* Add spacing around the line */
+  margin: 0 20px;
 }
 
 /* Rank and detail descriptions of the Artwork */
@@ -113,6 +113,9 @@ body {
   align-self: left;
 }
 
+/** 
+  main image part
+*/
 .topten-right {
   flex: 1;
   max-width: 60%;
@@ -128,7 +131,6 @@ body {
   aspect-ratio: auto;
   object-fit: cover;
   height: auto;
-  /* border-radius: 10px;  if we want smooth corner */
 }
 
 /*
@@ -148,7 +150,7 @@ body {
 */
 
 /*
-  render about the wiki link
+  render about the wiki link in ToptenArtistsPage
 */
 .wiki-link {
 
@@ -202,7 +204,6 @@ body {
 
 /* For large screen device */
 @media (min-width: 1200px) {
-  /* if image resolution is enough, apply the following part */
   .topten-list {
       grid-template-columns: repeat(1, 1fr);
   }
@@ -214,11 +215,4 @@ body {
     object-fit: cover;
     height: auto;
   }
-
-
-  /* if the image resolution is not so good, using the following part: 
-
-  .topten-list {
-      grid-template-columns: repeat(3, 1fr);
-  }*/
 }
