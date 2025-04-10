@@ -332,7 +332,7 @@ function CustomizedGlobe() {
     if (globeRef.current) {
       const controls = globeRef.current.controls();
       controls.autoRotate = true;
-      controls.autoRotateSpeed = 0.8;
+      controls.autoRotateSpeed = 0.4;
       controls.enableDamping = true;
       controls.dampingFactor = 0.05;
     }
