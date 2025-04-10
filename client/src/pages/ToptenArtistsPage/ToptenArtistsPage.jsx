@@ -30,6 +30,7 @@ const ToptenArtistsPage = () => {
         const formatted = data.Top_10_Artist.map((item) => {
 
           return {
+            objectid: item.objectid,
             artist: item.artist_name || "Unknown",
             lifeSpan: item.display_lifespan,
             artworkCount: item.artwork_count,
