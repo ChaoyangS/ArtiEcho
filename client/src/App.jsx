@@ -9,6 +9,7 @@ import ToptenArtworkByGenrePage from "./pages/ToptenArtworkByGenrePage/ToptenArt
 import Navbar from "./components/Navbar/Navbar";
 import ChatButton from "./components/ChatButton/ChatButton";
 import SearchPage from "./pages/SearchPage/SearchPage";
+import HomePage from "./pages/HomePage/HomePage";
 
 import ArtworkDetailPage from "./pages/ArtworkPage/ArtworkPage";
 
@@ -25,7 +26,7 @@ function App() {
       {/*<h1>ArtiEcho</h1>*/}
       {/* Routes for different pages */}
       <Routes>
-        <Route path="/" element={<CustomizedGlobe />} /> {/* Homepage route */}
+        <Route path="/" element={<HomePage />} /> {/* Homepage route */}
         <Route path="/topten-artworks" element={<ToptenArtworkPage />} />{" "}
         {/* Top 10 Artworks by style-genre page route */}
         <Route
