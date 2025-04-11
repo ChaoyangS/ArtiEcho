@@ -244,6 +244,15 @@ const ArtworkList = ({ artworks }) => (
 
 function CustomizedGlobe() {
   const globeRef = useRef();
+  /**
+   * add background dynamic size handler (fix on - 04/10)
+   */
+  const [globeSize, setGlobeSize] = useState({
+    width: window.innerWidth,
+    height: window.innerHeight,
+  });
+  /* */
+
   const [selectedLocation, setSelectedLocation] = useState(null);
   const [polygons, setPolygons] = useState([]);
   const [locations, setLocations] = useState([]); // dynamic locations
@@ -324,6 +333,21 @@ function CustomizedGlobe() {
       controls.dampingFactor = 0.05;
     }
   }, []);
+  /**
+   * add background dynamic size handler here(fix on - 04/10)
+   */
+  useEffect(() => {
+    const handleResize = () => {
+      setGlobeSize({
+        width: window.innerWidth,
+        height: window.innerHeight,
+      });
+    };
+  
+    window.addEventListener("resize", handleResize);
+    handleResize(); // set initial size
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   return (
     <div className="container">
@@ -336,6 +360,8 @@ function CustomizedGlobe() {
       >
         <Globe
           ref={globeRef}
+          width={globeSize.width}
+          height={globeSize.height} // fixed background dynamic size
           backgroundColor="#9aa8c3"
           globeMaterial={createGlobeMaterial}
           htmlElementsData={locations}

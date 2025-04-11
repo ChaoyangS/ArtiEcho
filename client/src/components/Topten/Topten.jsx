@@ -33,12 +33,14 @@ const Topten = ({ title, items, category, showStyle = true }) => {
                           {item.title}
                         </Link>
                       ) : (
-                        <Link
-                          to={`/artists/${item.artist.replace(/\s+/g, "-").toLowerCase()}`}
-                          className="topten-link"
-                        >
+                        <a
+                            href={`https://en.wikipedia.org/wiki/${item.artist.replace(/\s+/g, "_")}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="wiki-link"
+                          >
                           {item.artist}
-                        </Link>
+                          </a>
                       )}
                   </h3>
                     {/* If this is for top ten artworks */}          
@@ -60,9 +62,8 @@ const Topten = ({ title, items, category, showStyle = true }) => {
                     )}
                     {/* If this is for top ten artists */}  
                     {category === "Artist" && (
-                      <>
-                        <p><br /></p>
-                        <p>Influence: {item.lifeSpan}</p>
+                      <div className="artist-info-block">
+                        <p><br /></p> 
                         <p>Artworks total: {item.artworkCount}</p>
                         <p>
                           Related work:{" "}
@@ -70,18 +71,8 @@ const Topten = ({ title, items, category, showStyle = true }) => {
                             {item.title}
                           </Link>
                         </p>
-                        <p><br /></p>
-                        <p>
-                          <a
-                            href={`https://en.wikipedia.org/wiki/${item.artist.replace(/\s+/g, "_")}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="wiki-link"
-                          >
-                            → More about {item.artist} on Wikipedia
-                          </a>
-                        </p>
-                      </>
+                        <p>Influence: {item.lifeSpan}</p>
+                      </div>
                     )}                  
                   </div>
                   {/* downloadable secondary image */}
