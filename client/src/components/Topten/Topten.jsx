@@ -62,9 +62,8 @@ const Topten = ({ title, items, category, showStyle = true }) => {
                     )}
                     {/* If this is for top ten artists */}  
                     {category === "Artist" && (
-                      <>
-                        <p><br /></p>
-                        <p>Influence: {item.lifeSpan}</p>
+                      <div className="artist-info-block">
+                        <p><br /></p> 
                         <p>Artworks total: {item.artworkCount}</p>
                         <p>
                           Related work:{" "}
@@ -72,7 +71,8 @@ const Topten = ({ title, items, category, showStyle = true }) => {
                             {item.title}
                           </Link>
                         </p>
-                      </>
+                        <p>Influence: {item.lifeSpan}</p>
+                      </div>
                     )}                  
                   </div>
                   {/* downloadable secondary image */}

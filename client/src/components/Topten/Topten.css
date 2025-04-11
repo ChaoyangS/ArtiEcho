@@ -2,7 +2,7 @@
   style sheet for Topten component.
 */
 body {
-  font-size: 16px;
+  font-size: 1.5vw;
   color: #ffffff;
   background-color: #17181a;
   margin: 0;
@@ -153,7 +153,7 @@ body {
   render about the wiki link in ToptenArtistsPage
 */
 .wiki-link {
-  font-size: 1.8em;
+  font-size: 1.2em;
   color: #ae838c;
   text-decoration: none;
 }
@@ -162,6 +162,9 @@ body {
   color: #9d9acc;
 }
 
+.artist-info-block {
+  font-size: .88em;
+}
 
 /* Responsive Layout Adjustments */
 /* For small screen device */
