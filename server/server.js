@@ -31,7 +31,7 @@ app.get("/health", (req, res) => {
 // API Routes
 //app.get("/artwork", auth, routes.artwork);
 
-app.get("/artwork-by-genre", auth, routes.artworkByGenre);
+app.get("/artwork-by-year", auth, routes.artworkByYear);
 app.get("/topten-artist", auth, routes.topTenArtist);
 app.get("/artwork-by-title", auth, routes.artworkByTitle);
 app.get("/artwork-by-style", auth, routes.artworkByStyle);
@@ -47,8 +47,8 @@ app.get("/artwork-count-by-year", auth, routes.artworkCountByYear);
 app.get("/artwork-by-id", auth, routes.artworkbyID);
 
 /*
-http://localhost:3000/artwork-by-genre?genre=Drawing
-http://localhost:3000/topten-artist
+http://localhost:3000/artwork-by-year?year=1950
+http://localhost:3000/topten-artist?artist=Monet
 http://localhost:3000/artwork-by-title?title=Sunflowers
 http://localhost:3000/artwork-by-style?style=Impression&subclass=Painting  (add artwork's genre as subclass)
 http://localhost:3000/artwork-by-genre-style?subclass=Painting&style=Impression (add artwork's style as subclass)

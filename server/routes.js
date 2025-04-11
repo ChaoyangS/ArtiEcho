@@ -22,36 +22,50 @@ connection.connect((err) => err && console.log(err));
 //  * ROUTES *
 //  ********************************/
 
-// Route 1: GET/artworkByGenre
-// Filter artworks by genre(like specific categories: photography, painting, or sculpture);
-const artworkByGenre = async function (req, res) {
-  const genreInput = req.query.genre || ""; // get genre input
+// Route 1: GET/artworkByYear
+// Filter artworks by year
+const artworkByYear = async function (req, res) {
+  const yearInput = parseInt(req.query.year, 10); // get year input and convert to integer
+
+  if (isNaN(yearInput)) {
+    return res.status(400).json({ error: "Invalid year input" });
+  }
 
   connection.query(
     `
-    SELECT o.objectID, o.title, o.subclassification AS genre,
-      o.endYear,
-      img.iiifthumburl AS url
-    FROM objects o 
-    LEFT JOIN published_images img ON o.objectid = img.depictstmsobjectID
-      AND img.viewtype = 'primary'
-    WHERE o.subclassification ILIKE $1
-    ORDER BY o.endYear DESC NULLS LAST
-    LIMIT 10;
+    SELECT o.objectID,
+           o.title as artwork_title,
+           o.subclassification AS genre,
+           c.preferredDisplayname AS artist_name,
+           o.beginyear,
+           o.endyear,
+           img.iiifthumburl AS url
+    FROM objects o
+    JOIN objects_constituents oc 
+        ON o.objectID = oc.objectID 
+        AND oc.roletype = 'artist' 
+        AND oc.displayorder = 1
+    JOIN constituents c 
+        ON oc.constituentID = c.constituentID
+    LEFT JOIN published_images img
+        ON o.objectid = img.depictstmsobjectID
+        AND img.viewtype = 'primary'
+    WHERE o.endyear = $1 and img.iiifthumburl IS NOT NULL
+    ORDER BY o.title
+    LIMIT 25;
     `,
-    [`%${genreInput}%`],
+    [yearInput],
     (err, data) => {
       if (err) {
-        console.log(err);
+        console.error("DB query error:", err);
         res.status(500).json({ error: "Query failed" });
       } else {
-        res.json({
-          artworks: data.rows,
-        });
+        res.json(data.rows);
       }
     }
   );
 };
+
 
 // Route 2: GET/topten-artist
 // Find the top 10 artists with the most artworks in the collection;
@@ -509,7 +523,7 @@ const artworkbyID = async function (req, res) {
 
 
 module.exports = {
-  artworkByGenre,
+  artworkByYear,
   topTenArtist,
   artworkByTitle,
   artworkByStyle,
