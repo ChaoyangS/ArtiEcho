@@ -6,14 +6,20 @@ import "./CustomizedGlobe.css";
 import "../../styles/_global.css";
 
 // Function to Create Globe Material
-const createGlobeMaterial = () => {
-  return new THREE.MeshBasicMaterial({
-    color: new THREE.Color(),
-    map: new THREE.TextureLoader().load(
-      "https://upload.wikimedia.org/wikipedia/commons/2/2c/BlackMarble20161km.jpg"
-    ),
-  });
-};
+// const createGlobeMaterial = () => {
+//   return new THREE.MeshBasicMaterial({
+//     color: new THREE.Color(),
+//     map: new THREE.TextureLoader().load(
+//       "https://upload.wikimedia.org/wikipedia/commons/2/2c/BlackMarble20161km.jpg"
+//     ),
+//   });
+// };
+const createGlobeMaterial = new THREE.MeshPhongMaterial({
+  map: new THREE.TextureLoader().load(
+    "/texture.png"
+    // "https://upload.wikimedia.org/wikipedia/commons/7/7f/Watercolor_paper_texture_background.jpg"
+  ),
+});
 
 // Mapping nationality to location
 const nationalityToLocation = {
@@ -337,8 +343,8 @@ function CustomizedGlobe() {
           htmlLng={(d) => d.lng}
           htmlElement={(d) => renderHtmlElement(d, setSelectedLocation)}
           polygonsData={polygons}
-          polygonCapColor={() => "#cfcae5"}
-          polygonSideColor={() => "#6183b4"}
+          polygonCapColor={() => "rgba(207, 202, 229, 0.1)"}
+          polygonSideColor={() => "rgba(97, 131, 180, 0.3)"}
           polygonStrokeColor={() => "#243167"}
           polygonAltitude={0.01}
           polygonLabel={null}
