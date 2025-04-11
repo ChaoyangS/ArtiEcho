@@ -215,25 +215,6 @@ const renderHtmlElement = (location, setSelectedLocation) => {
 
 // Artwork List Component
 const ArtworkList = ({ artworks }) => (
-  // <div className="artwork-list">
-  //   {artworks.map((art, index) => (
-  //     <div key={index} className="artwork-card">
-  //       <img src={art.image} alt={art.title} width="550" />
-  //       <div className="artwork-details">
-  //         <h3>{art.title}</h3>
-  //         <p>
-  //           <strong>Artist:</strong> {art.artist}
-  //         </p>
-  //         <p>
-  //           <strong>Museum:</strong> {art.museum}
-  //         </p>
-  //         <p>
-  //           <strong>Year:</strong> {art.year}
-  //         </p>
-  //       </div>
-  //     </div>
-  //   ))}
-  // </div>
   <div className="artwork-list">
     {artworks.map((art, index) => (
       <div key={index} className="artwork-card">
@@ -317,7 +298,7 @@ function CustomizedGlobe() {
             artist: item.preferreddisplayname,
             museum: "Unknown",
             year: item.beginyear,
-            image: item.url ? item.url.replace("!200,200", "!600,600") : null,
+            image: item.url ? item.url.replace("!200,200", "!800,800") : null,
           });
         });
       });

@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import "./SearchPage.css";
 import { Link } from "react-router-dom";
-import { Search } from 'lucide-react';
+import { Search } from "lucide-react";
+import "../../styles/_global.css";
 
 const SearchPage = () => {
   const [mode, setMode] = useState("artist"); // "artist" or "artwork"
@@ -12,8 +13,12 @@ const SearchPage = () => {
     if (!query.trim()) return;
     const endpoint =
       mode === "artist"
-        ? `http://localhost:3000/artwork-by-artist?artist=${encodeURIComponent(query)}`
-        : `http://localhost:3000/artwork-by-title?title=${encodeURIComponent(query)}`;
+        ? `http://localhost:3000/artwork-by-artist?artist=${encodeURIComponent(
+            query
+          )}`
+        : `http://localhost:3000/artwork-by-title?title=${encodeURIComponent(
+            query
+          )}`;
 
     try {
       const res = await fetch(endpoint, {
@@ -63,16 +68,25 @@ const SearchPage = () => {
       <div className="results-panel">
         <div className="space-background">
           {results.length === 0 ? (
-            <p className="placeholder">Start typing to search the galaxy of art 🌌</p>
+            <p className="placeholder">
+              Start typing to search the galaxy of art 🌌
+            </p>
           ) : (
             results.map((item, index) => (
               <div className="art-card" key={index}>
                 <Link to={`/artwork/${item.objectid}`} className="topten-link">
-                    <h3>{item.artwork_title || "Untitled"}</h3>
+                  <h3>{item.artwork_title || "Untitled"}</h3>
                 </Link>
-                <p><strong>ObjectID:</strong> {item.objectid || "Unknown"}</p>
-                <p><strong>Artist:</strong> {item.artist_name || "Unknown"}</p>
-                <p><strong>Time:</strong> {item.beginyear || "?"} – {item.endyear || "?"}</p>
+                <p>
+                  <strong>ObjectID:</strong> {item.objectid || "Unknown"}
+                </p>
+                <p>
+                  <strong>Artist:</strong> {item.artist_name || "Unknown"}
+                </p>
+                <p>
+                  <strong>Time:</strong> {item.beginyear || "?"} –{" "}
+                  {item.endyear || "?"}
+                </p>
                 {item.url && (
                   <img
                     src={item.url.replace("!200,200", "!600,600")}

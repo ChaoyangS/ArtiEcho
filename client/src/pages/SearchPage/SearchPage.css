@@ -4,7 +4,7 @@
   height: 100vh;
   background-color: #17181a;
   color: #fff;
-  font-family: 'Inter', sans-serif;
+  /* font-family: "Inter", sans-serif; */
 }
 
 /* Sidebar Search Panel */
@@ -100,7 +100,10 @@
 
 .space-background {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* 👈 2 columns */
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(300px, 1fr)
+  ); /* 👈 2 columns */
   gap: 1.5rem;
 }
 
