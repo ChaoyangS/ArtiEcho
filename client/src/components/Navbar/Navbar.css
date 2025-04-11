@@ -1,4 +1,4 @@
-/* === Navbar Container === */
+/* Navbar Container */
 .navbar {
   display: flex;
   justify-content: space-between;
@@ -12,7 +12,10 @@
   width: 100%;
 }
 
-/* === Logo Section === */
+/* left region: Logo Section */
+.navbar-left {
+  flex-shrink: 0;
+}
 
 .logo-link {
   display: flex;
@@ -28,10 +31,17 @@
   height: 4em;
 }
 
-/* === Navigation Links === */
+/*  right region: nav links  */
+.navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+/*  Navigation Links  */
 .navbar-links {
   display: flex;
-  gap: 2rem;
+  gap: 1rem;
   align-items: center;
   padding-right: 5rem;
 }
@@ -59,7 +69,7 @@
   border-bottom: 2px solid #9d9acc;
 }
 
-/* === Burger Menu Button (Mobile) === */
+/* Menu Button (for small device) */
 .menu-button {
   background: none;
   border: none;
@@ -75,20 +85,23 @@
   padding-right: 4.5rem;
 }
 
-/* === Dropdown Menu (Mobile) === */
+/* Dropdown Menu (for small device)  */
 .menu-dropdown {
   position: absolute;
-  top: calc(100% + 0.5rem);
-  left: 0;
+  top: 4rem;
+  right: 1rem;
   background-color: #ffffff;
   border-radius: 8px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   min-width: 200px;
-  opacity: 0;
-  transform: translateY(-10px);
-  transition: all 0.2s ease;
-  border: 1px solid rgba(0, 0, 0, 0.05);
   z-index: 1000;
+  display: flex;
+  flex-direction: column;
+}
+
+.menu-dropdown.active {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .menu-item {
@@ -111,12 +124,7 @@
   border-bottom: none;
 }
 
-.menu-item:hover {
-  background-color: #f8f8f8;
-  color: #000;
-}
-
-/* === Mobile Override: hide full nav === */
+/* small device Override: hide full nav */
 @media (max-width: 768px) {
   .navbar-links {
     display: none;
