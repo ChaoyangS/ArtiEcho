@@ -1,11 +1,32 @@
 import { Link, useLocation } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react"; // added
 import "./ToptenNavbar.css";
 
 const ToptenNavbar = (props) => {
+  const [sidebarOpen, setSidebarOpen] = useState(false); // added
   const [activeStyle, setActiveStyle] = useState(null);
+  const sidebarRef = useRef(null); // add
   const location = useLocation();
   const isByGenrePage = location.pathname.includes("/topten-artworks-by-genre");
+
+  // if click on region outside sidebar
+  useEffect( () => {
+    const handleClickOutside = (event) => {
+      if (sidebarRef.current && !sidebarRef.current.contains(event.target)) {
+        setSidebarOpen(false);
+        setActiveStyle(null);
+      }
+    };
+
+    if (sidebarOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside)
+    };
+
+  }, [sidebarOpen]);
 
   const stylesWithGenres = {
     "Impressionist": ["paint", "drawing", "sculpture", "print"],
@@ -33,11 +54,12 @@ const ToptenNavbar = (props) => {
     return (
       <div
         id={props.id} 
-        className="hover-sidebar"
-        onMouseLeave={() => setActiveStyle(null)}
+        className={`click-sidebar-container ${sidebarOpen ? "open" : ""}`}
+        onClick={() => !sidebarOpen && setSidebarOpen(true)}
+        ref={sidebarRef}
       >
         
-      <div className="sidebar-title">
+      <div className="sidebar-title" onClick={() => setSidebarOpen(!sidebarOpen)}>
         <svg
           viewBox="0 0 24 24"
           fill="none"
@@ -62,7 +84,7 @@ const ToptenNavbar = (props) => {
               <ul key={header}>
                 <div
                   className="style-header"
-                  onMouseEnter={() => setActiveStyle(header)}
+                  onClick={() => setActiveStyle(header === activeStyle ? null : header)}
                 >
                   {header}
                 </div>

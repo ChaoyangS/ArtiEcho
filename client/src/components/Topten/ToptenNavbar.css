@@ -17,10 +17,10 @@
   height: auto;
 }
 
-.hover-sidebar {
+.click-sidebar-container {
   position: fixed;
   top: 0;
-  left: 0;
+  right: 0;
   width: 30px; 
   height: 100vh;
   background-color: #9aa8c3;
@@ -30,12 +30,12 @@
   cursor: pointer;
 }
 
-.hover-sidebar:hover .scalable-icon {
+.click-sidebar-container.open .scalable-icon {
   opacity: 0;
   pointer-events: none;
 }
 
-.hover-sidebar:hover {
+.click-sidebar-container.open {
   width: 20%;
 }
 
@@ -56,7 +56,7 @@
   margin: 10px;
 }
 
-.hover-sidebar:hover .hover-sidebar-inner {
+.click-sidebar-container.open .hover-sidebar-inner {
   opacity: 1;
   pointer-events: auto;
 }
