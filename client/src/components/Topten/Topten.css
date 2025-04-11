@@ -196,7 +196,7 @@ body {
 }
 
 /* For medium screen device */
-@media (min-width: 600px) {
+@media (min-width: 768px) {
   .topten-list {
       grid-template-columns: repeat(2, 1fr);
   }

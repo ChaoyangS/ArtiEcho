@@ -51,10 +51,10 @@
 
 .chat-window {
   position: fixed;
-  bottom: 90px;
-  right: 20px;
-  width: 400px;
-  height: 700px;
+  bottom: 4.5rem;
+  right: 3rem;
+  width: 25rem;
+  height: 30rem;
   background-color: white;
   border-radius: 10px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
