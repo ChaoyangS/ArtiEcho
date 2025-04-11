@@ -153,9 +153,9 @@ body {
   render about the wiki link in ToptenArtistsPage
 */
 .wiki-link {
-
+  font-size: 1.8em;
   color: #ae838c;
-  text-decoration: underline;
+  text-decoration: none;
 }
 
 .wiki-link:hover {

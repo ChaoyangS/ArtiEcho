@@ -33,12 +33,14 @@ const Topten = ({ title, items, category, showStyle = true }) => {
                           {item.title}
                         </Link>
                       ) : (
-                        <Link
-                          to={`/artists/${item.artist.replace(/\s+/g, "-").toLowerCase()}`}
-                          className="topten-link"
-                        >
+                        <a
+                            href={`https://en.wikipedia.org/wiki/${item.artist.replace(/\s+/g, "_")}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="wiki-link"
+                          >
                           {item.artist}
-                        </Link>
+                          </a>
                       )}
                   </h3>
                     {/* If this is for top ten artworks */}          
@@ -69,17 +71,6 @@ const Topten = ({ title, items, category, showStyle = true }) => {
                           <Link to={`/artwork/${item.objectid}`} className="topten-link">
                             {item.title}
                           </Link>
-                        </p>
-                        <p><br /></p>
-                        <p>
-                          <a
-                            href={`https://en.wikipedia.org/wiki/${item.artist.replace(/\s+/g, "_")}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="wiki-link"
-                          >
-                            → More about {item.artist} on Wikipedia
-                          </a>
                         </p>
                       </>
                     )}                  
