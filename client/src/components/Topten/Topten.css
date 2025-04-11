@@ -215,4 +215,9 @@ body {
     object-fit: cover;
     height: auto;
   }
+
+  .topten-container {
+    padding-right: 20%;
+    transition: padding-right 0.3s ease;
+  }
 }
