@@ -22,8 +22,50 @@ connection.connect((err) => err && console.log(err));
 //  * ROUTES *
 //  ********************************/
 
-// Route 1: GET/artworkByYear
-// Filter artworks by year
+
+// Route 1: GET/artworkByID
+const artworkbyID = async function (req, res) {
+  const id = req.query.id;
+  connection.query(
+    `
+    SELECT o.objectID,
+           o.title,
+           o.provenancetext AS genre,
+           c.preferredDisplayname AS artist_name,
+           o.beginyear,
+           o.endyear,
+           img.iiifthumburl AS url,
+           ot.visualBrowserStyle AS style,
+           c.nationality
+    FROM objects o
+    JOIN objects_constituents oc 
+        ON o.objectID = oc.objectID 
+        AND oc.roletype = 'artist' 
+        AND oc.displayorder = 1
+    JOIN constituents c 
+        ON oc.constituentID = c.constituentID
+    LEFT JOIN objects_terms ot
+        ON o.objectID = ot.objectID
+        and ot.termtype = 'Style'
+    LEFT JOIN published_images img 
+        ON o.objectID = img.depictstmsobjectID
+        AND img.viewtype = 'primary'
+    WHERE o.objectID = $1;
+    `,
+    [id],
+    (err, data) => {
+      if (err) {
+        console.error(err);
+        res.status(500).json({ error: "Query failed" });
+      } else {
+        res.json(data.rows);
+      }
+    }
+  );
+};
+
+
+// Route 2: GET/artworkByYear
 const artworkByYear = async function (req, res) {
   const yearInput = parseInt(req.query.year, 10); // get year input and convert to integer
 
@@ -66,11 +108,265 @@ const artworkByYear = async function (req, res) {
   );
 };
 
+// Route 3: GET/artworkByTitle
+const artworkByTitle = async function (req, res) {
+  const titleInput = req.query.title || "";
 
-// Route 2: GET/topten-artist
+  connection.query(
+    `
+    SELECT o.title AS artwork_title,
+           o.objectID,
+           o.beginYear,
+           o.endYear,
+           c.nationality,
+           img.iiifthumburl AS url,
+           c.preferredDisplayname AS artist_name
+    FROM objects o
+    LEFT JOIN objects_constituents oc ON o.objectid = oc.objectid
+      AND oc.roletype = 'artist'
+      AND oc.displayorder = 1
+    LEFT JOIN constituents c ON oc.constituentID = c.constituentID
+    LEFT JOIN published_images img ON o.objectid = img.depictstmsobjectID
+      AND img.viewtype = 'primary'
+    WHERE o.title ILIKE $1
+      AND o.title IS NOT NULL
+      AND img.iiifthumburl IS NOT NULL
+      AND c.preferredDisplayname IS NOT NULL
+    LIMIT 25;
+    `,
+    [`%${titleInput}%`],
+    (err, data) => {
+      if (err) {
+        console.log(err);
+        res.status(500).json({ error: "Query failed" });
+      } else {
+        res.json(data.rows);
+      }
+    }
+  );
+};
+
+
+// Route 4: GET/artworkByNationality
+const artworkByNationality = async function (req, res) {
+  const nationality = req.query.nationality || "";
+  // const endYear = req.query.endYear || "";
+
+  connection.query(
+    `
+    SELECT c.nationality,
+           o.title AS artwork_title,
+           o.beginYear,
+           o.endYear,
+           c.preferreddisplayname,
+           img.iiifthumburl AS url
+    FROM objects o
+    JOIN objects_constituents oc
+      ON o.objectID = oc.objectID
+      AND oc.roletype = 'artist'
+      AND oc.displayorder = 1
+    JOIN constituents c
+      ON oc.constituentID = c.constituentID
+    LEFT JOIN published_images img
+      ON o.objectID = img.depictstmsobjectID
+      AND img.viewtype = 'primary'
+    WHERE c.nationality ILIKE $1
+      AND o.endYear IS NOT NULL
+      AND o.beginYear IS NOT NULL
+      AND c.nationality IS NOT NULL
+      AND img.iiifthumburl IS NOT NULL
+    LIMIT 25;
+    `,
+
+    [`%${nationality}%`],
+    (err, data) => {
+      if (err) {
+        console.error(err);
+        res.status(500).json({ error: "Query failed" });
+      } else {
+        res.json(data.rows);
+      }
+    }
+  );
+};
+
+// Route 5: GET/artworkByArtist
+const artworkByArtist = async function (req, res) {
+  const artist = req.query.artist || "";
+  connection.query(
+    `
+      WITH target_artist AS (
+          SELECT constituentID
+          FROM constituents
+          WHERE preferredDisplayName ILIKE $1
+      )
+
+      SELECT o.title AS artwork_title,
+            o.objectID,
+            o.beginYear,
+            o.endYear,
+            c.nationality,
+            c.preferredDisplayName AS artist_name,
+            ot.visualBrowserStyle AS style,
+            img.iiifthumburl AS url
+      FROM objects o
+      LEFT JOIN objects_constituents oc
+          ON o.objectID = oc.objectID
+          AND oc.roleType = 'artist'
+          AND oc.displayOrder = 1
+      LEFT JOIN constituents c
+          ON oc.constituentID = c.constituentID
+      LEFT JOIN objects_terms ot
+          ON o.objectID = ot.objectID
+      LEFT JOIN published_images img 
+          ON o.objectID = img.depictstmsobjectID
+          AND img.viewtype = 'primary'
+      WHERE EXISTS (
+          SELECT 1
+          FROM target_artist ta
+          WHERE ta.constituentID = c.constituentID
+      )
+      and ot.visualBrowserStyle is not null
+      AND img.iiifthumburl IS NOT NULL
+      ORDER BY o.endYear DESC
+      LIMIT 25;
+    `,
+    [`%${artist}%`],
+    (err, data) => {
+      if (err) {
+        console.error(err);
+        res.status(500).json({ error: "Query failed" });
+      } else {
+        res.json(data.rows);
+      }
+    }
+  );
+};
+
+// Route 6: GET/artworkByStyle
+// update on Apr.7: add image url
+//                  add subclassInput for choosing genre(e.g. 'drawing', 'sculpture', 'photograph',  'print', 'paint')
+//                  add beginYear, endYear for artwork's time period
+//                  add "AND img.iiifthumburl,o.beginyear,o.endyear IS NOT NULL"
+//                  delete "GROUP BY style, artist_name, artwork_title, o.objectID, artist_name, url" //ORDER BY artwork finish year DESC
+const artworkByStyle = async function (req, res) {
+  const styleInput = req.query.style || "";
+  const subclassInput = req.query.subclass || "";
+
+  connection.query(
+    `
+    SELECT o.objectID,
+           o.title AS artwork_title,
+           ot.visualBrowserStyle AS style,
+           c.preferredDisplayname AS artist_name,
+           o.beginyear AS beginYear,
+           o.endyear AS endYear,
+           img.iiifthumburl AS url
+    FROM objects o
+    JOIN objects_constituents oc
+      ON o.objectID = oc.objectID AND oc.displayorder = 1
+    JOIN objects_terms ot
+      ON o.objectID = ot.objectID
+    JOIN constituents c
+      ON oc.constituentID = c.constituentID
+    LEFT JOIN published_images img
+      ON o.objectID = img.depictstmsobjectID
+      AND img.viewtype = 'primary'
+    WHERE oc.roleType = 'artist'
+      AND ot.visualBrowserStyle ILIKE $1
+      AND o.provenancetext ILIKE $2
+      AND img.iiifthumburl IS NOT NULL
+    ORDER BY o.endYear DESC NULLS LAST
+    LIMIT 10;
+    `,
+    [`%${styleInput}%`, `%${subclassInput}%`],
+    (err, data) => {
+      if (err) {
+        console.log(err);
+        res.status(500).json({ error: "Query failed" });
+      } else {
+        res.json(data.rows);
+      }
+    }
+  );
+};
+
+// Route 7: GET/artwork-by-genre-style
+const artworkByGenreByStyle = async function (req, res) {
+  const subclassInput = req.query.subclass || "";
+  const styleInput = req.query.style || "";
+
+  connection.query(
+    `
+    SELECT o.objectID,
+           o.title AS artwork_title,
+           o.provenancetext AS genre,
+           ot.visualBrowserStyle AS style,
+           c.preferredDisplayname AS artist_name,
+           o.beginyear AS beginYear,
+           o.endyear AS endYear,
+           img.iiifthumburl AS url
+    FROM objects o
+    JOIN objects_constituents oc
+      ON o.objectID = oc.objectID AND oc.displayorder = 1
+    JOIN constituents c
+      ON oc.constituentID = c.constituentID
+    JOIN objects_terms ot
+      ON o.objectID = ot.objectID
+    LEFT JOIN published_images img
+      ON o.objectID = img.depictstmsobjectID
+      AND img.viewtype = 'primary'
+    WHERE oc.roleType = 'artist'
+      AND o.provenancetext ILIKE $1
+      AND ot.visualBrowserStyle ILIKE $2
+      AND img.iiifthumburl IS NOT NULL
+    ORDER BY o.endYear DESC NULLS LAST
+    LIMIT 10;
+    `,
+    [`%${subclassInput}%`, `%${styleInput}%`],
+    (err, data) => {
+      if (err) {
+        console.log(err);
+        res.status(500).json({ error: "Query failed" });
+      } else {
+        res.json({
+          artworks: data.rows,
+        });
+      }
+    }
+  );
+};
+
+
+// Route 8: GET/topNationalities
+// Identify the top 10 most common nationalities of artists in the NGA collection;
+const topNationalities = async function (req, res) {
+  connection.query(
+    `
+    SELECT nationality,
+           COUNT(*) AS artist_count
+    FROM constituents
+    WHERE artistOfNGAObject = 1
+      AND nationality IS NOT NULL
+    GROUP BY nationality
+    ORDER BY artist_count DESC
+    LIMIT 10;
+    `,
+    (err, data) => {
+      if (err) {
+        console.error(err);
+        res.status(500).json({ error: "Query failed" });
+      } else {
+        res.json(data.rows);
+      }
+    }
+  );
+};
+
+// Route 9: GET/topten-artist
 // Find the top 10 artists with the most artworks in the collection;
 // Update: more complex query to get top 10 artist with their most latest work(where url is not null)
-//          get their life span(attribute: displayDate in constituent table)
+// get their life span(attribute: displayDate in constituent table)
 
 const topTenArtist = async function (req, res) {
   connection.query(
@@ -141,36 +437,24 @@ const topTenArtist = async function (req, res) {
   );
 };
 
-// Route 3: GET/artworkByTitle
-const artworkByTitle = async function (req, res) {
-  const titleInput = req.query.title || "";
 
+// Route 10: GET/topDonors
+// List the most common donors and the number of artworks they donated.
+const topDonors = async function (req, res) {
   connection.query(
     `
-    SELECT o.title AS artwork_title,
-           o.objectID,
-           o.beginYear,
-           o.endYear,
-           c.nationality,
-           img.iiifthumburl AS url,
-           c.preferredDisplayname AS artist_name
-    FROM objects o
-    LEFT JOIN objects_constituents oc ON o.objectid = oc.objectid
-      AND oc.roletype = 'artist'
-      AND oc.displayorder = 1
-    LEFT JOIN constituents c ON oc.constituentID = c.constituentID
-    LEFT JOIN published_images img ON o.objectid = img.depictstmsobjectID
-      AND img.viewtype = 'primary'
-    WHERE o.title ILIKE $1
-      AND o.title IS NOT NULL
-      AND img.iiifthumburl IS NOT NULL
-      AND c.preferredDisplayname IS NOT NULL
+    SELECT c.preferredDisplayName AS donor_name,
+           COUNT(oc.objectID) AS artwork_count
+    FROM objects_constituents oc
+    JOIN constituents c ON oc.constituentID = c.constituentID
+    WHERE oc.roleType = 'donor'
+    GROUP BY c.preferredDisplayName
+    ORDER BY artwork_count DESC
     LIMIT 25;
     `,
-    [`%${titleInput}%`],
     (err, data) => {
       if (err) {
-        console.log(err);
+        console.error(err);
         res.status(500).json({ error: "Query failed" });
       } else {
         res.json(data.rows);
@@ -179,46 +463,22 @@ const artworkByTitle = async function (req, res) {
   );
 };
 
-// Route 4.1: GET/artworkByStyle/ByGenre
-// update on Apr.7: add image url
-//                  add subclassInput for choosing genre(e.g. 'drawing', 'sculpture', 'photograph',  'print', 'paint')
-//                  add beginYear, endYear for artwork's time period
-//                  add "AND img.iiifthumburl,o.beginyear,o.endyear IS NOT NULL"
-//                  delete "GROUP BY style, artist_name, artwork_title, o.objectID, artist_name, url" //ORDER BY artwork finish year DESC
-const artworkByStyle = async function (req, res) {
-  const styleInput = req.query.style || "";
-  const subclassInput = req.query.subclass || "";
 
+
+// Route 11: GET/artworkCountByYear
+const artworkCountByYear = async function (req, res) {
   connection.query(
     `
-    SELECT o.objectID,
-           o.title AS artwork_title,
-           ot.visualBrowserStyle AS style,
-           c.preferredDisplayname AS artist_name,
-           o.beginyear AS beginYear,
-           o.endyear AS endYear,
-           img.iiifthumburl AS url
-    FROM objects o
-    JOIN objects_constituents oc
-      ON o.objectID = oc.objectID AND oc.displayorder = 1
-    JOIN objects_terms ot
-      ON o.objectID = ot.objectID
-    JOIN constituents c
-      ON oc.constituentID = c.constituentID
-    LEFT JOIN published_images img
-      ON o.objectID = img.depictstmsobjectID
-      AND img.viewtype = 'primary'
-    WHERE oc.roleType = 'artist'
-      AND ot.visualBrowserStyle ILIKE $1
-      AND o.provenancetext ILIKE $2
-      AND img.iiifthumburl IS NOT NULL
-    ORDER BY o.endYear DESC NULLS LAST
-    LIMIT 10;
+    SELECT endyear, COUNT(objectid) AS count
+    FROM objects
+    WHERE endyear IS NOT NULL 
+        AND endyear <= EXTRACT(YEAR FROM CURRENT_DATE)
+    GROUP BY endyear
+    ORDER BY endyear DESC;
     `,
-    [`%${styleInput}%`, `%${subclassInput}%`],
     (err, data) => {
       if (err) {
-        console.log(err);
+        console.error(err);
         res.status(500).json({ error: "Query failed" });
       } else {
         res.json(data.rows);
@@ -227,53 +487,8 @@ const artworkByStyle = async function (req, res) {
   );
 };
 
-// Route 4.2: GET /artwork-by-genre?genre=Painting&style=Impression
-const artworkByGenreByStyle = async function (req, res) {
-  const subclassInput = req.query.subclass || "";
-  const styleInput = req.query.style || "";
 
-  connection.query(
-    `
-    SELECT o.objectID,
-           o.title AS artwork_title,
-           o.provenancetext AS genre,
-           ot.visualBrowserStyle AS style,
-           c.preferredDisplayname AS artist_name,
-           o.beginyear AS beginYear,
-           o.endyear AS endYear,
-           img.iiifthumburl AS url
-    FROM objects o
-    JOIN objects_constituents oc
-      ON o.objectID = oc.objectID AND oc.displayorder = 1
-    JOIN constituents c
-      ON oc.constituentID = c.constituentID
-    JOIN objects_terms ot
-      ON o.objectID = ot.objectID
-    LEFT JOIN published_images img
-      ON o.objectID = img.depictstmsobjectID
-      AND img.viewtype = 'primary'
-    WHERE oc.roleType = 'artist'
-      AND o.provenancetext ILIKE $1
-      AND ot.visualBrowserStyle ILIKE $2
-      AND img.iiifthumburl IS NOT NULL
-    ORDER BY o.endYear DESC NULLS LAST
-    LIMIT 10;
-    `,
-    [`%${subclassInput}%`, `%${styleInput}%`],
-    (err, data) => {
-      if (err) {
-        console.log(err);
-        res.status(500).json({ error: "Query failed" });
-      } else {
-        res.json({
-          artworks: data.rows,
-        });
-      }
-    }
-  );
-};
-
-// Route 5: GET/artworkBibliographyByTitle
+// Route 12: GET/artworkBibliographyByTitle
 const artworkBibliographyByTitle = async function (req, res) {
   const title = req.query.title || "";
 
@@ -311,215 +526,6 @@ const artworkBibliographyByTitle = async function (req, res) {
   );
 };
 
-// Route 6: GET/artworkByNationalityAndEndYear
-const artworkByNationalityAndEndYear = async function (req, res) {
-  const nationality = req.query.nationality || "";
-  // const endYear = req.query.endYear || "";
-
-  connection.query(
-    `
-    SELECT c.nationality,
-           o.title AS artwork_title,
-           o.beginYear,
-           o.endYear,
-           c.preferreddisplayname,
-           img.iiifthumburl AS url
-    FROM objects o
-    JOIN objects_constituents oc
-      ON o.objectID = oc.objectID
-      AND oc.roletype = 'artist'
-      AND oc.displayorder = 1
-    JOIN constituents c
-      ON oc.constituentID = c.constituentID
-    LEFT JOIN published_images img
-      ON o.objectID = img.depictstmsobjectID
-      AND img.viewtype = 'primary'
-    WHERE c.nationality ILIKE $1
-      AND o.endYear IS NOT NULL
-      AND o.beginYear IS NOT NULL
-      AND c.nationality IS NOT NULL
-      AND img.iiifthumburl IS NOT NULL
-    LIMIT 25;
-    `,
-
-    [`%${nationality}%`],
-    (err, data) => {
-      if (err) {
-        console.error(err);
-        res.status(500).json({ error: "Query failed" });
-      } else {
-        res.json(data.rows);
-      }
-    }
-  );
-};
-
-// Route 7: GET/topNationalities
-// Identify the top 10 most common nationalities of artists in the NGA collection;
-const topNationalities = async function (req, res) {
-  connection.query(
-    `
-    SELECT nationality,
-           COUNT(*) AS artist_count
-    FROM constituents
-    WHERE artistOfNGAObject = 1
-      AND nationality IS NOT NULL
-    GROUP BY nationality
-    ORDER BY artist_count DESC
-    LIMIT 10;
-    `,
-    (err, data) => {
-      if (err) {
-        console.error(err);
-        res.status(500).json({ error: "Query failed" });
-      } else {
-        res.json(data.rows);
-      }
-    }
-  );
-};
-
-// Route 8: GET/topDonors
-// List the most common donors and the number of artworks they donated.
-const topDonors = async function (req, res) {
-  connection.query(
-    `
-    SELECT c.preferredDisplayName AS donor_name,
-           COUNT(oc.objectID) AS artwork_count
-    FROM objects_constituents oc
-    JOIN constituents c ON oc.constituentID = c.constituentID
-    WHERE oc.roleType = 'donor'
-    GROUP BY c.preferredDisplayName
-    ORDER BY artwork_count DESC
-    LIMIT 25;
-    `,
-    (err, data) => {
-      if (err) {
-        console.error(err);
-        res.status(500).json({ error: "Query failed" });
-      } else {
-        res.json(data.rows);
-      }
-    }
-  );
-};
-
-// Route 9: GET/artworkByArtist
-const artworkByArtist = async function (req, res) {
-  const artist = req.query.artist || "";
-  connection.query(
-    `
-      WITH target_artist AS (
-          SELECT constituentID
-          FROM constituents
-          WHERE preferredDisplayName ILIKE $1
-      )
-
-      SELECT o.title AS artwork_title,
-            o.objectID,
-            o.beginYear,
-            o.endYear,
-            c.nationality,
-            c.preferredDisplayName AS artist_name,
-            ot.visualBrowserStyle AS style,
-            img.iiifthumburl AS url
-      FROM objects o
-      LEFT JOIN objects_constituents oc
-          ON o.objectID = oc.objectID
-          AND oc.roleType = 'artist'
-          AND oc.displayOrder = 1
-      LEFT JOIN constituents c
-          ON oc.constituentID = c.constituentID
-      LEFT JOIN objects_terms ot
-          ON o.objectID = ot.objectID
-      LEFT JOIN published_images img 
-          ON o.objectID = img.depictstmsobjectID
-          AND img.viewtype = 'primary'
-      WHERE EXISTS (
-          SELECT 1
-          FROM target_artist ta
-          WHERE ta.constituentID = c.constituentID
-      )
-      and ot.visualBrowserStyle is not null
-      AND img.iiifthumburl IS NOT NULL
-      ORDER BY o.endYear DESC
-      LIMIT 25;
-    `,
-    [`%${artist}%`],
-    (err, data) => {
-      if (err) {
-        console.error(err);
-        res.status(500).json({ error: "Query failed" });
-      } else {
-        res.json(data.rows);
-      }
-    }
-  );
-};
-
-// Route 10: GET/artworkCountByYear
-const artworkCountByYear = async function (req, res) {
-  connection.query(
-    `
-    SELECT endyear, COUNT(objectid) AS count
-    FROM objects
-    WHERE endyear IS NOT NULL 
-        AND endyear <= EXTRACT(YEAR FROM CURRENT_DATE)
-    GROUP BY endyear
-    ORDER BY endyear DESC;
-    `,
-    (err, data) => {
-      if (err) {
-        console.error(err);
-        res.status(500).json({ error: "Query failed" });
-      } else {
-        res.json(data.rows);
-      }
-    }
-  );
-};
-
-
-
-const artworkbyID = async function (req, res) {
-  const id = req.query.id;
-  connection.query(
-    `
-    SELECT o.objectID,
-           o.title,
-           o.provenancetext AS genre,
-           c.preferredDisplayname AS artist_name,
-           o.beginyear,
-           o.endyear,
-           img.iiifthumburl AS url,
-           ot.visualBrowserStyle AS style,
-           c.nationality
-    FROM objects o
-    JOIN objects_constituents oc 
-        ON o.objectID = oc.objectID 
-        AND oc.roletype = 'artist' 
-        AND oc.displayorder = 1
-    JOIN constituents c 
-        ON oc.constituentID = c.constituentID
-    LEFT JOIN objects_terms ot
-        ON o.objectID = ot.objectID
-        and ot.termtype = 'Style'
-    LEFT JOIN published_images img 
-        ON o.objectID = img.depictstmsobjectID
-        AND img.viewtype = 'primary'
-    WHERE o.objectID = $1;
-    `,
-    [id],
-    (err, data) => {
-      if (err) {
-        console.error(err);
-        res.status(500).json({ error: "Query failed" });
-      } else {
-        res.json(data.rows);
-      }
-    }
-  );
-};
 
 
 module.exports = {
@@ -529,7 +535,7 @@ module.exports = {
   artworkByStyle,
   artworkByGenreByStyle,
   artworkBibliographyByTitle,
-  artworkByNationalityAndEndYear,
+  artworkByNationality,
   topNationalities,
   topDonors,
   artworkByArtist,
