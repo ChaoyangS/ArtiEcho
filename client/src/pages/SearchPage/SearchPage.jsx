@@ -25,6 +25,13 @@ const SearchPage = () => {
           "X-API-Token": "artiecho",
         },
       });
+
+      if (!res.ok) {
+        const errorData = await res.json();
+        alert(errorData.error || "Search failed");
+        return; // prevent setting results to empty array
+      }
+
       const data = await res.json();
       setResults(data);
     } catch (err) {

@@ -70,7 +70,7 @@ const artworkByYear = async function (req, res) {
   const yearInput = parseInt(req.query.year, 10); // get year input and convert to integer
 
   if (isNaN(yearInput)) {
-    return res.status(400).json({ error: "Invalid year input" });
+    return res.status(400).json({ error: "Please enter a valid year (number)." });
   }
 
   connection.query(
