@@ -360,7 +360,7 @@ function CustomizedGlobe() {
             <ArtworkList artworks={selectedLocation.artworks} />
           </>
         ) : (
-          <p>Click a location on the globe to see details.</p>
+          <p>Click a location on the globe to start your journey</p>
         )}
       </div>
     </div>
