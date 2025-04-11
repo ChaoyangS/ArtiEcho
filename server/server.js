@@ -3,8 +3,7 @@ const cors = require("cors");
 const config = require("./config");
 const routes = require("./routes");
 const auth = require("./middleware/auth");
-// import cors from "cors";
-// import artworkRoutes from "./routes/artworks.js";
+
 
 // Initialize express app
 const app = express();
@@ -29,36 +28,44 @@ app.get("/health", (req, res) => {
 });
 
 // API Routes
-//app.get("/artwork", auth, routes.artwork);
-
-app.get("/artwork-by-genre", auth, routes.artworkByGenre);
-app.get("/topten-artist", auth, routes.topTenArtist);
-app.get("/artwork-by-title", auth, routes.artworkByTitle);
-app.get("/artwork-by-style", auth, routes.artworkByStyle);
-// adding
-app.get("/artwork-by-genre-style", auth, routes.artworkByGenreByStyle);
-app.get("/artwork-bibliography-search", auth,routes.artworkBibliographyByTitle);
-
-app.get("/artwork-by-nationality", auth, routes.artworkByNationalityAndEndYear);
-app.get("/top-nationalities", auth, routes.topNationalities);
-app.get("/top-donors", auth, routes.topDonors);
-app.get("/artwork-by-artist", auth, routes.artworkByArtist);
-app.get("/artwork-count-by-year", auth, routes.artworkCountByYear);
+// X-API-Token : artiecho
+// 1  http://localhost:3000/artwork-by-id?id=131766
 app.get("/artwork-by-id", auth, routes.artworkbyID);
 
-/*
-http://localhost:3000/artwork-by-genre?genre=Drawing
-http://localhost:3000/topten-artist
-http://localhost:3000/artwork-by-title?title=Sunflowers
-http://localhost:3000/artwork-by-style?style=Impression&subclass=Painting  (add artwork's genre as subclass)
-http://localhost:3000/artwork-by-genre-style?subclass=Painting&style=Impression (add artwork's style as subclass)
-http://localhost:3000/artwork-bibliography-search?title=sunflower
-http://localhost:3000/artwork-by-nationality?nationality=French
-http://localhost:3000/top-nationalities
-http://localhost:3000/top-donors
-http://localhost:3000/artwork-by-artist?artist=Monet, Claude
-http://localhost:3000/artwork-count-by-year
-*/
+// 2  http://localhost:3000/artwork-by-year?year=1950
+app.get("/artwork-by-year", auth, routes.artworkByYear);
+
+// 3  http://localhost:3000/artwork-by-title?title=Sunflowers
+app.get("/artwork-by-title", auth, routes.artworkByTitle);
+
+// 4  http://localhost:3000/artwork-by-nationality?nationality=French
+app.get("/artwork-by-nationality", auth, routes.artworkByNationality);
+
+// 5  http://localhost:3000/artwork-by-artist?artist=Monet
+app.get("/artwork-by-artist", auth, routes.artworkByArtist);
+
+// 6  http://localhost:3000/artwork-by-style?style=Impression&subclass=Painting
+app.get("/artwork-by-style", auth, routes.artworkByStyle);
+
+// 7  http://localhost:3000/artwork-by-genre-style?subclass=Painting&style=Impression
+app.get("/artwork-by-genre-style", auth, routes.artworkByGenreByStyle);
+
+// 8  http://localhost:3000/top-nationalities
+app.get("/top-nationalities", auth, routes.topNationalities);
+
+// 9  http://localhost:3000/topten-artist
+app.get("/topten-artist", auth, routes.topTenArtist);
+
+// 10 http://localhost:3000/top-donors
+app.get("/top-donors", auth, routes.topDonors);
+
+// 11 http://localhost:3000/artwork-count-by-year
+app.get("/artwork-count-by-year", auth, routes.artworkCountByYear);
+
+// 12 http://localhost:3000/artwork-bibliography-search?title=sunflower
+app.get("/artwork-bibliography-search", auth,routes.artworkBibliographyByTitle);
+
+
 
 // Error handling middleware
 app.use((err, req, res, next) => {

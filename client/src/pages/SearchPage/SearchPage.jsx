@@ -5,20 +5,19 @@ import { Search } from "lucide-react";
 import "../../styles/_global.css";
 
 const SearchPage = () => {
-  const [mode, setMode] = useState("artist"); // "artist" or "artwork"
+  const [mode, setMode] = useState("artist"); 
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
 
   const handleSearch = async () => {
     if (!query.trim()) return;
+
     const endpoint =
       mode === "artist"
-        ? `http://localhost:3000/artwork-by-artist?artist=${encodeURIComponent(
-            query
-          )}`
-        : `http://localhost:3000/artwork-by-title?title=${encodeURIComponent(
-            query
-          )}`;
+        ? `http://localhost:3000/artwork-by-artist?artist=${encodeURIComponent(query)}`
+        : mode === "artwork"
+        ? `http://localhost:3000/artwork-by-title?title=${encodeURIComponent(query)}`
+        : `http://localhost:3000/artwork-by-year?year=${encodeURIComponent(query)}`;
 
     try {
       const res = await fetch(endpoint, {
@@ -26,6 +25,13 @@ const SearchPage = () => {
           "X-API-Token": "artiecho",
         },
       });
+
+      if (!res.ok) {
+        const errorData = await res.json();
+        alert(errorData.error || "Search failed");
+        return; // prevent setting results to empty array
+      }
+
       const data = await res.json();
       setResults(data);
     } catch (err) {
@@ -50,18 +56,15 @@ const SearchPage = () => {
         </div>
 
         <div className="mode-toggle">
-          <div
-            className={`mode-option ${mode === "artist" ? "active" : ""}`}
-            onClick={() => setMode("artist")}
-          >
-            Artist
-          </div>
-          <div
-            className={`mode-option ${mode === "artwork" ? "active" : ""}`}
-            onClick={() => setMode("artwork")}
-          >
-            Artwork
-          </div>
+          {["artist", "artwork", "year"].map((option) => (
+            <div
+              key={option}
+              className={`mode-option ${mode === option ? "active" : ""}`}
+              onClick={() => setMode(option)}
+            >
+              {option.charAt(0).toUpperCase() + option.slice(1)}
+            </div>
+          ))}
         </div>
       </div>
 
