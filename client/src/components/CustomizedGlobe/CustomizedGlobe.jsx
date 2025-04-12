@@ -231,10 +231,10 @@ const ArtworkList = ({ artworks }) => (
             <strong>Artist:</strong> {art.artist}
           </p>
           <p>
-            <strong>Museum:</strong> {art.museum}
+            <strong>Year:</strong> {art.beginyear}
           </p>
           <p>
-            <strong>Year:</strong> {art.year}
+            <strong>Bibliography:</strong> {art.text}
           </p>
         </div>
       </div>
@@ -311,8 +311,8 @@ function CustomizedGlobe() {
           grouped[key].artworks.push({
             title: item.artwork_title,
             artist: item.preferreddisplayname,
-            museum: "Unknown",
-            year: item.beginyear,
+            beginyear: item.beginyear,
+            text: item.text,
             image: item.url ? item.url.replace("!200,200", "!800,800") : null,
           });
         });

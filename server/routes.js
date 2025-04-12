@@ -22,7 +22,6 @@ connection.connect((err) => err && console.log(err));
 //  * ROUTES *
 //  ********************************/
 
-
 // Route 1: GET/artworkByID
 const artworkbyID = async function (req, res) {
   const id = req.query.id;
@@ -64,13 +63,14 @@ const artworkbyID = async function (req, res) {
   );
 };
 
-
 // Route 2: GET/artworkByYear
 const artworkByYear = async function (req, res) {
   const yearInput = parseInt(req.query.year, 10); // get year input and convert to integer
 
   if (isNaN(yearInput)) {
-    return res.status(400).json({ error: "Please enter a valid year (number)." });
+    return res
+      .status(400)
+      .json({ error: "Please enter a valid year (number)." });
   }
 
   connection.query(
@@ -146,37 +146,76 @@ const artworkByTitle = async function (req, res) {
   );
 };
 
-
 // Route 4: GET/artworkByNationality
 const artworkByNationality = async function (req, res) {
   const nationality = req.query.nationality || "";
   // const endYear = req.query.endYear || "";
 
   connection.query(
-    `
-    SELECT c.nationality,
-           o.title AS artwork_title,
-           o.beginYear,
-           o.endYear,
-           c.preferreddisplayname,
-           img.iiifthumburl AS url
-    FROM objects o
-    JOIN objects_constituents oc
-      ON o.objectID = oc.objectID
-      AND oc.roletype = 'artist'
-      AND oc.displayorder = 1
-    JOIN constituents c
-      ON oc.constituentID = c.constituentID
-    LEFT JOIN published_images img
-      ON o.objectID = img.depictstmsobjectID
-      AND img.viewtype = 'primary'
-    WHERE c.nationality ILIKE $1
-      AND o.endYear IS NOT NULL
-      AND o.beginYear IS NOT NULL
-      AND c.nationality IS NOT NULL
-      AND img.iiifthumburl IS NOT NULL
-    LIMIT 25;
-    `,
+    // `
+    // SELECT c.nationality,
+    //        o.title AS artwork_title,
+    //        o.beginYear,
+    //        o.endYear,
+    //        c.preferreddisplayname,
+    //        img.iiifthumburl AS url
+    // FROM objects o
+    // JOIN objects_constituents oc
+    //   ON o.objectID = oc.objectID
+    //   AND oc.roletype = 'artist'
+    //   AND oc.displayorder = 1
+    // JOIN constituents c
+    //   ON oc.constituentID = c.constituentID
+    // LEFT JOIN published_images img
+    //   ON o.objectID = img.depictstmsobjectID
+    //   AND img.viewtype = 'primary'
+    // WHERE c.nationality ILIKE $1
+    //   AND o.endYear IS NOT NULL
+    //   AND o.beginYear IS NOT NULL
+    //   AND c.nationality IS NOT NULL
+    //   AND img.iiifthumburl IS NOT NULL
+    // LIMIT 25;
+    // `
+    `SELECT 
+    c.nationality,
+    o.title AS artwork_title,
+    o.beginYear,
+    o.endYear,
+    c.preferredDisplayName,
+    img.iiifthumburl AS url,
+    sub.text,
+    sub.textType,
+    sub.year
+FROM objects o
+JOIN objects_constituents oc
+    ON o.objectID = oc.objectID
+    AND oc.roletype = 'artist'
+    AND oc.displayorder = 1
+JOIN constituents c
+    ON oc.constituentID = c.constituentID
+LEFT JOIN published_images img
+    ON o.objectID = img.depictstmsobjectID
+    AND img.viewtype = 'primary'
+LEFT JOIN (
+    SELECT 
+        t.objectID,
+        t.text,
+        t.textType,
+        t.year,
+        ROW_NUMBER() OVER (PARTITION BY t.objectID ORDER BY t.year DESC) AS rn
+    FROM objects_text_entries t
+    WHERE t.textType = 'bibliography'
+) sub
+    ON o.objectID = sub.objectID AND sub.rn = 1
+WHERE 
+    c.nationality ILIKE $1
+    AND o.endYear IS NOT NULL
+    AND o.beginYear IS NOT NULL
+    AND c.nationality IS NOT NULL
+    AND img.iiifthumburl IS NOT NULL
+    AND sub.text IS NOT NULL
+LIMIT 25;
+`,
 
     [`%${nationality}%`],
     (err, data) => {
@@ -337,7 +376,6 @@ const artworkByGenreByStyle = async function (req, res) {
   );
 };
 
-
 // Route 8: GET/topNationalities
 // Identify the top 10 most common nationalities of artists in the NGA collection;
 const topNationalities = async function (req, res) {
@@ -437,7 +475,6 @@ const topTenArtist = async function (req, res) {
   );
 };
 
-
 // Route 10: GET/topDonors
 // List the most common donors and the number of artworks they donated.
 const topDonors = async function (req, res) {
@@ -463,8 +500,6 @@ const topDonors = async function (req, res) {
   );
 };
 
-
-
 // Route 11: GET/artworkCountByYear
 const artworkCountByYear = async function (req, res) {
   connection.query(
@@ -486,7 +521,6 @@ const artworkCountByYear = async function (req, res) {
     }
   );
 };
-
 
 // Route 12: GET/artworkBibliographyByTitle
 const artworkBibliographyByTitle = async function (req, res) {
@@ -525,8 +559,6 @@ const artworkBibliographyByTitle = async function (req, res) {
     }
   );
 };
-
-
 
 module.exports = {
   artworkByYear,

@@ -128,6 +128,7 @@
 }
 
 .artwork-details {
+  width: 100%;
   padding: 16px;
   color: #111;
 }
@@ -139,6 +140,9 @@
 }
 
 .artwork-details p {
+  padding-right: 1rem;
+  word-wrap: break-word;
+  white-space: normal;
   color: #ae838c;
   font-size: 0.9rem;
   margin: 4px 0;
