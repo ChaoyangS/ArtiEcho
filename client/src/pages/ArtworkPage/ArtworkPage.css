@@ -64,7 +64,7 @@
 
 .artwork-image-wrapper {
   /* editing the width for image */
-  width: 70%;
+  width: 100%;
   /*background-color: #bfb1cd;  image section background */
 
   display: flex;
@@ -109,10 +109,15 @@
   .artwork-image-wrapper,
   .artwork-header {
     flex: 1;
-
+    display: flex;
     padding: 1em;
   }
 
+  .artwork-main-image {
+    width: 100%;
+    max-width: 100%;
+  }
+  
   .artwork-title {
     font-size: 1.5rem; /* ⬇️ smaller for mobile */
   }
