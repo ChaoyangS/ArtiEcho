@@ -29,26 +29,26 @@ const ToptenNavbar = (props) => {
   }, [sidebarOpen]);
 
   const stylesWithGenres = {
-    "Impressionist": ["paint", "drawing", "sculpture", "print"],
-    "Post-Impressionist": ["paint", "drawing", "sculpture", "print"],
-    "Renaissance": ["paint", "drawing", "sculpture", "decorative art"],
-    "Abstract Expressionist": ["paint"],
-    "Realist": ["paint", "drawing", "sculpture", "print"],
-    "Baroque": ["paint", "drawing", "sculpture", "decorative art"],
-    "Romantic": ["paint", "drawing", "sculpture"],
-    "Neoclassic": ["paint", "drawing", "sculpture", "print"],
-    "Rococo": ["paint", "drawing", "sculpture"],
-    "Surrealist": ["paint", "print"],
-    "Gothic": ["paint", "sculpture"],
-    "Minimalist": ["paint",  "sculpture"]
+    "Impressionist": ["Paint", "Drawing", "Sculpture", "Print"],
+    "Post-Impressionist": ["Paint", "Drawing", "Sculpture", "Print"],
+    "Renaissance": ["Paint", "Drawing", "Sculpture", "Decorative art"],
+    "Abstract Expressionist": ["Paint"],
+    "Realist": ["Paint", "Drawing", "Sculpture", "Print"],
+    "Baroque": ["Paint", "Drawing", "Sculpture", "Decorative art"],
+    "Romantic": ["Paint", "Drawing", "Sculpture"],
+    "Neoclassic": ["Paint", "Drawing", "Sculpture", "Print"],
+    "Rococo": ["Paint", "Drawing", "Sculpture"],
+    "Surrealist": ["Paint", "Print"],
+    "Gothic": ["Paint", "Sculpture"],
+    "Minimalist": ["Paint", "Sculpture"]
   };
-
+  
   const genreWithStyles = {
-    "paint" : ["Post-Impressionist", "Renaissance", "Abstract Expressionist", "Realist", "Baroque", "Romantic", "Neoclassic", "Rococo", "Surrealist", "Gothic", "Minimalist"],
-    "drawing": ["Impressionist", "Post-Impressionist", "Renaissance", "Victorian", "Realist", "Baroque", "Romantic", "Neoclassic", "Rococo", "Gothic"],
-    "sculpture": ["Impressionist", "Post-Impressionist", "Renaissance", "Realist", "Baroque", "Romantic", "Neoclassic", "Rococo", "Gothic", "Minimalist"],
-    "print": ["Pop", "Impressionist", "Post-Impressionist", "Realist", "Neoclassic", "Surrealist"],
-    "decorative art": ["Kangxi", "Renaissance", "Baroque"]
+    "Paint": ["Post-Impressionist", "Renaissance", "Abstract Expressionist", "Realist", "Baroque", "Romantic", "Neoclassic", "Rococo", "Surrealist", "Gothic", "Minimalist"],
+    "Drawing": ["Impressionist", "Post-Impressionist", "Renaissance", "Victorian", "Realist", "Baroque", "Romantic", "Neoclassic", "Rococo", "Gothic"],
+    "Sculpture": ["Impressionist", "Post-Impressionist", "Renaissance", "Realist", "Baroque", "Romantic", "Neoclassic", "Rococo", "Gothic", "Minimalist"],
+    "Print": ["Pop", "Impressionist", "Post-Impressionist", "Realist", "Neoclassic", "Surrealist"],
+    "Decorative art": ["Kangxi", "Renaissance", "Baroque"]
   };
 
     return (

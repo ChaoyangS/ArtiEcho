@@ -30,12 +30,12 @@ const artworkbyID = async function (req, res) {
     `
     SELECT o.objectID,
            o.title,
-           o.provenancetext AS genre,
+           o.subclassification AS genre,
            c.preferredDisplayname AS artist_name,
            o.beginyear,
            o.endyear,
            img.iiifthumburl AS url,
-           ot.visualBrowserStyle AS style,
+           ot.term AS style,
            c.nationality
     FROM objects o
     JOIN objects_constituents oc 
@@ -207,7 +207,7 @@ const artworkByArtist = async function (req, res) {
             o.endYear,
             c.nationality,
             c.preferredDisplayName AS artist_name,
-            ot.visualBrowserStyle AS style,
+            ot.term AS style,
             img.iiifthumburl AS url
       FROM objects o
       LEFT JOIN objects_constituents oc
@@ -226,7 +226,7 @@ const artworkByArtist = async function (req, res) {
           FROM target_artist ta
           WHERE ta.constituentID = c.constituentID
       )
-      and ot.visualBrowserStyle is not null
+      and ot.term is not null
       AND img.iiifthumburl IS NOT NULL
       ORDER BY o.endYear DESC
       LIMIT 25;
@@ -257,7 +257,7 @@ const artworkByStyle = async function (req, res) {
     `
     SELECT o.objectID,
            o.title AS artwork_title,
-           ot.visualBrowserStyle AS style,
+           ot.term AS style,
            c.preferredDisplayname AS artist_name,
            o.beginyear AS beginYear,
            o.endyear AS endYear,
@@ -273,8 +273,8 @@ const artworkByStyle = async function (req, res) {
       ON o.objectID = img.depictstmsobjectID
       AND img.viewtype = 'primary'
     WHERE oc.roleType = 'artist'
-      AND ot.visualBrowserStyle ILIKE $1
-      AND o.provenancetext ILIKE $2
+      AND ot.term ILIKE $1
+      AND o.subclassification ILIKE $2
       AND img.iiifthumburl IS NOT NULL
     ORDER BY o.endYear DESC NULLS LAST
     LIMIT 10;
@@ -300,8 +300,8 @@ const artworkByGenreByStyle = async function (req, res) {
     `
     SELECT o.objectID,
            o.title AS artwork_title,
-           o.provenancetext AS genre,
-           ot.visualBrowserStyle AS style,
+           o.subclassification AS genre,
+           ot.term AS style,
            c.preferredDisplayname AS artist_name,
            o.beginyear AS beginYear,
            o.endyear AS endYear,
@@ -317,8 +317,8 @@ const artworkByGenreByStyle = async function (req, res) {
       ON o.objectID = img.depictstmsobjectID
       AND img.viewtype = 'primary'
     WHERE oc.roleType = 'artist'
-      AND o.provenancetext ILIKE $1
-      AND ot.visualBrowserStyle ILIKE $2
+      AND o.subclassification ILIKE $1
+      AND ot.term ILIKE $2
       AND img.iiifthumburl IS NOT NULL
     ORDER BY o.endYear DESC NULLS LAST
     LIMIT 10;
@@ -407,7 +407,7 @@ const topTenArtist = async function (req, res) {
       la.objectID,
       c.preferredDisplayName AS artist_name,
       CASE
-        WHEN c.displayDate IS NOT NULL THEN c.displayDate
+        ---WHEN c.displayDate IS NOT NULL THEN c.displayDate
         WHEN c.beginYear IS NOT NULL AND c.endYear IS NOT NULL THEN CONCAT(c.beginYear, ' - ', c.endYear)
         WHEN c.beginYear IS NOT NULL THEN CONCAT(c.beginYear, ' - ?')
         WHEN c.endYear IS NOT NULL THEN CONCAT('? - ', c.endYear)
