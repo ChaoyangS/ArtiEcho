@@ -343,7 +343,7 @@ function CustomizedGlobe() {
         height: window.innerHeight,
       });
     };
-  
+
     window.addEventListener("resize", handleResize);
     handleResize(); // set initial size
     return () => window.removeEventListener("resize", handleResize);
@@ -379,7 +379,7 @@ function CustomizedGlobe() {
         />
       </div>
 
-      <div className={`nav-pane ${selectedLocation ? "open" : ""}`}>
+      {/* <div className={`nav-pane ${selectedLocation ? "open" : ""}`}>
         {selectedLocation ? (
           <>
             <button
@@ -394,7 +394,21 @@ function CustomizedGlobe() {
         ) : (
           <p>Click a location on the globe to start your journey</p>
         )}
-      </div>
+      </div> */}
+      {selectedLocation && (
+        <div
+          className="nav-pane-overlay"
+          onClick={() => setSelectedLocation(null)}
+        >
+          <div
+            className="nav-pane open"
+            onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside the pane
+          >
+            <h2>{selectedLocation.name}</h2>
+            <ArtworkList artworks={selectedLocation.artworks} />
+          </div>
+        </div>
+      )}
     </div>
   );
 }

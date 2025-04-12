@@ -28,7 +28,7 @@
 /* Navigation Pane */
 .nav-pane {
   position: fixed;
-  top: 0;
+  top: 4rem;
   right: -40vw; /* Start off-screen */
   width: 40vw;
   height: 100vh;
@@ -44,6 +44,18 @@
 
 .nav-pane.open {
   right: 0; /* Slide in when a location is selected */
+}
+
+.nav-pane-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.1); /* Optional dim background */
+  display: flex;
+  justify-content: flex-end; /* Align pane to the right */
+  z-index: 999;
 }
 
 /* Vertical text for folded state */
