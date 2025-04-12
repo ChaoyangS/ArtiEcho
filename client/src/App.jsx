@@ -22,7 +22,7 @@ function App() {
 
   return (
     <>
-      {showNavbar && <Navbar />}
+      <Navbar /> { /* load Navbar in each page */ }
       {/*<h1>ArtiEcho</h1>*/}
       {/* Routes for different pages */}
       <Routes>
