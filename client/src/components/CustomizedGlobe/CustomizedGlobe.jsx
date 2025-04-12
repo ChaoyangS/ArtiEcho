@@ -379,23 +379,7 @@ function CustomizedGlobe() {
         />
       </div>
 
-      {/* <div className={`nav-pane ${selectedLocation ? "open" : ""}`}>
-        {selectedLocation ? (
-          <>
-            <button
-              className="close-btn"
-              onClick={() => setSelectedLocation(null)}
-            >
-              ×
-            </button>
-            <h2>{selectedLocation.name}</h2>
-            <ArtworkList artworks={selectedLocation.artworks} />
-          </>
-        ) : (
-          <p>Click a location on the globe to start your journey</p>
-        )}
-      </div> */}
-      {selectedLocation && (
+      {selectedLocation ? (
         <div
           className="nav-pane-overlay"
           onClick={() => setSelectedLocation(null)}
@@ -407,6 +391,10 @@ function CustomizedGlobe() {
             <h2>{selectedLocation.name}</h2>
             <ArtworkList artworks={selectedLocation.artworks} />
           </div>
+        </div>
+      ) : (
+        <div className="nav-pane default">
+          <p>Click a location on the globe to start your journey</p>
         </div>
       )}
     </div>
