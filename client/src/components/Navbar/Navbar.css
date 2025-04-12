@@ -50,7 +50,8 @@
   text-decoration: none;
   color: #17181a;
   font-weight: 500;
-  font-size: 1.3rem;
+  font-size: 1.1rem;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
   transition: all 0.2s ease-in-out;
   display: flex;
   align-items: center;
