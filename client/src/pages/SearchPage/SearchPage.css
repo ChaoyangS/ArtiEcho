@@ -30,6 +30,7 @@
 
 .search-bar input {
   border: none;
+  width: 50%;
   flex: 1;
   background: transparent;
   padding: 0.5rem;
