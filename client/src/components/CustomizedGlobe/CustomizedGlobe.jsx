@@ -4,6 +4,7 @@ import Globe from "react-globe.gl";
 import * as THREE from "three";
 import "./CustomizedGlobe.css";
 import "../../styles/_global.css";
+import "../../../public/stars.png";
 
 // Function to Create Globe Material
 // const createGlobeMaterial = () => {
@@ -362,16 +363,16 @@ function CustomizedGlobe() {
           ref={globeRef}
           width={globeSize.width}
           height={globeSize.height} // fixed background dynamic size
-          backgroundColor="#9aa8c3"
+          backgroundImageUrl="/stars.png" // star night as background instead of color
           globeMaterial={createGlobeMaterial}
           htmlElementsData={locations}
           htmlLat={(d) => d.lat}
           htmlLng={(d) => d.lng}
           htmlElement={(d) => renderHtmlElement(d, setSelectedLocation)}
           polygonsData={polygons}
-          polygonCapColor={() => "rgba(207, 202, 229, 0.1)"}
-          polygonSideColor={() => "rgba(97, 131, 180, 0.3)"}
-          polygonStrokeColor={() => "#243167"}
+          polygonCapColor={() => "#000000"}
+          polygonSideColor={() => "#ffffff"}
+          polygonStrokeColor={() => "#cfcae5"}
           polygonAltitude={0.01}
           polygonLabel={null}
           atmosphereColor="#ffffff"

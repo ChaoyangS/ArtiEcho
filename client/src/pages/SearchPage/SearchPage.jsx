@@ -3,6 +3,7 @@ import "./SearchPage.css";
 import { Link } from "react-router-dom";
 import { Search } from "lucide-react";
 import "../../styles/_global.css";
+import "../../../public/stars.png";
 
 const SearchPage = () => {
   const [mode, setMode] = useState("artist"); 

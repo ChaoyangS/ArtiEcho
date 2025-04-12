@@ -10,7 +10,7 @@
 /* Custom X markers */
 .custom-marker {
   font-family: "Caveat", cursive;
-  color: #407076;
+  color: #f9e153; /* #9d9acc */
   border-color: #ffffff;
   font-size: 20px;
   font-weight: bold;
@@ -22,7 +22,7 @@
 }
 
 .custom-marker:hover {
-  color: #ae838c;
+  color: #d6555d;
 }
 
 /* Navigation Pane */
@@ -32,9 +32,9 @@
   right: -40vw; /* Start off-screen */
   width: 40vw;
   height: 100vh;
-  background: rgba(97, 131, 180, 0.9);
+  background: #cdd2dd;
   /* backdrop-filter: blur(10px); */
-  opacity: 100%;
+  opacity: 90%;
   box-shadow: -0.25rem 0 0.625rem rgba(0, 0, 0, 0.2);
   padding: 1.25rem;
   transition: right 0.3s ease-in-out;
