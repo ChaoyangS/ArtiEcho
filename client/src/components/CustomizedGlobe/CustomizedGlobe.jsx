@@ -213,8 +213,13 @@ const nationalityToLocation = {
 // Function to Render HTML Element for Locations
 const renderHtmlElement = (location, setSelectedLocation) => {
   const el = document.createElement("div");
-  el.innerHTML = "✘";
-  el.className = "custom-marker";
+  el.className = "custom-marker-container";
+  el.innerHTML = `
+    <div class="custom-marker">✘</div>
+    <div class="custom-label">${location.name}</div>
+  `;
+  // el.innerHTML = "✘";
+  // el.className = "custom-marker";
   el.onclick = () => setSelectedLocation(location);
   return el;
 };

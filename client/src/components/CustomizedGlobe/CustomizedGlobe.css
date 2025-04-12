@@ -8,7 +8,7 @@
 }
 
 /* Custom X markers */
-.custom-marker {
+/* .custom-marker {
   font-family: "Caveat", cursive;
   color: #407076;
   border-color: #ffffff;
@@ -19,6 +19,30 @@
   cursor: pointer;
   pointer-events: auto;
   z-index: 9999;
+} */
+.custom-marker-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: auto;
+}
+
+.custom-marker {
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #407076;
+}
+
+.custom-label {
+  margin-top: 0.1rem;
+  font-size: 0.5rem;
+  /* font-weight: bold; */
+  color: #22222200;
+  /* background-color: rgba(255, 255, 255, 0.8); */
+  /* padding: 0.1rem; */
+  /* border-radius: 4px; */
+  white-space: nowrap;
+  pointer-events: none;
 }
 
 .custom-marker:hover {
