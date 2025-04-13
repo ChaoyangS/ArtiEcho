@@ -1,13 +1,22 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react"; 
 import "./SearchPage.css";
-import { Link } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 import { Search } from "lucide-react";
 import "../../styles/_global.css";
 
 const SearchPage = () => {
-  const [mode, setMode] = useState("artist"); 
-  const [query, setQuery] = useState("");
-  const [results, setResults] = useState([]);
+  const location = useLocation();
+  const params = new URLSearchParams(location.search);
+  
+  const [mode, setMode] = useState(params.get("mode") || "artist"); // Set initial search mode (default to "artist" if not specified in URL)
+  const [query, setQuery] = useState(params.get("query") || ""); // Set initial query string if not specified in URL
+  const [results, setResults] = useState([]); 
+
+  useEffect(() => {
+    if (query) {
+      handleSearch(); // search based on query param if URL contains a query
+    }
+  }, []); // add for allow query for search through url
 
   const handleSearch = async () => {
     if (!query.trim()) return;
