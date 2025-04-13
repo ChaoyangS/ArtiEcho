@@ -48,6 +48,12 @@ const Topten = ({ title, items, category, showStyle = true }) => {
                       <article className="detail-list-description">
                         <p><br /></p>
                         <p>Time period: {item.timePeriod || "Unknown"}</p>
+                        <p>Artist:{" "} {/* change to link page to search page */}
+                            <Link to={`/search?mode=artist&query=${encodeURIComponent(item.artist)}`} className="topten-link">
+                              {item.artist}
+                            </Link>
+                        </p>
+                        { /* former version artist link not exists
                         <p>Artist:{" "}
                           <Link
                             to={`/artists/${item.artist.replace(/\s+/g, "-").toLowerCase()}`}
@@ -55,7 +61,7 @@ const Topten = ({ title, items, category, showStyle = true }) => {
                           >
                             {item.artist}
                           </Link>
-                        </p>
+                        </p> */}
                           {!isGenrePage && <p>Art Style: {item.style || "Unknown"}</p>}
                           {!isStylePage && <p>Genre: {item.genre || "Unknown"}</p>}
                         </article>
