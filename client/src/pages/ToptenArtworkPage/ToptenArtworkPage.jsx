@@ -15,7 +15,7 @@ const ToptenArtworkPage = () => {
   const location = useLocation();
 
   const queryParams = new URLSearchParams(location.search);
-  const style = queryParams.get("style") || "Impressionist";
+  const style = queryParams.get("style") || "Neoclassic"; // previous default:Impressionist, or Surrealist
   const subclass = queryParams.get("subclass") || "paint";
   useEffect(() => {
 
