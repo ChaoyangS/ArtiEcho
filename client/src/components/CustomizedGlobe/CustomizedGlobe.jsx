@@ -4,6 +4,7 @@ import Globe from "react-globe.gl";
 import * as THREE from "three";
 import "./CustomizedGlobe.css";
 import "../../styles/_global.css";
+import { config } from "../../config"; // 导入配置
 
 // Function to Create Globe Material
 // const createGlobeMaterial = () => {
@@ -279,11 +280,9 @@ function CustomizedGlobe() {
       const requests = nationalities.map((nationality) =>
         axios
           .get(
-            `http://localhost:3000/artwork-by-nationality?nationality=${nationality}`,
+            `${config.API_BASE_URL}/artwork-by-nationality?nationality=${nationality}`,
             {
-              headers: {
-                "X-API-Token": token,
-              },
+              headers: config.API_HEADERS,
             }
           )
           .then((res) => ({ nationality, data: res.data }))

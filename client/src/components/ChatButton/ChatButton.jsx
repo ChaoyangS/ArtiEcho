@@ -20,7 +20,7 @@ const ChatButton = () => {
             </button>
           </div>
           <iframe
-            src="http://100.28.186.239:8501/"
+            src="https://www.artiecho.com/chatbot2/"
             title="Chat"
             className="chat-iframe"
           />

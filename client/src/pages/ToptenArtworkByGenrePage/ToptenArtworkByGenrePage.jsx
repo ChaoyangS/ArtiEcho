@@ -8,6 +8,7 @@ import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import ToptenNavbar from "../../components/Topten/ToptenNavbar";
 import Topten from "../../components/Topten/Topten";
+import { config } from "../../config";
 import "./ToptenArtworkByGenrePage.css";
 
 const ToptenArtworkByGenrePage = () => {
@@ -23,11 +24,9 @@ const ToptenArtworkByGenrePage = () => {
       try {
         /* Fetch data for Impression style ('drawing', 'sculpture', 'photograph',  'print', 'paint', 'decorative art')*/
         const response = await fetch(
-          `http://localhost:3000/artwork-by-genre-style?subclass=${encodeURIComponent(subclass)}&style=${encodeURIComponent(style)}`,
+          `${config.API_BASE_URL}/artwork-by-genre-style?subclass=${encodeURIComponent(subclass)}&style=${encodeURIComponent(style)}`,
           {
-            headers: {
-              "X-API-Token": "artiecho",
-            },
+            headers: config.API_HEADERS,
           }
         );
 

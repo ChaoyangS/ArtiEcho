@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./SearchPage.css";
 import { useLocation, Link } from "react-router-dom";
 import { Search } from "lucide-react";
+import { config } from "../../config"; // 导入配置
 import "../../styles/_global.css";
 
 const SearchPage = () => {
@@ -23,16 +24,14 @@ const SearchPage = () => {
 
     const endpoint =
       mode === "artist"
-        ? `http://localhost:3000/artwork-by-artist?artist=${encodeURIComponent(query)}`
+        ? `${config.API_BASE_URL}/artwork-by-artist?artist=${encodeURIComponent(query)}`
         : mode === "artwork"
-        ? `http://localhost:3000/artwork-by-title?title=${encodeURIComponent(query)}`
-        : `http://localhost:3000/artwork-by-year?year=${encodeURIComponent(query)}`;
+        ? `${config.API_BASE_URL}/artwork-by-title?title=${encodeURIComponent(query)}`
+        : `${config.API_BASE_URL}/artwork-by-year?year=${encodeURIComponent(query)}`;
 
     try {
       const res = await fetch(endpoint, {
-        headers: {
-          "X-API-Token": "artiecho",
-        },
+        headers: config.API_HEADERS,
       });
 
       if (!res.ok) {

@@ -1,16 +1,15 @@
 import React, { useEffect, useState } from "react";
 import "./DonorTable.css";
 import axios from "axios";
+import { config } from "../../config"; // 导入配置
 
 const DonorTable = () => {
   const [donors, setDonors] = useState([]);
 
   useEffect(() => {
     axios
-      .get(`http://localhost:3000/top-donors`, {
-        headers: {
-          "X-API-Token": "artiecho",
-        },
+      .get(`${config.API_BASE_URL}/top-donors`, {
+        headers: config.API_HEADERS,
       })
       .then((response) => {
         setDonors(response.data);

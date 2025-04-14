@@ -17,10 +17,21 @@ const corsOptions = {
   origin: "*", // Allows all origins
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "X-API-Token"],
+  exposedHeaders: ["Access-Control-Allow-Origin"],
+  credentials: true,
   maxAge: 86400, // 24 hours
 };
 
 app.use(cors(corsOptions));
+
+// 添加CSP头以允许Google Fonts
+app.use((req, res, next) => {
+  res.setHeader(
+    'Content-Security-Policy',
+    "default-src 'self'; font-src 'self' https://fonts.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;"
+  );
+  next();
+});
 
 // Health check endpoint
 app.get("/health", (req, res) => {

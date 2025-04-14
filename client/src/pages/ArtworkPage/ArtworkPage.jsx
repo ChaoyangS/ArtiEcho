@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { config } from "../../config";
 import "./ArtworkPage.css";
 
 const ArtworkDetailPage = () => {
@@ -9,10 +10,8 @@ const ArtworkDetailPage = () => {
   useEffect(() => {
     const fetchArtwork = async () => {
       try {
-        const res = await fetch(`http://localhost:3000/artwork-by-id?id=${id}`, {
-          headers: {
-            "X-API-Token": "artiecho",
-          },
+        const res = await fetch(`${config.API_BASE_URL}/artwork-by-id?id=${id}`, {
+          headers: config.API_HEADERS,
         });
         const data = await res.json();
         setArtwork(data.length ? data[0] : null);

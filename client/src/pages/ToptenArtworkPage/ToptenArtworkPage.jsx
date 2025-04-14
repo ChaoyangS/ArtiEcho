@@ -8,6 +8,7 @@ import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import ToptenNavbar from "../../components/Topten/ToptenNavbar";
 import Topten from "../../components/Topten/Topten";
+import { config } from "../../config"; // 导入配置
 import "./ToptenArtworkPage.css";
 
 const ToptenArtworkPage = () => {
@@ -22,10 +23,8 @@ const ToptenArtworkPage = () => {
     const fetchArtworks = async () => {
 
       try { /* Fetch data for Impression style ('drawing', 'sculpture', 'photograph',  'print', 'paint', 'decorative art')*/
-        const response = await fetch(`http://localhost:3000/artwork-by-style?style=${encodeURIComponent(style)}&subclass=${encodeURIComponent(subclass)}`, {
-          headers: {
-            "X-API-Token": "artiecho",
-          },
+        const response = await fetch(`${config.API_BASE_URL}/artwork-by-style?style=${encodeURIComponent(style)}&subclass=${encodeURIComponent(subclass)}`, {
+          headers: config.API_HEADERS,
         });
 
         if (!response.ok) {

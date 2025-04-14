@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./NationalityTable.css";
 import axios from "axios";
+import { config } from "../../config"; // 导入配置
 
 const NationalityTable = () => {
   const [nationalities, setNationalities] = useState([]);
@@ -19,10 +20,8 @@ const NationalityTable = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:3000/top-nationalities`, {
-        headers: {
-          "X-API-Token": "artiecho",
-        },
+      .get(`${config.API_BASE_URL}/top-nationalities`, {
+        headers: config.API_HEADERS,
       })
       .then((response) => {
         setNationalities(response.data);

@@ -6,6 +6,7 @@
 
 import React, { useEffect, useState } from "react";
 import Topten from "../../components/Topten/Topten";
+import { config } from "../../config"; // 导入配置
 import "./ToptenArtistsPage.css";
 
 const ToptenArtistsPage = () => {
@@ -14,10 +15,8 @@ const ToptenArtistsPage = () => {
 
     const fetchArtworks = async () => {
       try { 
-        const response = await fetch(`http://localhost:3000/topten-artist`, {
-          headers: {
-            "X-API-Token": "artiecho",
-          },
+        const response = await fetch(`${config.API_BASE_URL}/topten-artist`, {
+          headers: config.API_HEADERS,
         });
 
         if (!response.ok) {
