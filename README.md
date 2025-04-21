@@ -1,6 +1,5 @@
-# Project Title
+# ArtiEcho
 
-Artiecho  
 ArtiEcho is a full-stack web app that lets users explore global art through interactive visuals and ambient sounds. Users can explore artworks based on cultural origins, artists, art genres, and more with an interactive UI.
 
 ## 🚀 Features
