@@ -32,22 +32,28 @@ cd artiecho
 
 ### 2. Install frontend dependencies
 
+```bash
 cd client
 npm install
+```
 
 ### 3. Install backend dependencies
 
+```bash
 cd ../server
 npm install
+```
 
 ### 5. Run the backend server
 
+```bash
 cd server
 npm start
+```
 
 ### 6. Run the frontend
 
-```
+```bash
 cd ../client
 npm run dev
 
