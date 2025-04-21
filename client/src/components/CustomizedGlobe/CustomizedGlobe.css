@@ -171,3 +171,9 @@
   font-size: 0.9rem;
   margin: 4px 0;
 }
+
+@media (max-width: 768px) {
+  .nav-pane.default {
+    top: 3rem;
+  }
+}

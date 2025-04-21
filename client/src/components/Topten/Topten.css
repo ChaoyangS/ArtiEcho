@@ -16,12 +16,14 @@ body {
   height: 100%;
   display: flex;
   margin: auto;
+  padding-top: 1rem;
   flex-direction: column;
   align-items: center;
   box-sizing: border-box;
 }
 
-.topten-header {  /** may be discard later */
+.topten-header {
+  /** may be discard later */
   font-size: 2vw;
   font-weight: bold;
   margin-bottom: 10px;
@@ -31,7 +33,7 @@ body {
   display: grid;
   grid-template-columns: 1fr;
   width: 100%;
-  max-width:1500px;
+  max-width: 1500px;
   gap: 20px;
   margin-top: 0px;
 }
@@ -39,7 +41,7 @@ body {
 .topten-item {
   display: flex;
   align-items: flex-start;
-  background: rgba(255, 255, 255, 0.1);/* adding a layer of black here*/
+  background: rgba(255, 255, 255, 0.1); /* adding a layer of black here*/
   padding: 15px;
   border-radius: 10px;
   transition: transform 0.3s ease-in-out;
@@ -69,23 +71,24 @@ body {
 }
 
 .vertical-line {
-  width: 2px; 
-  background-color: white; 
+  width: 2px;
+  background-color: white;
   height: 100%; /* Full height of the container */
   margin: 0 20px;
 }
 
 /* Rank and detail descriptions of the Artwork */
-.topten-rank {            /* Rank - the large number displayed on the page */
+.topten-rank {
+  /* Rank - the large number displayed on the page */
   font-size: 4vw;
   font-weight: 800;
   margin-right: 10px;
-  opacity: .8;
+  opacity: 0.8;
 }
 
 .topten-category {
   font-size: 1em;
-  opacity: .8;
+  opacity: 0.8;
 }
 
 .topten-title {
@@ -95,11 +98,11 @@ body {
 .topten-text {
   text-align: left;
   flex-grow: 1;
-  opacity: .8;
+  opacity: 0.8;
 }
 
 .detail-list-description p {
-  font-size: .8em;
+  font-size: 0.8em;
 }
 /* End of Rank and detail descriptions of the Artwork */
 
@@ -137,12 +140,12 @@ body {
   Clickable topten artwork names and artist
 */
 .topten-text .topten-link {
-  color: white;   
-  font-size: 1.1em;       
+  color: white;
+  font-size: 1.1em;
 }
 
 .topten-link:hover {
-  color: #9d9acc;           
+  color: #9d9acc;
   text-decoration: underline;
 }
 /*
@@ -163,18 +166,18 @@ body {
 }
 
 .artist-info-block {
-  font-size: .88em;
+  font-size: 0.88em;
 }
 
 /* Responsive Layout Adjustments */
 /* For small screen device */
 @media (max-width: 599px) {
   .topten-list {
-      grid-template-columns: 1fr; /* One column for small screens */
+    grid-template-columns: 1fr; /* One column for small screens */
   }
   .topten-left {
-      flex-direction: column;
-      align-items: left;
+    flex-direction: column;
+    align-items: left;
   }
   .topten-rank {
     align-items: left;
@@ -184,7 +187,7 @@ body {
     text-align: left;
   }
   .topten-main-images {
-      flex-direction: column;
+    flex-direction: column;
   }
   .topten-secondary-image {
     display: none;
@@ -192,23 +195,22 @@ body {
   .topten-text {
     text-align: left;
     flex-grow: 1;
-    opacity: .8;
+    opacity: 0.8;
     align-items: flex-end;
   }
-  
 }
 
 /* For medium screen device */
 @media (min-width: 768px) {
   .topten-list {
-      grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
 /* For large screen device */
 @media (min-width: 1200px) {
   .topten-list {
-      grid-template-columns: repeat(1, 1fr);
+    grid-template-columns: repeat(1, 1fr);
   }
   .topten-main-image {
     width: 100%;
