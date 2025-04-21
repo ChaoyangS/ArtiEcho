@@ -28,20 +28,27 @@ To run this project locally, follow these steps:
 ```bash
 git clone https://github.com/ChaoyangS/artiecho.git
 cd artiecho
+```
 
 ### 2. Install frontend dependencies
+
 cd client
 npm install
 
 ### 3. Install backend dependencies
+
 cd ../server
 npm install
 
 ### 5. Run the backend server
+
 cd server
 npm start
 
 ### 6. Run the frontend
+
+```
 cd ../client
 npm run dev
+
 ```
