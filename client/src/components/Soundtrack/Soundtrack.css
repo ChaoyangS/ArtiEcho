@@ -7,9 +7,10 @@
 }
 
 .soundtrack-toggle {
+  font-family: "Limelight", sans-serif;
   margin-bottom: 0.5rem;
   padding: 0.3rem 0.6rem;
-  font-size: 0.8rem;
+  font-size: 0.6rem;
   background-color: #474954;
   color: white;
   border: none;

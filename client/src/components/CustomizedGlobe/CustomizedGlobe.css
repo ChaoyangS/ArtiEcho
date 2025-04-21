@@ -8,18 +8,7 @@
 }
 
 /* Custom X markers */
-/* .custom-marker {
-  font-family: "Caveat", cursive;
-  color: #407076;
-  border-color: #ffffff;
-  font-size: 20px;
-  font-weight: bold;
-  position: absolute;
-  transform: translate(-50%, -50%);
-  cursor: pointer;
-  pointer-events: auto;
-  z-index: 9999;
-} */
+
 .custom-marker-container {
   display: flex;
   flex-direction: column;
@@ -56,9 +45,10 @@
   right: -40vw; /* Start off-screen */
   width: 40vw;
   height: 100vh;
-  background: rgba(97, 131, 180, 0.9);
+  /* background: rgba(97, 131, 180, 0.9); */
+  background: #4f5d75;
   /* backdrop-filter: blur(10px); */
-  opacity: 100%;
+  opacity: 0.9;
   box-shadow: -0.25rem 0 0.625rem rgba(0, 0, 0, 0.2);
   padding: 1.25rem;
   transition: right 0.3s ease-in-out;
@@ -86,6 +76,10 @@
 .nav-pane.default {
   top: 5rem;
 }
+.nav-pane.default p {
+  top: 45%;
+  font-family: "Limelight", sans-serif;
+}
 .nav-pane p {
   font-size: 1rem;
   writing-mode: vertical-lr;
@@ -104,9 +98,11 @@
 }
 
 .nav-pane h2 {
+  font-family: "Limelight", sans-serif;
+  font-size: 5rem;
   margin: 0 0 10px;
   color: lightgrey;
-  /* font-family: "Monoton", sans-serif; need to check again */
+  text-align: center;
 }
 
 /* Close Button */
