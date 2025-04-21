@@ -78,6 +78,7 @@
 }
 .nav-pane.default p {
   top: 45%;
+  font-size: 0.8rem;
   font-family: "Limelight", sans-serif;
 }
 .nav-pane p {
