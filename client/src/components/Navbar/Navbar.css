@@ -4,7 +4,8 @@
   justify-content: space-between;
   align-items: center;
   padding: 0.5rem 1rem;
-  background-color: #cdd2dd;
+  /* background-color: #cdd2dd; */
+  background-color: whitesmoke;
   /* border-bottom: 1px solid #e5e5e5; */
   position: sticky;
   top: 0;

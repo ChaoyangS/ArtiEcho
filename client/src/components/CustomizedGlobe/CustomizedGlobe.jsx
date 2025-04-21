@@ -5,20 +5,8 @@ import * as THREE from "three";
 import "./CustomizedGlobe.css";
 import "../../styles/_global.css";
 
-// Function to Create Globe Material
-// const createGlobeMaterial = () => {
-//   return new THREE.MeshBasicMaterial({
-//     color: new THREE.Color(),
-//     map: new THREE.TextureLoader().load(
-//       "https://upload.wikimedia.org/wikipedia/commons/2/2c/BlackMarble20161km.jpg"
-//     ),
-//   });
-// };
 const createGlobeMaterial = new THREE.MeshPhongMaterial({
-  map: new THREE.TextureLoader().load(
-    "/texture.png"
-    // "https://upload.wikimedia.org/wikipedia/commons/7/7f/Watercolor_paper_texture_background.jpg"
-  ),
+  map: new THREE.TextureLoader().load("/texture.png"),
 });
 
 // Mapping nationality to location
