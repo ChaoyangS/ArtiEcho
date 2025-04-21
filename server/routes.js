@@ -518,9 +518,9 @@ const artworkCountByYear = async function (req, res) {
   );
 };
 
-// Route 12: GET/artworkBibliographyByTitle
-const artworkBibliographyByTitle = async function (req, res) {
-  const title = req.query.title || "";
+// Route 12: GET/artworkExhibitionHistory
+const artworkExhibitionHistory = async function (req, res) {
+  const id = req.query.id || "";
 
   connection.query(
     `
@@ -538,13 +538,14 @@ const artworkBibliographyByTitle = async function (req, res) {
                ROW_NUMBER() OVER (PARTITION BY o.objectid ORDER BY t.year DESC) AS rn
         FROM objects o
         JOIN objects_text_entries t ON o.objectID = t.objectID
-        WHERE t.textType = 'bibliography'
-          AND o.title ILIKE $1
+        WHERE t.textType = 'exhibition_history'
+          AND o.objectid = $1
+          AND t.text IS NOT NULL
     ) sub
     WHERE rn = 1
     LIMIT 25;
     `,
-    [`%${title}%`],
+    [id],
     (err, data) => {
       if (err) {
         console.error(err);
@@ -562,7 +563,7 @@ module.exports = {
   artworkByTitle,
   artworkByStyle,
   artworkByGenreByStyle,
-  artworkBibliographyByTitle,
+  artworkExhibitionHistory,
   artworkByNationality,
   topNationalities,
   topDonors,

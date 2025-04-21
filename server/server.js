@@ -62,8 +62,8 @@ app.get("/top-donors", auth, routes.topDonors);
 // 11 http://localhost:3000/artwork-count-by-year
 app.get("/artwork-count-by-year", auth, routes.artworkCountByYear);
 
-// 12 http://localhost:3000/artwork-bibliography-search?title=sunflower
-app.get("/artwork-bibliography-search", auth,routes.artworkBibliographyByTitle);
+// 12 http://localhost:3000/artwork-exhibition-history?id=1111
+app.get("/artwork-exhibition-history", auth,routes.artworkExhibitionHistory);
 
 
 
