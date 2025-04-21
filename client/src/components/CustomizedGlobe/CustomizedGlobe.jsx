@@ -319,6 +319,13 @@ function CustomizedGlobe() {
 
   useEffect(() => {
     if (globeRef.current) {
+      const globeObj = globeRef.current;
+      const scene = globeObj.scene();
+      const loader = new THREE.TextureLoader();
+
+      loader.load("/backgroundstar6.png", (texture) => {
+        scene.background = texture;
+      });
       const controls = globeRef.current.controls();
       controls.autoRotate = true;
       controls.autoRotateSpeed = 0.4;
@@ -326,6 +333,7 @@ function CustomizedGlobe() {
       controls.dampingFactor = 0.05;
     }
   }, []);
+
   /**
    * add background dynamic size handler here(fix on - 04/10)
    */
