@@ -29,6 +29,12 @@
   flex-direction: column;
 }
 
+.exhibition-history-text {
+  white-space: normal;     /* ✅ Allow wrapping */
+  line-height: 1.4;        /* Optional: improve readability */
+  opacity: 0.8;            /* Match meta-line tone */
+}
+
 .artwork-genre {
   font-size: 1.1rem;
   margin-bottom: 0.3rem;
