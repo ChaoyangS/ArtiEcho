@@ -100,7 +100,7 @@
 .nav-pane h2 {
   font-family: "Limelight", sans-serif;
   font-size: 5rem;
-  margin: 0 0 10px;
+  margin: 0.5rem 0 0 0;
   color: lightgrey;
   text-align: center;
 }
