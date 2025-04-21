@@ -84,7 +84,7 @@
 
 /* Vertical text for folded state */
 .nav-pane.default {
-  top: 5rem;
+  top: 4rem;
 }
 .nav-pane p {
   font-size: 1rem;
