@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from "react"; // added
 import "./ToptenNavbar.css";
 
 const ToptenNavbar = (props) => {
-  const [sidebarOpen, setSidebarOpen] = useState(false); // added
+  const [sidebarOpen, setSidebarOpen] = useState(true); // added
   const [activeStyle, setActiveStyle] = useState(null);
   const sidebarRef = useRef(null); // add
   const location = useLocation();
