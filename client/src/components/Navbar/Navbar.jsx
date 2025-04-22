@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import "./Navbar.css";
-import artiechologo from "../../assets/logo3.png";
+import artiechologo from "../../assets/ArtiEcho_logo.png";
 import { Link } from "react-router-dom";
 
 const Navbar = () => {
