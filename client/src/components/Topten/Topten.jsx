@@ -80,7 +80,7 @@ const Topten = ({ title, items, category, showStyle = true }) => {
                             rel="noopener noreferrer"
                             className="wiki-link"
                           >
-                            More on Wikipedia ...
+                            &#8690; More on Wikipedia 
                           </a>
                         </p>
                       </div>
