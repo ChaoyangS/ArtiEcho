@@ -89,9 +89,11 @@ const SearchPage = () => {
                 <Link to={`/artwork/${item.objectid}`} className="topten-link">
                   <h3>{item.artwork_title || "Untitled"}</h3>
                 </Link>
+                {/* We don't need to provide objectID to user
                 <p>
                   <strong>ObjectID:</strong> {item.objectid || "Unknown"}
                 </p>
+                */}
                 <p>
                   <strong>Artist:</strong> {item.artist_name || "Unknown"}
                 </p>
