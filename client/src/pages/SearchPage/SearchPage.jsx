@@ -3,6 +3,7 @@ import "./SearchPage.css";
 import { useLocation, Link } from "react-router-dom";
 import { Search } from "lucide-react";
 import "../../styles/_global.css";
+import "../../../public/backgroundstar7.png";
 
 const SearchPage = () => {
   const location = useLocation();

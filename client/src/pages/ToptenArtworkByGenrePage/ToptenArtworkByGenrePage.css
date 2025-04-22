@@ -16,6 +16,7 @@
   
   body {
     background-color: #cfcae5;
+    opacity: .9;
   }
 
   #genre-navbar {
