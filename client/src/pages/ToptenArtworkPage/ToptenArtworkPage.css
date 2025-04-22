@@ -1,20 +1,20 @@
 .topten-artwork-page {
-    background-color: #cdd2dd; /* optional color: #ae838c; */
-    padding: 0 20px;
-    text-align: center;
-    height: auto;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
+  background-color: #8d99ae; /* optional color: #ae838c; */
+  opacity: 0.9;
+  padding: 0 20px;
+  text-align: center;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
 
-  h3 {
-    padding: 0;
-    color: #f2ded8; /* optional color: #f2ded8; */
-    margin-bottom: 20px;
-  }
+h3 {
+  padding: 0;
+  color: #f2ded8; /* optional color: #f2ded8; */
+  margin-bottom: 20px;
+}
 
-  body {
-    background-color: #cdd2dd;
-  }
-  
+body {
+  background-color: #cdd2dd;
+}

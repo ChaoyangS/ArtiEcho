@@ -12,8 +12,8 @@ import SearchPage from "./pages/SearchPage/SearchPage";
 import ToptenArtistsPage from "./pages/ToptenArtistsPage/ToptenArtistsPage";
 import HomePage from "./pages/HomePage/HomePage";
 import NationalityPage from "./pages/NationalityPage/NationalityPage";
-
 import ArtworkDetailPage from "./pages/ArtworkPage/ArtworkPage";
+import Footer from "./components/Footer/Footer";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -22,7 +22,7 @@ function App() {
 
   return (
     <>
-      <Navbar /> { /* load Navbar in each page */ }
+      <Navbar /> {/* load Navbar in each page */}
       {/*<h1>ArtiEcho</h1>*/}
       {/* Routes for different pages */}
       <Routes>
@@ -42,6 +42,7 @@ function App() {
         <Route path="/artwork/:id" element={<ArtworkDetailPage />} />
       </Routes>
       <ChatButton />
+      <Footer />
     </>
   );
 }

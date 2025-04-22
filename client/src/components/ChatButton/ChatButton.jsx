@@ -14,7 +14,7 @@ const ChatButton = () => {
       {isOpen && (
         <div className="chat-window">
           <div className="chat-header">
-            <span>Spotify Chatbot</span>
+            <span>ArtiEcho Chatbot</span>
             <button onClick={toggleChat} className="close-button">
               ×
             </button>

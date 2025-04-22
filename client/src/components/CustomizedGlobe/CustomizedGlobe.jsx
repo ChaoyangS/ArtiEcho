@@ -4,22 +4,10 @@ import Globe from "react-globe.gl";
 import * as THREE from "three";
 import "./CustomizedGlobe.css";
 import "../../styles/_global.css";
-import { config } from "../../config"; // 导入配置
+import { Link } from "react-router-dom";
 
-// Function to Create Globe Material
-// const createGlobeMaterial = () => {
-//   return new THREE.MeshBasicMaterial({
-//     color: new THREE.Color(),
-//     map: new THREE.TextureLoader().load(
-//       "https://upload.wikimedia.org/wikipedia/commons/2/2c/BlackMarble20161km.jpg"
-//     ),
-//   });
-// };
 const createGlobeMaterial = new THREE.MeshPhongMaterial({
-  map: new THREE.TextureLoader().load(
-    "/texture.png"
-    // "https://upload.wikimedia.org/wikipedia/commons/7/7f/Watercolor_paper_texture_background.jpg"
-  ),
+  map: new THREE.TextureLoader().load("/texture.png"),
 });
 
 // Mapping nationality to location
@@ -232,7 +220,11 @@ const ArtworkList = ({ artworks }) => (
       <div key={index} className="artwork-card">
         <img src={art.image} alt={art.title} className="artwork-image" />
         <div className="artwork-details">
-          <h3>{art.title}</h3>
+          <h3>
+            <Link to={`/artwork/${art.id}`} className="link-reset">
+              {art.title}
+            </Link>
+          </h3>
           <p>
             <strong>Artist:</strong> {art.artist}
           </p>
@@ -240,7 +232,7 @@ const ArtworkList = ({ artworks }) => (
             <strong>Year:</strong> {art.beginyear}
           </p>
           <p>
-            <strong>Bibliography:</strong> {art.text}
+            <strong>Genre:</strong> {art.subclassification}
           </p>
         </div>
       </div>
@@ -316,7 +308,8 @@ function CustomizedGlobe() {
             title: item.artwork_title,
             artist: item.preferreddisplayname,
             beginyear: item.beginyear,
-            text: item.text,
+            subclassification: item.subclassification,
+            id: item.objectid,
             image: item.url ? item.url.replace("!200,200", "!800,800") : null,
           });
         });
@@ -330,6 +323,13 @@ function CustomizedGlobe() {
 
   useEffect(() => {
     if (globeRef.current) {
+      const globeObj = globeRef.current;
+      const scene = globeObj.scene();
+      const loader = new THREE.TextureLoader();
+
+      loader.load("/backgroundstar6.png", (texture) => {
+        scene.background = texture;
+      });
       const controls = globeRef.current.controls();
       controls.autoRotate = true;
       controls.autoRotateSpeed = 0.4;
@@ -337,6 +337,7 @@ function CustomizedGlobe() {
       controls.dampingFactor = 0.05;
     }
   }, []);
+
   /**
    * add background dynamic size handler here(fix on - 04/10)
    */
@@ -379,7 +380,7 @@ function CustomizedGlobe() {
           polygonAltitude={0.01}
           polygonLabel={null}
           atmosphereColor="#ffffff"
-          atmosphereAltitude={0.1}
+          atmosphereAltitude={0.2}
         />
       </div>
 

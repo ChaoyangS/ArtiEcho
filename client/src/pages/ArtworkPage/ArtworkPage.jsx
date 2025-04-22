@@ -6,6 +6,7 @@ import "./ArtworkPage.css";
 const ArtworkDetailPage = () => {
   const { id } = useParams();
   const [artwork, setArtwork] = useState(null);
+  const [exhibitionHistory, setExhibitionHistory] = useState("");
 
   useEffect(() => {
     const fetchArtwork = async () => {
@@ -20,7 +21,24 @@ const ArtworkDetailPage = () => {
       }
     };
 
+    const fetchExhibitionHistory = async () => {
+      try {
+        const res = await fetch(`http://localhost:3000/artwork-exhibition-history?id=${id}`, {
+          headers: {
+            "X-API-Token": "artiecho",
+          },
+        });
+        const data = await res.json();
+        if (data.length > 0 && data[0].text) {
+          setExhibitionHistory(data[0].text);
+        }
+      } catch (err) {
+        console.error("Error fetching exhibition history:", err);
+      }
+    };
+
     fetchArtwork();
+    fetchExhibitionHistory();
   }, [id]);
 
   if (!artwork) return <p className="loading">Loading...</p>;
@@ -31,8 +49,7 @@ const ArtworkDetailPage = () => {
 
   return (
     <div className="artwork-detail-container">
-      <div className="artwork-side-by-side"> {/* adding a container here to arrage image and description */}
-        
+      <div className="artwork-side-by-side">
         {/* main Image on the left */}
         {artwork.url && (
           <div className="artwork-image-wrapper">
@@ -54,12 +71,22 @@ const ArtworkDetailPage = () => {
               <div className="meta-line"><span className="meta-label">Time period:</span>{timePeriod}</div>
               <div className="meta-line"><span className="meta-label">Artist:</span>{artwork.artist_name || "Unknown"}</div>
               <div className="meta-line"><span className="meta-label">Artist Nationality:</span>{artwork.nationality || "Unknown"}</div>
+
+              <div className="meta-line">
+                <span className="meta-label">Bibliorgraphy:</span>
+                <div className="exhibition-history-text">{artwork.bibliography || "No record available"}</div>
+              </div>
+
+              <div className="meta-line">
+                <span className="meta-label">Latest Exhibition:</span>
+                <div className="exhibition-history-text">{exhibitionHistory || "No record available"}</div>
+              </div>
+
             </div>
           </div>
         </div>
-
       </div>
-</div>
+    </div>
   );
 };
 

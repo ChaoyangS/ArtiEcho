@@ -1,5 +1,6 @@
 .donor-table-container {
-  background-color: #b18389;
+  /* background-color: #b18389; */
+  background-color: #a3b49f;
   min-height: 100vh;
   padding: 1.5rem;
   color: white;
@@ -27,6 +28,7 @@
 }
 
 .donor-table td {
+  font-size: 1rem;
   padding: 0.5rem;
   padding-left: 0.5rem;
   border-top: 0.0625rem solid white;

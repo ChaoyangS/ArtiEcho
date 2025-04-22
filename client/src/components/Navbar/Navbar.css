@@ -3,9 +3,10 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.5rem 1.5rem;
-  background-color: #cdd2dd;
-  border-bottom: 1px solid #e5e5e5;
+  padding: 0.5rem 1rem;
+  /* background-color: #cdd2dd; */
+  background-color: whitesmoke;
+  /* border-bottom: 1px solid #e5e5e5; */
   position: sticky;
   top: 0;
   z-index: 1000;
@@ -48,26 +49,26 @@
 
 .navbar-link {
   text-decoration: none;
-  color: #17181a;
-  font-weight: 500;
-  font-size: 1.1rem;
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
-  transition: all 0.2s ease-in-out;
+  color: #353134;
+  font-weight: 600;
+  font-size: 0.8rem;
+  /* font-family: "Chonburi", serif; */
+  font-family: "Limelight", sans-serif;
+
+  /* font-family: Verdana, Geneva, Tahoma, sans-serif; */
+  /* transition: all 0.2s ease-in-out; */
+  transition: font-size 0.4s ease, opacity 0.4s ease;
   display: flex;
   align-items: center;
-  gap: 5px;
-  padding: 0.5rem 0.75rem;
+  gap: 0.3rem;
+  padding: 0rem 0.75rem;
   border-radius: 4px;
 }
 
 .navbar-link:hover {
-  background-color: #f5f5f5;
+  /* background-color: #f5f5f5; */
   color: #9d9acc;
-}
-
-.navbar-link.active {
-  font-weight: 600;
-  border-bottom: 2px solid #9d9acc;
+  font-size: 1rem;
 }
 
 /* Menu Button (for small device) */
@@ -75,7 +76,7 @@
   background: none;
   border: none;
   padding: 0.5rem 1rem;
-  font-size: 1rem;
+  font-size: 0.8rem;
   color: #333;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -89,13 +90,15 @@
 /* Dropdown Menu (for small device)  */
 .menu-dropdown {
   position: absolute;
-  top: 4rem;
+  top: 3rem;
   right: 1rem;
-  background-color: #ffffff;
+  background-color: white;
+  opacity: 0.8;
   border-radius: 8px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-  min-width: 200px;
-  z-index: 1000;
+  min-width: 10rem;
+  right: 5rem;
+  z-index: 800;
   display: flex;
   flex-direction: column;
 }
@@ -106,21 +109,22 @@
 }
 
 .menu-item {
+  font-family: "Limelight", sans-serif;
   display: block;
   padding: 0.75rem 1.25rem;
-  color: #333;
+  color: #343a40;
   text-decoration: none;
   transition: all 0.2s ease;
+
   font-size: 0.95rem;
   position: relative;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  /* border-bottom: 1px solid rgba(0, 0, 0, 0.05); */
 }
 
 .menu-item:hover {
-  background-color: #f5f5f5;
+  /* background-color: #f5f5f5; */
   color: #9d9acc;
 }
-
 .menu-item:last-child {
   border-bottom: none;
 }
@@ -129,5 +133,10 @@
 @media (max-width: 768px) {
   .navbar-links {
     display: none;
+  }
+  .logo {
+    padding: 0.5 0.5rem;
+    width: auto;
+    height: 3em;
   }
 }

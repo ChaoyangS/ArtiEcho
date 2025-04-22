@@ -27,29 +27,46 @@ const artworkbyID = async function (req, res) {
   const id = req.query.id;
   connection.query(
     `
+    WITH bibliography AS (
+        SELECT objectid,
+              text,
+              textType,
+              year,
+              ROW_NUMBER() OVER (PARTITION BY objectid ORDER BY year DESC) AS rn
+        from objects_text_entries
+    ),
+    latest_bibliography AS (
+        select * from   bibliography where rn = 1
+    )
+
     SELECT o.objectID,
-           o.title,
-           o.subclassification AS genre,
-           c.preferredDisplayname AS artist_name,
-           o.beginyear,
-           o.endyear,
-           img.iiifthumburl AS url,
-           ot.term AS style,
-           c.nationality
+          o.title,
+          o.subclassification AS genre,
+          c.preferredDisplayname AS artist_name,
+          o.beginyear,
+          o.endyear,
+          img.iiifthumburl AS url,
+          ot.term AS style,
+          c.nationality,
+          lb.text AS bibliography
     FROM objects o
-    JOIN objects_constituents oc 
-        ON o.objectID = oc.objectID 
-        AND oc.roletype = 'artist' 
+    JOIN objects_constituents oc
+        ON o.objectID = oc.objectID
+        AND oc.roletype = 'artist'
         AND oc.displayorder = 1
-    JOIN constituents c 
+    JOIN constituents c
         ON oc.constituentID = c.constituentID
     LEFT JOIN objects_terms ot
         ON o.objectID = ot.objectID
         and ot.termtype = 'Style'
-    LEFT JOIN published_images img 
+    LEFT JOIN published_images img
         ON o.objectID = img.depictstmsobjectID
         AND img.viewtype = 'primary'
-    WHERE o.objectID = $1;
+    LEFT JOIN latest_bibliography lb
+        ON o.objectid = lb.objectid
+    WHERE o.objectid = $1
+      AND img.iiifthumburl IS NOT NULL
+      AND lb.text IS NOT NULL;
     `,
     [id],
     (err, data) => {
@@ -152,70 +169,33 @@ const artworkByNationality = async function (req, res) {
   // const endYear = req.query.endYear || "";
 
   connection.query(
-    // `
-    // SELECT c.nationality,
-    //        o.title AS artwork_title,
-    //        o.beginYear,
-    //        o.endYear,
-    //        c.preferreddisplayname,
-    //        img.iiifthumburl AS url
-    // FROM objects o
-    // JOIN objects_constituents oc
-    //   ON o.objectID = oc.objectID
-    //   AND oc.roletype = 'artist'
-    //   AND oc.displayorder = 1
-    // JOIN constituents c
-    //   ON oc.constituentID = c.constituentID
-    // LEFT JOIN published_images img
-    //   ON o.objectID = img.depictstmsobjectID
-    //   AND img.viewtype = 'primary'
-    // WHERE c.nationality ILIKE $1
-    //   AND o.endYear IS NOT NULL
-    //   AND o.beginYear IS NOT NULL
-    //   AND c.nationality IS NOT NULL
-    //   AND img.iiifthumburl IS NOT NULL
-    // LIMIT 25;
-    // `
-    `SELECT 
-    c.nationality,
-    o.title AS artwork_title,
-    o.beginYear,
-    o.endYear,
-    c.preferredDisplayName,
-    img.iiifthumburl AS url,
-    sub.text,
-    sub.textType,
-    sub.year
-FROM objects o
-JOIN objects_constituents oc
-    ON o.objectID = oc.objectID
-    AND oc.roletype = 'artist'
-    AND oc.displayorder = 1
-JOIN constituents c
-    ON oc.constituentID = c.constituentID
-LEFT JOIN published_images img
-    ON o.objectID = img.depictstmsobjectID
-    AND img.viewtype = 'primary'
-LEFT JOIN (
-    SELECT 
-        t.objectID,
-        t.text,
-        t.textType,
-        t.year,
-        ROW_NUMBER() OVER (PARTITION BY t.objectID ORDER BY t.year DESC) AS rn
-    FROM objects_text_entries t
-    WHERE t.textType = 'bibliography'
-) sub
-    ON o.objectID = sub.objectID AND sub.rn = 1
-WHERE 
-    c.nationality ILIKE $1
-    AND o.endYear IS NOT NULL
-    AND o.beginYear IS NOT NULL
-    AND c.nationality IS NOT NULL
-    AND img.iiifthumburl IS NOT NULL
-    AND sub.text IS NOT NULL
-LIMIT 25;
-`,
+    `
+    SELECT c.nationality,
+           o.objectid,
+           o.title AS artwork_title,
+           o.subclassification,
+           o.beginYear,
+           o.endYear,
+           c.preferreddisplayname,
+           img.iiifthumburl AS url
+    FROM objects o
+    JOIN objects_constituents oc
+      ON o.objectID = oc.objectID
+      AND oc.roletype = 'artist'
+      AND oc.displayorder = 1
+    JOIN constituents c
+      ON oc.constituentID = c.constituentID
+    LEFT JOIN published_images img
+      ON o.objectID = img.depictstmsobjectID
+      AND img.viewtype = 'primary'
+    WHERE c.nationality ILIKE $1
+      AND o.endYear IS NOT NULL
+      AND o.beginYear IS NOT NULL
+      AND o.subclassification IS NOT NULL
+      AND c.nationality IS NOT NULL
+      AND img.iiifthumburl IS NOT NULL
+    LIMIT 25;
+    `,
 
     [`%${nationality}%`],
     (err, data) => {
@@ -246,7 +226,6 @@ const artworkByArtist = async function (req, res) {
             o.endYear,
             c.nationality,
             c.preferredDisplayName AS artist_name,
-            ot.term AS style,
             img.iiifthumburl AS url
       FROM objects o
       LEFT JOIN objects_constituents oc
@@ -255,8 +234,6 @@ const artworkByArtist = async function (req, res) {
           AND oc.displayOrder = 1
       LEFT JOIN constituents c
           ON oc.constituentID = c.constituentID
-      LEFT JOIN objects_terms ot
-          ON o.objectID = ot.objectID
       LEFT JOIN published_images img 
           ON o.objectID = img.depictstmsobjectID
           AND img.viewtype = 'primary'
@@ -265,7 +242,6 @@ const artworkByArtist = async function (req, res) {
           FROM target_artist ta
           WHERE ta.constituentID = c.constituentID
       )
-      and ot.term is not null
       AND img.iiifthumburl IS NOT NULL
       ORDER BY o.endYear DESC
       LIMIT 25;
@@ -501,30 +477,8 @@ const topDonors = async function (req, res) {
 };
 
 // Route 11: GET/artworkCountByYear
-const artworkCountByYear = async function (req, res) {
-  connection.query(
-    `
-    SELECT endyear, COUNT(objectid) AS count
-    FROM objects
-    WHERE endyear IS NOT NULL 
-        AND endyear <= EXTRACT(YEAR FROM CURRENT_DATE)
-    GROUP BY endyear
-    ORDER BY endyear DESC;
-    `,
-    (err, data) => {
-      if (err) {
-        console.error(err);
-        res.status(500).json({ error: "Query failed" });
-      } else {
-        res.json(data.rows);
-      }
-    }
-  );
-};
-
-// Route 12: GET/artworkBibliographyByTitle
-const artworkBibliographyByTitle = async function (req, res) {
-  const title = req.query.title || "";
+const artworkBibliography= async function (req, res) {
+  const id = req.query.id || "";
 
   connection.query(
     `
@@ -542,13 +496,14 @@ const artworkBibliographyByTitle = async function (req, res) {
                ROW_NUMBER() OVER (PARTITION BY o.objectid ORDER BY t.year DESC) AS rn
         FROM objects o
         JOIN objects_text_entries t ON o.objectID = t.objectID
-        WHERE t.textType = 'bibliography'
-          AND o.title ILIKE $1
+        WHERE t.textType = 'exhibition_history'
+          AND o.objectid = $1
+          AND t.text IS NOT NULL
     ) sub
     WHERE rn = 1
     LIMIT 25;
     `,
-    [`%${title}%`],
+    [id],
     (err, data) => {
       if (err) {
         console.error(err);
@@ -560,17 +515,56 @@ const artworkBibliographyByTitle = async function (req, res) {
   );
 };
 
-module.exports = {
+// Route 12: GET/artworkExhibitionHistory
+const artworkExhibitionHistory = async function (req, res) {
+  const id = req.query.id || "";
+
+  connection.query(
+    `
+    SELECT objectid,
+           artwork_title,
+           text,
+           textType,
+           year
+    FROM (
+        SELECT o.objectid,
+               o.title AS artwork_title,
+               t.text,
+               t.textType,
+               t.year,
+               ROW_NUMBER() OVER (PARTITION BY o.objectid ORDER BY t.year DESC) AS rn
+        FROM objects o
+        JOIN objects_text_entries t ON o.objectID = t.objectID
+        WHERE t.textType = 'exhibition_history'
+          AND o.objectid = $1
+          AND t.text IS NOT NULL
+    ) sub
+    WHERE rn = 1
+    LIMIT 25;
+    `,
+    [id],
+    (err, data) => {
+      if (err) {
+        console.error(err);
+        res.status(500).json({ error: "Query failed" });
+      } else {
+        res.json(data.rows);
+      }
+    }
+  );
+};
+
+module.exports = {  
+  artworkbyID,
   artworkByYear,
-  topTenArtist,
   artworkByTitle,
-  artworkByStyle,
+  artworkByStyle,  
+  artworkByArtist,
   artworkByGenreByStyle,
-  artworkBibliographyByTitle,
+  artworkExhibitionHistory,
   artworkByNationality,
   topNationalities,
+  topTenArtist,
   topDonors,
-  artworkByArtist,
-  artworkCountByYear,
-  artworkbyID,
+  artworkBibliography,
 };
