@@ -7,13 +7,23 @@
   justify-content: center;
 }
 
+.sidebar-still p {
+  top: 45%;
+  font-size: 1rem;
+  color: #f2ded8;
+  opacity: .8;
+  writing-mode: vertical-lr;
+  text-align: center;
+  position: relative;
+  padding-top: 30vh;
+}
+
 .style-header {
   font-size: 1.5vw;
   opacity: 0.6;
   transition: font-size 0.4s ease, opacity 0.4s ease;
 }
 .style-header:hover {
-  font-size: 1.6vw; /* Slightly larger */
   opacity: 0.8; /* Fully visible */
 }
 
@@ -33,6 +43,7 @@
   overflow: hidden;
   z-index: 999;
   cursor: pointer;
+  padding-top: 1vh;
 }
 
 .click-sidebar-container.open .scalable-icon {
@@ -95,13 +106,14 @@
 .genre-list a {
   display: block;
   color: #17181a;
-  opacity: 0.3;
+  opacity: 0.4;
   margin: 2px 0;
 }
 
 .genre-list li {
   margin-bottom: 10px;
   list-style: none;
+  font-size: 110%;
 }
 
 .genre-list a:hover {
