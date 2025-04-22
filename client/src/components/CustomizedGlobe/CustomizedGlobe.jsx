@@ -397,6 +397,7 @@ function CustomizedGlobe() {
           >
             <h2>{selectedLocation.name}</h2>
             <ArtworkList artworks={selectedLocation.artworks} />
+            <div style={{ height: "5rem" }} />
           </div>
         </div>
       ) : (
