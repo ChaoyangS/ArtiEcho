@@ -3,7 +3,7 @@ import "./SearchPage.css";
 import { useLocation, Link } from "react-router-dom";
 import { Search } from "lucide-react";
 import "../../styles/_global.css";
-import "../../../public/backgroundstar7.png";
+import "../../assets/backgroundstar7.png";
 
 const SearchPage = () => {
   const location = useLocation();
@@ -16,6 +16,7 @@ const SearchPage = () => {
   useEffect(() => {
     if (query) {
       handleSearch(); // search based on query param if URL contains a query
+
     }
   }, []); // add for allow query for search through url
 
