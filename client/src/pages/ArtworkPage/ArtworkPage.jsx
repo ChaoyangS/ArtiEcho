@@ -72,10 +72,17 @@ const ArtworkDetailPage = () => {
               <div className="meta-line"><span className="meta-label">Time period:</span>{timePeriod}</div>
               <div className="meta-line"><span className="meta-label">Artist:</span>{artwork.artist_name || "Unknown"}</div>
               <div className="meta-line"><span className="meta-label">Artist Nationality:</span>{artwork.nationality || "Unknown"}</div>
+
+              <div className="meta-line">
+                <span className="meta-label">Bibliorgraphy:</span>
+                <div className="exhibition-history-text">{artwork.bibliography || "No record available"}</div>
+              </div>
+
               <div className="meta-line">
                 <span className="meta-label">Latest Exhibition:</span>
                 <div className="exhibition-history-text">{exhibitionHistory || "No record available"}</div>
               </div>
+
             </div>
           </div>
         </div>

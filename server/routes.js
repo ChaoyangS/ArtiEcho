@@ -27,29 +27,46 @@ const artworkbyID = async function (req, res) {
   const id = req.query.id;
   connection.query(
     `
+    WITH bibliography AS (
+        SELECT objectid,
+              text,
+              textType,
+              year,
+              ROW_NUMBER() OVER (PARTITION BY objectid ORDER BY year DESC) AS rn
+        from objects_text_entries
+    ),
+    latest_bibliography AS (
+        select * from   bibliography where rn = 1
+    )
+
     SELECT o.objectID,
-           o.title,
-           o.subclassification AS genre,
-           c.preferredDisplayname AS artist_name,
-           o.beginyear,
-           o.endyear,
-           img.iiifthumburl AS url,
-           ot.term AS style,
-           c.nationality
+          o.title,
+          o.subclassification AS genre,
+          c.preferredDisplayname AS artist_name,
+          o.beginyear,
+          o.endyear,
+          img.iiifthumburl AS url,
+          ot.term AS style,
+          c.nationality,
+          lb.text AS bibliography
     FROM objects o
-    JOIN objects_constituents oc 
-        ON o.objectID = oc.objectID 
-        AND oc.roletype = 'artist' 
+    JOIN objects_constituents oc
+        ON o.objectID = oc.objectID
+        AND oc.roletype = 'artist'
         AND oc.displayorder = 1
-    JOIN constituents c 
+    JOIN constituents c
         ON oc.constituentID = c.constituentID
     LEFT JOIN objects_terms ot
         ON o.objectID = ot.objectID
         and ot.termtype = 'Style'
-    LEFT JOIN published_images img 
+    LEFT JOIN published_images img
         ON o.objectID = img.depictstmsobjectID
         AND img.viewtype = 'primary'
-    WHERE o.objectID = $1;
+    LEFT JOIN latest_bibliography lb
+        ON o.objectid = lb.objectid
+    WHERE o.objectid = $1
+      AND img.iiifthumburl IS NOT NULL
+      AND lb.text IS NOT NULL;
     `,
     [id],
     (err, data) => {
@@ -497,16 +514,33 @@ const topDonors = async function (req, res) {
 };
 
 // Route 11: GET/artworkCountByYear
-const artworkCountByYear = async function (req, res) {
+const artworkBibliography= async function (req, res) {
+  const id = req.query.id || "";
+
   connection.query(
     `
-    SELECT endyear, COUNT(objectid) AS count
-    FROM objects
-    WHERE endyear IS NOT NULL 
-        AND endyear <= EXTRACT(YEAR FROM CURRENT_DATE)
-    GROUP BY endyear
-    ORDER BY endyear DESC;
+    SELECT objectid,
+           artwork_title,
+           text,
+           textType,
+           year
+    FROM (
+        SELECT o.objectid,
+               o.title AS artwork_title,
+               t.text,
+               t.textType,
+               t.year,
+               ROW_NUMBER() OVER (PARTITION BY o.objectid ORDER BY t.year DESC) AS rn
+        FROM objects o
+        JOIN objects_text_entries t ON o.objectID = t.objectID
+        WHERE t.textType = 'exhibition_history'
+          AND o.objectid = $1
+          AND t.text IS NOT NULL
+    ) sub
+    WHERE rn = 1
+    LIMIT 25;
     `,
+    [id],
     (err, data) => {
       if (err) {
         console.error(err);
@@ -557,17 +591,17 @@ const artworkExhibitionHistory = async function (req, res) {
   );
 };
 
-module.exports = {
+module.exports = {  
+  artworkbyID,
   artworkByYear,
-  topTenArtist,
   artworkByTitle,
-  artworkByStyle,
+  artworkByStyle,  
+  artworkByArtist,
   artworkByGenreByStyle,
   artworkExhibitionHistory,
   artworkByNationality,
   topNationalities,
+  topTenArtist,
   topDonors,
-  artworkByArtist,
-  artworkCountByYear,
-  artworkbyID,
+  artworkBibliography,
 };
