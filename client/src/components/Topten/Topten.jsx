@@ -6,7 +6,7 @@ import React from "react";
 import "./Topten.css";
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
-
+import "../../../public/backgroundstar7.png";
 
 
 const Topten = ({ title, items, category, showStyle = true }) => {
