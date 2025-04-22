@@ -227,7 +227,7 @@ const ArtworkList = ({ artworks }) => (
             <strong>Year:</strong> {art.beginyear}
           </p>
           <p>
-            <strong>Bibliography:</strong> {art.text}
+            <strong>Genre:</strong> {art.subclassification}
           </p>
         </div>
       </div>
@@ -305,7 +305,7 @@ function CustomizedGlobe() {
             title: item.artwork_title,
             artist: item.preferreddisplayname,
             beginyear: item.beginyear,
-            text: item.text,
+            subclassification: item.subclassification,
             image: item.url ? item.url.replace("!200,200", "!800,800") : null,
           });
         });

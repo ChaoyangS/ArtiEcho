@@ -152,69 +152,31 @@ const artworkByNationality = async function (req, res) {
   // const endYear = req.query.endYear || "";
 
   connection.query(
-    // `
-    // SELECT c.nationality,
-    //        o.title AS artwork_title,
-    //        o.beginYear,
-    //        o.endYear,
-    //        c.preferreddisplayname,
-    //        img.iiifthumburl AS url
-    // FROM objects o
-    // JOIN objects_constituents oc
-    //   ON o.objectID = oc.objectID
-    //   AND oc.roletype = 'artist'
-    //   AND oc.displayorder = 1
-    // JOIN constituents c
-    //   ON oc.constituentID = c.constituentID
-    // LEFT JOIN published_images img
-    //   ON o.objectID = img.depictstmsobjectID
-    //   AND img.viewtype = 'primary'
-    // WHERE c.nationality ILIKE $1
-    //   AND o.endYear IS NOT NULL
-    //   AND o.beginYear IS NOT NULL
-    //   AND c.nationality IS NOT NULL
-    //   AND img.iiifthumburl IS NOT NULL
-    // LIMIT 25;
-    // `
-    `SELECT 
-          c.nationality,
-          o.title AS artwork_title,
-          o.beginYear,
-          o.endYear,
-          c.preferredDisplayName,
-          img.iiifthumburl AS url,
-          sub.text,
-          sub.textType,
-          sub.year
-      FROM objects o
-      JOIN objects_constituents oc
-          ON o.objectID = oc.objectID
-          AND oc.roletype = 'artist'
-          AND oc.displayorder = 1
-      JOIN constituents c
-          ON oc.constituentID = c.constituentID
-      LEFT JOIN published_images img
-          ON o.objectID = img.depictstmsobjectID
-          AND img.viewtype = 'primary'
-      LEFT JOIN (
-          SELECT 
-              t.objectID,
-              t.text,
-              t.textType,
-              t.year,
-              ROW_NUMBER() OVER (PARTITION BY t.objectID ORDER BY t.year DESC) AS rn
-          FROM objects_text_entries t
-          WHERE t.textType = 'bibliography'
-      ) sub
-          ON o.objectID = sub.objectID AND sub.rn = 1
-      WHERE 
-          c.nationality ILIKE $1
-          AND o.endYear IS NOT NULL
-          AND o.beginYear IS NOT NULL
-          AND c.nationality IS NOT NULL
-          AND img.iiifthumburl IS NOT NULL
-          AND sub.text IS NOT NULL
-      LIMIT 25;
+    `
+    SELECT c.nationality,
+           o.title AS artwork_title,
+           o.subclassification,
+           o.beginYear,
+           o.endYear,
+           c.preferreddisplayname,
+           img.iiifthumburl AS url
+    FROM objects o
+    JOIN objects_constituents oc
+      ON o.objectID = oc.objectID
+      AND oc.roletype = 'artist'
+      AND oc.displayorder = 1
+    JOIN constituents c
+      ON oc.constituentID = c.constituentID
+    LEFT JOIN published_images img
+      ON o.objectID = img.depictstmsobjectID
+      AND img.viewtype = 'primary'
+    WHERE c.nationality ILIKE $1
+      AND o.endYear IS NOT NULL
+      AND o.beginYear IS NOT NULL
+      AND o.subclassification IS NOT NULL
+      AND c.nationality IS NOT NULL
+      AND img.iiifthumburl IS NOT NULL
+    LIMIT 25;
     `,
 
     [`%${nationality}%`],
