@@ -382,7 +382,7 @@ function CustomizedGlobe() {
           polygonAltitude={0.01}
           polygonLabel={null}
           atmosphereColor="#ffffff"
-          atmosphereAltitude={0.1}
+          atmosphereAltitude={0.2}
         />
       </div>
 

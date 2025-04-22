@@ -2,7 +2,7 @@
   /* background-color: #f2ded8; */
   min-height: 100vh;
   padding: 1.5rem;
-  color: #3b3b3b;
+  color: #353134;
   background-color: #f9f6ef;
   font-family: sans-serif;
 }
@@ -24,12 +24,12 @@
   font-size: 1.25rem;
   font-weight: bold;
   padding-left: 0.5rem;
-  border-bottom: 0.125rem solid #3b3b3b;
+  border-bottom: 0.125rem solid #353134;
 }
 
 .nationality-table td {
   font-size: 1rem;
   padding: 0.5rem;
   padding-left: 0.5rem;
-  border-top: 0.0625rem solid #3b3b3b;
+  border-top: 0.0625rem solid #353134;
 }
