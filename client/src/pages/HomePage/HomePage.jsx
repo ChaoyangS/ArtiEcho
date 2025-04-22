@@ -5,7 +5,7 @@ const HomePage = () => {
   return (
     <>
       <CustomizedGlobe />
-      <Soundtrack />
+      {/* <Soundtrack /> */}
     </>
   );
 };
