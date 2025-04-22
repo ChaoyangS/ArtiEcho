@@ -14,6 +14,7 @@ import HomePage from "./pages/HomePage/HomePage";
 import NationalityPage from "./pages/NationalityPage/NationalityPage";
 import ArtworkDetailPage from "./pages/ArtworkPage/ArtworkPage";
 import Footer from "./components/Footer/Footer";
+import Soundtrack from "./components/Soundtrack/Soundtrack";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -41,6 +42,7 @@ function App() {
         <Route path="/search" element={<SearchPage />} />
         <Route path="/artwork/:id" element={<ArtworkDetailPage />} />
       </Routes>
+      <Soundtrack />
       <ChatButton />
       <Footer />
     </>
