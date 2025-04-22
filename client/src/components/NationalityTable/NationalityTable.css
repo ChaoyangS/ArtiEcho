@@ -33,3 +33,8 @@
   padding-left: 0.5rem;
   border-top: 0.0625rem solid #353134;
 }
+
+.nationality-table tr:hover td {
+  background-color: #ece7df;
+  transition: background-color 0.2s ease;
+}
