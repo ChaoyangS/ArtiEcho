@@ -434,6 +434,8 @@ const topTenArtist = async function (req, res) {
     FROM artist_artwork_counts aac
     JOIN constituents c ON aac.constituentID = c.constituentID
     JOIN latest_valid_artworks la ON aac.constituentID = la.constituentID
+    WHERE (c.beginYear IS NOT NULL AND c.endYear IS NOT NULL)
+      AND la.url IS NOT NULL AND la.url <> ''
     ORDER BY aac.artwork_count DESC
     LIMIT 10;
   `,
