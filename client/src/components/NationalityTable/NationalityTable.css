@@ -1,8 +1,9 @@
 .nationality-table-container {
-  background-color: #f2ded8;
+  /* background-color: #f2ded8; */
   min-height: 100vh;
   padding: 1.5rem;
-  color: #ae838c;
+  color: #3b3b3b;
+  background-color: #f9f6ef;
   font-family: sans-serif;
 }
 
@@ -23,12 +24,12 @@
   font-size: 1.25rem;
   font-weight: bold;
   padding-left: 0.5rem;
-  border-bottom: 0.125rem solid #ae838c;
+  border-bottom: 0.125rem solid #3b3b3b;
 }
 
 .nationality-table td {
   font-size: 1rem;
   padding: 0.5rem;
   padding-left: 0.5rem;
-  border-top: 0.0625rem solid #ae838c;
+  border-top: 0.0625rem solid #3b3b3b;
 }
