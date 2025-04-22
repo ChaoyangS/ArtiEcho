@@ -4,6 +4,7 @@ import Globe from "react-globe.gl";
 import * as THREE from "three";
 import "./CustomizedGlobe.css";
 import "../../styles/_global.css";
+import { Link } from "react-router-dom";
 
 const createGlobeMaterial = new THREE.MeshPhongMaterial({
   map: new THREE.TextureLoader().load("/texture.png"),
@@ -219,7 +220,11 @@ const ArtworkList = ({ artworks }) => (
       <div key={index} className="artwork-card">
         <img src={art.image} alt={art.title} className="artwork-image" />
         <div className="artwork-details">
-          <h3>{art.title}</h3>
+          <h3>
+            <Link to={`/artwork/${art.id}`} className="link-reset">
+              {art.title}
+            </Link>
+          </h3>
           <p>
             <strong>Artist:</strong> {art.artist}
           </p>
@@ -306,6 +311,7 @@ function CustomizedGlobe() {
             artist: item.preferreddisplayname,
             beginyear: item.beginyear,
             subclassification: item.subclassification,
+            id: item.objectid,
             image: item.url ? item.url.replace("!200,200", "!800,800") : null,
           });
         });

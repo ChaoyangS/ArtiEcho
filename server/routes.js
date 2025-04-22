@@ -154,6 +154,7 @@ const artworkByNationality = async function (req, res) {
   connection.query(
     `
     SELECT c.nationality,
+           o.objectid,
            o.title AS artwork_title,
            o.subclassification,
            o.beginYear,
