@@ -22,9 +22,3 @@ Reference for Bodoni font-weight values:
 	•	900 – Black
 */
 
-/* 添加全局字体设置 */
-body {
-  font-family: 'Bodoni Moda', Georgia, serif;
-}
-
-/* 如果需要，添加其他全局样式 */
