@@ -6,7 +6,7 @@ import React from "react";
 import "./Topten.css";
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
-
+import "../../assets/backgroundstar7.png";
 
 
 const Topten = ({ title, items, category, showStyle = true }) => {
@@ -32,15 +32,10 @@ const Topten = ({ title, items, category, showStyle = true }) => {
                         <Link to={`/artwork/${item.objectid}`} className="topten-link">
                           {item.title}
                         </Link>
-                      ) : (
-                        <a
-                            href={`https://en.wikipedia.org/wiki/${item.artist.replace(/\s+/g, "_")}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="wiki-link"
-                          >
+                      ) : (                        
+                        <Link to={`/search?mode=artist&query=${encodeURIComponent(item.artist)}`} className="topten-link">
                           {item.artist}
-                          </a>
+                        </Link>
                       )}
                   </h3>
                     {/* If this is for top ten artworks */}          
@@ -78,6 +73,16 @@ const Topten = ({ title, items, category, showStyle = true }) => {
                           </Link>
                         </p>
                         <p>Influence: {item.lifeSpan}</p>
+                        <p>
+                          <a
+                            href={`https://en.wikipedia.org/wiki/${item.artist.replace(/\s+/g, "_")}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="wiki-link"
+                          >
+                            &#8690; More on Wikipedia 
+                          </a>
+                        </p>
                       </div>
                     )}                  
                   </div>

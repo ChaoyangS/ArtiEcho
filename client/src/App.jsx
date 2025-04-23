@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Routes, Route, Link } from "react-router-dom";
 import "./App.css";
 import "./styles/_global.css";
-import CustomizedGlobe from "./components/CustomizedGlobe/CustomizedGlobe";
 import ToptenArtworkPage from "./pages/ToptenArtworkPage/ToptenArtworkPage";
 import DonarsPage from "./pages/DonarsPage/DonarsPage";
 import ToptenArtworkByGenrePage from "./pages/ToptenArtworkByGenrePage/ToptenArtworkByGenrePage";
@@ -14,6 +13,7 @@ import HomePage from "./pages/HomePage/HomePage";
 import NationalityPage from "./pages/NationalityPage/NationalityPage";
 import ArtworkDetailPage from "./pages/ArtworkPage/ArtworkPage";
 import Footer from "./components/Footer/Footer";
+import Soundtrack from "./components/Soundtrack/Soundtrack";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -41,6 +41,7 @@ function App() {
         <Route path="/search" element={<SearchPage />} />
         <Route path="/artwork/:id" element={<ArtworkDetailPage />} />
       </Routes>
+      <Soundtrack />
       <ChatButton />
       <Footer />
     </>

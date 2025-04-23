@@ -5,6 +5,7 @@ import * as THREE from "three";
 import "./CustomizedGlobe.css";
 import "../../styles/_global.css";
 import { Link } from "react-router-dom";
+import config from "../../config";
 
 const createGlobeMaterial = new THREE.MeshPhongMaterial({
   map: new THREE.TextureLoader().load("/texture.png"),
@@ -395,6 +396,7 @@ function CustomizedGlobe() {
           >
             <h2>{selectedLocation.name}</h2>
             <ArtworkList artworks={selectedLocation.artworks} />
+            <div style={{ height: "5rem" }} />
           </div>
         </div>
       ) : (

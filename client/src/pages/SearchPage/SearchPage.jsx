@@ -4,6 +4,7 @@ import { useLocation, Link } from "react-router-dom";
 import { Search } from "lucide-react";
 import { config } from "../../config"; // 导入配置
 import "../../styles/_global.css";
+import "../../assets/backgroundstar7.png";
 
 const SearchPage = () => {
   const location = useLocation();
@@ -16,6 +17,7 @@ const SearchPage = () => {
   useEffect(() => {
     if (query) {
       handleSearch(); // search based on query param if URL contains a query
+
     }
   }, []); // add for allow query for search through url
 
@@ -88,9 +90,11 @@ const SearchPage = () => {
                 <Link to={`/artwork/${item.objectid}`} className="topten-link">
                   <h3>{item.artwork_title || "Untitled"}</h3>
                 </Link>
+                {/* We don't need to provide objectID to user
                 <p>
                   <strong>ObjectID:</strong> {item.objectid || "Unknown"}
                 </p>
+                */}
                 <p>
                   <strong>Artist:</strong> {item.artist_name || "Unknown"}
                 </p>

@@ -4,7 +4,7 @@
 body {
   font-size: 1.5vw;
   color: #ffffff;
-  background-color: #17181a;
+  background-image: url("/backgroundstar7.png");
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -156,13 +156,13 @@ body {
   render about the wiki link in ToptenArtistsPage
 */
 .wiki-link {
-  font-size: 1.2em;
-  color: #ae838c;
+  color: #9d9acc;
+  font-size: 90%;
   text-decoration: none;
 }
 
 .wiki-link:hover {
-  color: #9d9acc;
+  color: #ae838c;
 }
 
 .artist-info-block {
