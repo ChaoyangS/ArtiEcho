@@ -27,44 +27,37 @@ const artworkbyID = async function (req, res) {
   const id = req.query.id;
   connection.query(
     `
-    WITH bibliography AS (
-        SELECT objectid,
-              text,
-              textType,
-              year,
-              ROW_NUMBER() OVER (PARTITION BY objectid ORDER BY year DESC) AS rn
-        from objects_text_entries
-    ),
-    latest_bibliography AS (
-        select * from   bibliography where rn = 1
-    )
+      WITH bibliography AS (
+          SELECT objectid,
+                text,
+                textType,
+                year,
+                ROW_NUMBER() OVER (PARTITION BY objectid ORDER BY year DESC) AS rn
+          from objects_text_entries
+      ),
+          latest_bibliography AS (
+              select * from   bibliography where rn = 1
+          )
 
-    SELECT o.objectID,
-          o.title,
-          o.subclassification AS genre,
-          c.preferredDisplayname AS artist_name,
-          o.beginyear,
-          o.endyear,
-          img.iiifthumburl AS url,
-          ot.term AS style,
-          c.nationality,
-          lb.text AS bibliography
-    FROM objects o
-    JOIN objects_constituents oc
-        ON o.objectID = oc.objectID
-        AND oc.roletype = 'artist'
-        AND oc.displayorder = 1
-    JOIN constituents c
-        ON oc.constituentID = c.constituentID
-    LEFT JOIN objects_terms ot
-        ON o.objectID = ot.objectID
-        and ot.termtype = 'Style'
-    LEFT JOIN published_images img
-        ON o.objectID = img.depictstmsobjectID
-        AND img.viewtype = 'primary'
-    LEFT JOIN latest_bibliography lb
-        ON o.objectid = lb.objectid
+      SELECT o.objectID,
+            o.title,
+            o.subclassification AS genre,
+            o.preferredDisplayname AS artist_name,
+            o.beginyear,
+            o.endyear,
+            o.iiifthumburl AS url,
+            ot.term AS style,
+            o.nationality,
+            lb.text AS bibliography
+      FROM objects_artist_img_mv o
+              LEFT JOIN objects_terms ot
+                        ON o.objectID = ot.objectID
+                            and ot.termtype = 'Style'
+              LEFT JOIN latest_bibliography lb
+                        ON o.objectid = lb.objectid
     WHERE o.objectid = $1
+      ---AND img.iiifthumburl IS NOT NULL
+      ---AND lb.text IS NOT NULL;
     `,
     [id],
     (err, data) => {
