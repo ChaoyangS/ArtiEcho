@@ -34,6 +34,7 @@ const artworkbyID = async function (req, res) {
                 year,
                 ROW_NUMBER() OVER (PARTITION BY objectid ORDER BY year DESC) AS rn
           from objects_text_entries
+          where textType = 'bibliography'
       ),
           latest_bibliography AS (
               select * from   bibliography where rn = 1
