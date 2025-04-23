@@ -65,8 +65,6 @@ const artworkbyID = async function (req, res) {
     LEFT JOIN latest_bibliography lb
         ON o.objectid = lb.objectid
     WHERE o.objectid = $1
-      AND img.iiifthumburl IS NOT NULL
-      AND lb.text IS NOT NULL;
     `,
     [id],
     (err, data) => {
