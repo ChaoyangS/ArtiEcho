@@ -1,5 +1,5 @@
 {
-  "rds_host": "database-artiecho.cwasddjils9h.us-east-1.rds.amazonaws.com",
+  "rds_host": "artiecho.ckpom4w4gd5s.us-east-1.rds.amazonaws.com",
   "rds_port": "5432",
   "rds_user": "artiecho",
   "rds_password": "ArtiEcho550",
