@@ -2,6 +2,8 @@
 
 ArtiEcho is a full-stack web app that lets users explore global art through interactive visuals and ambient sounds. Users can explore artworks based on cultural origins, artists, art genres, and more with an interactive UI.
 
+![1765191019523](https://github.com/user-attachments/assets/2ee3aa06-91f6-4a63-bce2-07d373273c4e)
+
 ## 🚀 Features
 
 - 3D interactive globe using `react-globe.gl`
